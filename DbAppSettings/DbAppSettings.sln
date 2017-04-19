@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings", "DbAppSettings\DbAppSettings.csproj", "{ED364AC6-A6AA-4601-9DCF-CA12A32C7895}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings", "Source\DbAppSettings\DbAppSettings.csproj", "{1F4CD95D-4C5E-468F-B990-40922949E8CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Test", "Source\DbAppSettings.Test\DbAppSettings.Test.csproj", "{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ED364AC6-A6AA-4601-9DCF-CA12A32C7895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED364AC6-A6AA-4601-9DCF-CA12A32C7895}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED364AC6-A6AA-4601-9DCF-CA12A32C7895}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED364AC6-A6AA-4601-9DCF-CA12A32C7895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4CD95D-4C5E-468F-B990-40922949E8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4CD95D-4C5E-468F-B990-40922949E8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4CD95D-4C5E-468F-B990-40922949E8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4CD95D-4C5E-468F-B990-40922949E8CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
