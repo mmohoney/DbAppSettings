@@ -143,6 +143,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Maintenance\Controllers\MaintenanceController.cs" />
     <Compile Include="Areas\Maintenance\MaintenanceAreaRegistration.cs" />
+    <Compile Include="Areas\Maintenance\Models\DbAppSettingModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -150,6 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Maintenance\Scripts\DbAppSettingMaintenance.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -191,7 +193,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Maintenance\Models\" />
     <Folder Include="Areas\Maintenance\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -209,6 +210,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbAppSettings\DbAppSettings.csproj">
+      <Project>{1F4CD95D-4C5E-468F-B990-40922949E8CF}</Project>
+      <Name>DbAppSettings</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

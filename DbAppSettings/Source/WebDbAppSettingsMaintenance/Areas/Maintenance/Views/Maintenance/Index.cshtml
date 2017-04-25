@@ -13,3 +13,24 @@
     </div>
 </div>
 
+@section scripts
+{
+    @Scripts.Render("~/bundles/Maintenance/js")
+
+    <script type="text/javascript">
+        $(function () {
+            var jsModel = @Html.Raw(Json.Encode(Model));
+
+            var settings = {
+                viewModel: jsModel,
+                urls: {
+                    GetAllApplications: '@Url.Action("GetAllApplications")',
+                    GetAllAssembliesForApplication: '@Url.Action("GetAllAssembliesForApplication")',
+                    GetAllDbAppSettingsForApplicationAndAssemblie: '@Url.Action("GetAllDbAppSettingsForApplicationAndAssemblie")',
+                    SaveSetting: '@Url.Action("SaveSetting")',
+                    RemoveSetting: '@Url.Action("RemoveSetting")',
+                }
+            };
+        });
+    </script>
+}
