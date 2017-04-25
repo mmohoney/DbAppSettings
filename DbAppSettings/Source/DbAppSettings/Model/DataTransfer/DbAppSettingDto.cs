@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DbAppSettings.Model.DataTransfer
 {
@@ -18,6 +20,17 @@ namespace DbAppSettings.Model.DataTransfer
         /// <summary>
         /// Should represent DbAppSetting.TypeString
         /// </summary>
+        /// <summary>
+        /// Returns the assembly portion of the Key
+        /// </summary>
+        public string Assembly
+        {
+            get
+            {
+                List<string> keySplits = Key.Split('.').ToList();
+                return string.Join(".", keySplits.Take(keySplits.Count - 1));
+            }
+        }
         public string Type { get; set; }
         /// <summary>
         /// String representation of the DbAppSetting.Value
