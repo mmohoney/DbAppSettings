@@ -77,7 +77,7 @@ namespace DbAppSettings.Model.Domain
 
             using (Stream stream = new MemoryStream())
             {
-                using (var writer = new XmlTextWriter(stream, Encoding.UTF8) { Formatting = Formatting.Indented, Indentation = 5, })
+                using (XmlTextWriter writer = new XmlTextWriter(stream, Encoding.UTF8) { Formatting = Formatting.Indented, Indentation = 5, })
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
                     serializer.Serialize(writer, inputList);
@@ -115,7 +115,7 @@ namespace DbAppSettings.Model.Domain
 
     /// <summary>
     /// Represents a setting containing a default value and an up to date value from the data access layer. If the data access layer
-    /// cannot update the underlying value, a default value will be provided always
+    /// cannot update the underlying value, a default value will always be provided 
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TValueType"></typeparam>

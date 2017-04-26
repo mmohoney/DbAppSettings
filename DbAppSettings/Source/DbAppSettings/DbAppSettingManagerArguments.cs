@@ -4,6 +4,9 @@ using DbAppSettings.Model.DataAccess.Interfaces;
 
 namespace DbAppSettings
 {
+    /// <summary>
+    /// Allows passing in of initialization parameters into the DbAppSettingCacheManager
+    /// </summary>
     public class DbAppSettingManagerArguments
     {
         /// <summary>

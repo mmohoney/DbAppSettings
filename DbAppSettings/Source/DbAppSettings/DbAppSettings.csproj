@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="DbAppSettingManagerArguments.cs" />
     <Compile Include="Model\DataAccess\DefaultDbAppSettingDao.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Demo\DemoDbAppSettingMaintenanceDao.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Demo\DemoDbAppSettings.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Interfaces\IDbAppSettingMaintenanceDao.cs" />
     <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
     <Compile Include="Model\Domain\DbAppSetting.cs" />
     <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
@@ -51,6 +54,8 @@
     <Compile Include="DbAppSettingCacheManager.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingInitialization.cs" />
+    <Compile Include="Model\Service\Maintenance\DbAppSettingMaintenanceService.cs" />
+    <Compile Include="Model\Service\Maintenance\Interfaces\IDbAppSettingMaintenanceService.cs" />
     <Compile Include="Model\Service\SettingCache.cs" />
     <Compile Include="Model\Service\SettingInitialization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,5 +72,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

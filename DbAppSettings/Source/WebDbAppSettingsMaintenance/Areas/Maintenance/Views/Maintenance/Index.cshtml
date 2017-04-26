@@ -1,0 +1,36 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="clearfix">
+    <div class="col-md-6">
+        <h3>
+            <span>DbAppSettings Maintenance</span>
+        </h3>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/Maintenance/js")
+
+    <script type="text/javascript">
+        $(function () {
+            var jsModel = @Html.Raw(Json.Encode(Model));
+
+            var settings = {
+                viewModel: jsModel,
+                urls: {
+                    GetAllApplications: '@Url.Action("GetAllApplications")',
+                    GetAllAssembliesForApplication: '@Url.Action("GetAllAssembliesForApplication")',
+                    GetAllDbAppSettingsForApplicationAndAssemblie: '@Url.Action("GetAllDbAppSettingsForApplicationAndAssemblie")',
+                    SaveSetting: '@Url.Action("SaveSetting")',
+                    RemoveSetting: '@Url.Action("RemoveSetting")',
+                }
+            };
+        });
+    </script>
+}

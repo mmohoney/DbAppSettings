@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DbAppSettings")]
+[assembly: AssemblyTitle("WebDbAppSettingsMaintenance")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Quad/Graphics, Inc.")]
-[assembly: AssemblyProduct("DbAppSettings")]
+[assembly: AssemblyProduct("WebDbAppSettingsMaintenance")]
 [assembly: AssemblyCopyright("Copyright © Quad/Graphics, Inc. 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1f4cd95d-4c5e-468f-b990-40922949e8cf")]
+[assembly: Guid("7de4a4a9-4ed2-4c0a-b2d2-35a5666e4768")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,11 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers
+// You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("DbAppSettings.Test")]
-[assembly: InternalsVisibleTo("WebDbAppSettingsMaintenance")]

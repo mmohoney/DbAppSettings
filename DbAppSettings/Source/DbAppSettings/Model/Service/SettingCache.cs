@@ -68,6 +68,9 @@ namespace DbAppSettings.Model.Service
 
                 if (_dbAppSettingDictionary.ContainsKey<T, TValueType>())
                     return _dbAppSettingDictionary.Get<T, TValueType>();
+
+                //Attempt to hydrate the setting from the dto if we have not done so already
+                HydrateSettingFromDto(newSetting);
             }
             
             return newSetting;
@@ -113,41 +116,44 @@ namespace DbAppSettings.Model.Service
         /// </summary>
         internal void InitalizeSettingWatchTask()
         {
-            //Task.Factory.StartNew pattern
-            _settingWatchTask = Task.Factory.StartNew(() =>
+            lock (Lock)
             {
-                //Initially sleep for the refresh time since settings were just retrieved from the data access layer
-                Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
-
-                //Run this indefinitly
-                while (true)
+                //Task.Factory.StartNew pattern
+                _settingWatchTask = Task.Factory.StartNew(() =>
                 {
-                    try
+                    //Initially sleep for the refresh time since settings were just retrieved from the data access layer
+                    Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
+
+                    //Run this indefinitly
+                    while (true)
                     {
-                        //Return all settings that have changed since the last time a setting was refreshed
-                        List<DbAppSettingDto> settingDtos = _settingInitialization.AppSettingDao.GetChangedDbAppSettings(_lastRefreshedTime).ToList();
-                        if (settingDtos.Any())
+                        try
                         {
-                            //Run in sync mode
-                            lock (Lock)
+                            //Return all settings that have changed since the last time a setting was refreshed
+                            List<DbAppSettingDto> settingDtos = _settingInitialization.AppSettingDao.GetChangedDbAppSettings(_lastRefreshedTime).ToList();
+                            if (settingDtos.Any())
                             {
-                                //Update the settings
-                                SetSettingValues(settingDtos);
+                                //Run in sync mode
+                                lock (Lock)
+                                {
+                                    //Update the settings
+                                    SetSettingValues(settingDtos);
 
-                                //Store a reference to the latest changed time
-                                _lastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+                                    //Store a reference to the latest changed time
+                                    _lastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+                                }
                             }
-                        }
 
-                        //Sleep before checking again
-                        Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
+                            //Sleep before checking again
+                            Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
+                        }
+                        catch (Exception e)
+                        {
+                            //cacheManager.NotifyOfException(e);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        //cacheManager.NotifyOfException(e);
-                    }
-                }
-            });
+                });
+            }
         }
 
         /// <summary>
@@ -156,51 +162,60 @@ namespace DbAppSettings.Model.Service
         /// <param name="settingDtos"></param>
         internal void SetSettingValues(List<DbAppSettingDto> settingDtos)
         {
-            //If any applications are provided, filter the results to only those settings
-            if (_settingInitialization.Applications.Any())
-                settingDtos = settingDtos.Where(d => _settingInitialization.Applications.Contains(d.ApplicationKey)).ToList();
-
-            //Always store the dtos by key in case we do not have a loaded assembly when searching for a type. 
-            //  This allows hydration without hitting the data access layer
-            foreach (DbAppSettingDto settingDto in settingDtos)
+            lock (Lock)
             {
-                if (!SettingDtosByKey.ContainsKey(settingDto.Key))
-                    SettingDtosByKey.Add(settingDto.Key, settingDto);
-                else
-                    SettingDtosByKey[settingDto.Key] = settingDto;
+                //If any applications are provided, filter the results to only those settings
+                if (_settingInitialization.Applications.Any())
+                    settingDtos = settingDtos.Where(d => _settingInitialization.Applications.Contains(d.ApplicationKey)).ToList();
+
+                //Always store the dtos by key in case we do not have a loaded assembly when searching for a type. 
+                //  This allows hydration without hitting the data access layer
+                foreach (DbAppSettingDto settingDto in settingDtos)
+                {
+                    if (!SettingDtosByKey.ContainsKey(settingDto.Key))
+                        SettingDtosByKey.Add(settingDto.Key, settingDto);
+                    else
+                        SettingDtosByKey[settingDto.Key] = settingDto;
+                }
+
+                //Get all settings in the loaded assemblies
+                List<Type> genericSettingTypes = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
+
+                //Iterate through the types
+                foreach (Type type in genericSettingTypes)
+                {
+                    //Create an instance of each type
+                    object activatedType = Activator.CreateInstance(type);
+
+                    //Cast to the lowest base class of a DbAppSetting
+                    InternalDbAppSettingBase dbAppSetting = activatedType as InternalDbAppSettingBase;
+                    if (dbAppSetting == null)
+                        continue;
+
+                    //Attempt to hydrate the setting from the dto if we have not done so already
+                    HydrateSettingFromDto(dbAppSetting);
+                }
             }
+        }
 
-            //Get all settings in the loaded assemblies
-            List<Type> genericSettingTypes = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
+        private static void HydrateSettingFromDto(InternalDbAppSettingBase dbAppSetting)
+        {
+            //If we have not yet loaded an assembly of a type, ignore this setting
+            if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
+                return;
 
-            //Iterate through the types
-            foreach (Type type in genericSettingTypes)
+            DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
+
+            //Add or update the internal dictionary of the DbAppSetting after hydration from the dto
+            if (_dbAppSettingDictionary.ContainsKey(dbAppSetting.FullSettingName))
             {
-                //Create an instance of each type
-                object activatedType = Activator.CreateInstance(type);
-
-                //Cast to the lowest base class of a DbAppSetting
-                InternalDbAppSettingBase dbAppSetting = activatedType as InternalDbAppSettingBase;
-                if (dbAppSetting == null)
-                    continue;
-
-                //If we have not yet loaded an assembly of a type, ignore this setting
-                if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
-                    continue;
-
-                DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
-
-                //Add or update the internal dictionary of the DbAppSetting after hydration from the dto
-                if (_dbAppSettingDictionary.ContainsKey(dbAppSetting.FullSettingName))
-                {
-                    dbAppSetting = _dbAppSettingDictionary.Get(dbAppSetting.FullSettingName);
-                    dbAppSetting.From(settingDto);
-                }
-                else
-                {
-                    dbAppSetting.From(settingDto);
-                    _dbAppSettingDictionary.Add(dbAppSetting.FullSettingName, dbAppSetting);
-                }
+                dbAppSetting = _dbAppSettingDictionary.Get(dbAppSetting.FullSettingName);
+                dbAppSetting.From(settingDto);
+            }
+            else
+            {
+                dbAppSetting.From(settingDto);
+                _dbAppSettingDictionary.Add(dbAppSetting.FullSettingName, dbAppSetting);
             }
         }
     }
