@@ -10,8 +10,8 @@ namespace DbAppSettings.Test.Model.Framework
     [TestFixture]
     public class DbAppSettingAssemblySearcherTest
     {
-        public class DbAppSettingAssemblySearcherTestSetting1 : DbAppSetting<DbAppSettingAssemblySearcherTestSetting1, int> { public override int DefaultValue => 1; }
-        public class DbAppSettingAssemblySearcherTestSetting2 : DbAppSetting<DbAppSettingAssemblySearcherTestSetting2, bool> { public override bool DefaultValue => true; }
+        public class DbAppSettingAssemblySearcherTestSetting1 : DbAppSetting<DbAppSettingAssemblySearcherTestSetting1, int> { public override int InitialValue => 1; }
+        public class DbAppSettingAssemblySearcherTestSetting2 : DbAppSetting<DbAppSettingAssemblySearcherTestSetting2, bool> { public override bool InitialValue => true; }
 
         [Test]
         public void GetGenericDbAppSettingsTest()

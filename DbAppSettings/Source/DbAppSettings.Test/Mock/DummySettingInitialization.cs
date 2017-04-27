@@ -8,7 +8,7 @@ namespace DbAppSettings.Test.Mock
     {
         internal DummySettingInitialization(IDbAppSettingDao appSettingDao, int cacheRefreshTimeoutMs, List<string> applications)
         {
-            AppSettingDao = appSettingDao;
+            DbAppSettingDao = appSettingDao;
             Applications = applications;
             CacheRefreshTimeoutMs = cacheRefreshTimeoutMs;
         }
@@ -25,7 +25,7 @@ namespace DbAppSettings.Test.Mock
 
         }
 
-        public IDbAppSettingDao AppSettingDao { get; }
+        public IDbAppSettingDao DbAppSettingDao { get; }
         public List<string> Applications { get; }
         public int CacheRefreshTimeoutMs { get; }
     }

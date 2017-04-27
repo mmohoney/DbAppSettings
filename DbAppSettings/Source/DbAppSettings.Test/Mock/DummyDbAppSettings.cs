@@ -6,12 +6,12 @@ namespace DbAppSettings.Test.Mock
 {
     public class DummyDbAppSettings
     {
-        public class DummyDbAppSettingDaoTestSetting1 : DbAppSetting<DummyDbAppSettingDaoTestSetting1, int> { public override int DefaultValue => 1; }
-        public class DummyDbAppSettingDaoTestSetting2 : DbAppSetting<DummyDbAppSettingDaoTestSetting2, string> { public override string DefaultValue => "TEST"; }
-        public class DummyDbAppSettingDaoTestSetting3 : DbAppSetting<DummyDbAppSettingDaoTestSetting3, bool> { public override bool DefaultValue => false; }
-        public class DummyDbAppSettingDaoTestSetting4 : DbAppSetting<DummyDbAppSettingDaoTestSetting4, bool> { public override bool DefaultValue => false; }
-        public class DummyDbAppSettingDaoTestSetting5 : DbAppSetting<DummyDbAppSettingDaoTestSetting5, bool> { public override bool DefaultValue => false; }
-        public class DummyDbAppSettingDaoTestSetting6 : DbAppSetting<DummyDbAppSettingDaoTestSetting6, bool> { public override bool DefaultValue => false; }
+        public class DummyDbAppSettingDaoTestSetting1 : DbAppSetting<DummyDbAppSettingDaoTestSetting1, int> { public override int InitialValue => 1; }
+        public class DummyDbAppSettingDaoTestSetting2 : DbAppSetting<DummyDbAppSettingDaoTestSetting2, string> { public override string InitialValue => "TEST"; }
+        public class DummyDbAppSettingDaoTestSetting3 : DbAppSetting<DummyDbAppSettingDaoTestSetting3, bool> { public override bool InitialValue => false; }
+        public class DummyDbAppSettingDaoTestSetting4 : DbAppSetting<DummyDbAppSettingDaoTestSetting4, bool> { public override bool InitialValue => false; }
+        public class DummyDbAppSettingDaoTestSetting5 : DbAppSetting<DummyDbAppSettingDaoTestSetting5, bool> { public override bool InitialValue => false; }
+        public class DummyDbAppSettingDaoTestSetting6 : DbAppSetting<DummyDbAppSettingDaoTestSetting6, bool> { public override bool InitialValue => false; }
     }
 
     public class DummyDbAppSettingsDtos

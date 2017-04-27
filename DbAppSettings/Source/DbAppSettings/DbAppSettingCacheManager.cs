@@ -38,7 +38,7 @@ namespace DbAppSettings
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
-        public DbAppSettingCacheManager CreateAndIntialize(DbAppSettingManagerArguments arguments)
+        public static DbAppSettingCacheManager CreateAndIntialize(DbAppSettingManagerArguments arguments)
         {
             if (arguments == null)
                 throw new NullReferenceException("arguments cannot be null");

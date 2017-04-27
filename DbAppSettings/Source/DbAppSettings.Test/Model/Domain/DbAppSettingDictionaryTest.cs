@@ -6,7 +6,7 @@ namespace DbAppSettings.Test.Model.Domain
     [TestFixture]
     public class DbAppSettingDictionaryTest
     {
-        public class DbAppSettingDictionaryTestSetting : DbAppSetting<DbAppSettingDictionaryTestSetting, int> { public override int DefaultValue => 1; }
+        public class DbAppSettingDictionaryTestSetting : DbAppSetting<DbAppSettingDictionaryTestSetting, int> { public override int InitialValue => 1; }
 
         [Test]
         public void Create()
@@ -109,7 +109,7 @@ namespace DbAppSettings.Test.Model.Domain
 
             DbAppSetting<DbAppSettingDictionaryTestSetting, int> result = dictionary.Get<DbAppSettingDictionaryTestSetting, int>();
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.DefaultValue == setting.DefaultValue);
+            Assert.IsTrue(result.InitialValue == setting.InitialValue);
         }
     }
 }

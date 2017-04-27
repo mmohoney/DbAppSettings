@@ -94,7 +94,7 @@ namespace DbAppSettings.Model.Service
                         _dbAppSettingDictionary = DbAppSettingDictionary.Create();
 
                         //Get all settings from the data access layer
-                        List<DbAppSettingDto> settingDtos = _settingInitialization.AppSettingDao.GetAllDbAppSettings().ToList();
+                        List<DbAppSettingDto> settingDtos = _settingInitialization.DbAppSettingDao.GetAllDbAppSettings().ToList();
                         if (settingDtos.Any())
                             SetSettingValues(settingDtos);
 
@@ -130,7 +130,7 @@ namespace DbAppSettings.Model.Service
                         try
                         {
                             //Return all settings that have changed since the last time a setting was refreshed
-                            List<DbAppSettingDto> settingDtos = _settingInitialization.AppSettingDao.GetChangedDbAppSettings(_lastRefreshedTime).ToList();
+                            List<DbAppSettingDto> settingDtos = _settingInitialization.DbAppSettingDao.GetChangedDbAppSettings(_lastRefreshedTime).ToList();
                             if (settingDtos.Any())
                             {
                                 //Run in sync mode

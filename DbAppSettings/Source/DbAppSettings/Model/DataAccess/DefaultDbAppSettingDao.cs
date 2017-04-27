@@ -10,11 +10,20 @@ namespace DbAppSettings.Model.DataAccess
     /// </summary>
     internal class DefaultDbAppSettingDao : IDbAppSettingDao
     {
+        /// <summary>
+        /// Returns all settings from the database. Initially used to load all settings into the cache
+        /// </summary>
+        /// <returns>all settings</returns>
         public IEnumerable<DbAppSettingDto> GetAllDbAppSettings()
         {
             return new List<DbAppSettingDto>();
         }
 
+        /// <summary>
+        /// Returns all settings from the database that have changed since the last time a value was retrieved
+        /// </summary>
+        /// <param name="latestDbAppSettingChangedDate"></param>
+        /// <returns>all settings the have changed</returns>
         public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)
         {
             return new List<DbAppSettingDto>();

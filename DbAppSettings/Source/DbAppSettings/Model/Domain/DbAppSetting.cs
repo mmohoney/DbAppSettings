@@ -129,22 +129,16 @@ namespace DbAppSettings.Model.Domain
         /// All DbAppSettings should contain a default value that will be returned if a data access value cannot be provided.
         /// This allows safe fallback if a data access connection cannot be made.
         /// </summary>
-        public abstract TValueType DefaultValue { get; }
+        public abstract TValueType InitialValue { get; }
 
         /// <summary>
         /// The static level representing either a default value, or an up to date value from the data access layer
         /// </summary>
-        public static TValueType Value
-        {
-            get
-            {
-                DbAppSetting<T, TValueType> cachedDbAppSetting = SettingCache.GetDbAppSetting<T, TValueType>();
-                if (cachedDbAppSetting != null)
-                    return cachedDbAppSetting.InternalValue;
-
-                return new T().DefaultValue;
-            }
-        }
+        public static TValueType Value => SettingCache.GetDbAppSetting<T, TValueType>().InternalValue;
+        /// <summary>
+        /// The static level representing the initial value
+        /// </summary>
+        public static TValueType DefaultValue => new T().InitialValue;
 
         /// <summary>
         /// Ties a setting to an application. The cache will only load settings for the specified application. Will be null until
@@ -163,7 +157,7 @@ namespace DbAppSettings.Model.Domain
             get
             {
                 if (!_hydratedFromDataAccess)
-                    return default(TValueType);
+                    return InitialValue;
                 return _value;
             }
             set { _value = value; }

@@ -5,6 +5,10 @@
     /// </summary>
     internal interface ISettingCache
     {
+        /// <summary>
+        /// Initialize the cache
+        /// </summary>
+        /// <param name="cacheManager"></param>
         void InitializeCache(ISettingInitialization cacheManager);
     }
 }

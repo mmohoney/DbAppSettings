@@ -9,7 +9,7 @@ namespace DbAppSettings.Model.Service
     internal static class DbAppSettingAssemblySearcher
     {
         /// <summary>
-        /// Returns all DbAppSettings implementing the generic key
+        /// Returns all DbAppSettings implementing the generic signature
         /// </summary>
         /// <returns></returns>
         public static List<Type> GetGenericDbAppSettings()

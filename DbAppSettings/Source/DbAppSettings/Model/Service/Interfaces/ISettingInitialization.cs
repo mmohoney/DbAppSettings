@@ -8,8 +8,18 @@ namespace DbAppSettings.Model.Service.Interfaces
     /// </summary>
     internal interface ISettingInitialization
     {
-        IDbAppSettingDao AppSettingDao { get; }
+        /// <summary>
+        /// Implementation of the data access layer
+        /// </summary>
+        IDbAppSettingDao DbAppSettingDao { get; }
+        /// <summary>
+        /// Optional - If any applications are passed in. The SettingCache will only pull up to date
+        /// values for the specified applications. Generally this will not be needed unless specific security is needed
+        /// </summary>
         List<string> Applications { get; }
+        /// <summary>
+        /// Static function that returns in milliseconds how long to wait before checking the data access layer for new values
+        /// </summary>
         int CacheRefreshTimeoutMs { get; }
     }
 }

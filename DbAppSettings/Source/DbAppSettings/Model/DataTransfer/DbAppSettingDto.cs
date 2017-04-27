@@ -20,6 +20,7 @@ namespace DbAppSettings.Model.DataTransfer
         /// <summary>
         /// Should represent DbAppSetting.TypeString
         /// </summary>
+        public string Type { get; set; }
         /// <summary>
         /// Returns the assembly portion of the Key
         /// </summary>
@@ -31,7 +32,6 @@ namespace DbAppSettings.Model.DataTransfer
                 return string.Join(".", keySplits.Take(keySplits.Count - 1));
             }
         }
-        public string Type { get; set; }
         /// <summary>
         /// String representation of the DbAppSetting.Value
         /// </summary>

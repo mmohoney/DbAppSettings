@@ -15,7 +15,7 @@ namespace DbAppSettings.Test.Model.Domain
     [TestFixture]
     public class DbAppSettingTest
     {
-        public class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int DefaultValue => 1; }
+        public class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int InitialValue => 1; }
 
         [Test]
         public void DbAppSetting_InstantiateTest()
@@ -98,7 +98,7 @@ namespace DbAppSettings.Test.Model.Domain
             object newObject = Activator.CreateInstance(myType);
             Assert.IsNotNull(newObject);
 
-            object defaultValue = myType.GetProperty("DefaultValue").GetValue(newObject, null);
+            object defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
             Assert.IsNotNull(defaultValue);
             Assert.IsTrue(defaultValue is int);
             Assert.IsTrue((int)defaultValue == 1);
@@ -118,7 +118,7 @@ namespace DbAppSettings.Test.Model.Domain
             object value = myType.GetProperty("InternalValue", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
             Assert.IsNotNull(value);
             Assert.IsTrue(value is int);
-            Assert.IsTrue((int)value == default(int));
+            Assert.IsTrue((int)value == 1);
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace DbAppSettings.Test.Model.Domain
             object newObject = Activator.CreateInstance(myType);
             Assert.IsNotNull(newObject);
 
-            object defaultValue = myType.GetProperty("DefaultValue").GetValue(newObject, null);
+            object defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
             Assert.IsNotNull(defaultValue);
             Assert.IsTrue(defaultValue is int);
             Assert.IsTrue((int)defaultValue == 1);
@@ -157,13 +157,13 @@ namespace DbAppSettings.Test.Model.Domain
             object value = myType.GetProperty("InternalValue", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
             Assert.IsNotNull(value);
             Assert.IsTrue(value is int);
-            Assert.IsTrue((int)value == default(int));
+            Assert.IsTrue((int)value == 1);
 
             DbAppSettingDto settingDto = new DbAppSettingDto() {Key = "DbAppSettingTest1", Value = "2", Type = typeof(int).FullName };
             MethodInfo fromMethod = newObject.GetType().GetMethod("From", BindingFlags.Instance | BindingFlags.NonPublic);
             fromMethod.Invoke(newObject, new object[] { settingDto });
 
-            defaultValue = myType.GetProperty("DefaultValue").GetValue(newObject, null);
+            defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
             Assert.IsNotNull(defaultValue);
             Assert.IsTrue(defaultValue is int);
             Assert.IsTrue((int)defaultValue == 1);
