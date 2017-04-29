@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Maintenance.Interfaces;
 using DbAppSettings.Model.DataTransfer;
-using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.Maintenance.Interfaces;
 
 namespace DbAppSettings.Model.Service.Maintenance
