@@ -77,6 +77,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
 
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
+
             SettingCache cache = SettingCache.Instance;
             Assert.IsNotNull(cache);
 
@@ -95,6 +99,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
 
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
+
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.Value == 2);
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.Value == "NEW TEST");
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.Value == true);
@@ -106,6 +114,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1().InitialValue == 1);
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
+
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
 
             SettingCache cache = SettingCache.Instance;
             Assert.IsNotNull(cache);
@@ -125,6 +137,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
 
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
+
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.Value == 2);
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.Value == "NEW TEST");
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.Value == true);
@@ -137,6 +153,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1().InitialValue == 1);
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
+
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
 
             SettingCache cache = SettingCache.Instance;
             Assert.IsNotNull(cache);
@@ -155,6 +175,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2().InitialValue == "TEST");
             Assert.IsTrue(new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3().InitialValue == false);
 
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
+
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.Value == 2);
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.Value == "NEW TEST");
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.Value == true);
@@ -162,6 +186,10 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsTrue(_dao.HitCount > 5);
             Assert.IsTrue(SettingCache.IsInitalized);
             Assert.IsNotNull(SettingCache.SettingWatchTask);
+
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.DefaultValue == 1);
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.DefaultValue == "TEST");
+            Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting3.DefaultValue == false);
 
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1.Value == 2);
             Assert.IsTrue(DummyDbAppSettings.DummyDbAppSettingDaoTestSetting2.Value == "NEW TEST");
