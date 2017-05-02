@@ -11,12 +11,12 @@ DbAppSettings
 #### Download
 Download the [latest release].
 
-### Documentation
+#### Documentation
 Visit the [Wiki] for quick setup guide.
 
 For complete examples and unit tests visit [DbAppSettings.Test]. 
 
-### Quick Example
+#### Quick Example
 
 Settings File:
 ```c#
