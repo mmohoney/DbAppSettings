@@ -12,7 +12,7 @@ namespace DbAppSettings
         /// <summary>
         /// Implementation of the data access layer
         /// </summary>
-        public IDbAppSettingDao AppSettingDao { get; set; }
+        public IDbAppSettingDao DbAppSettingDao { get; set; }
         /// <summary>
         /// Optional - If any applications are passed in. The SettingCache will only pull up to date values for the specified applications. 
         /// Generally this will not be needed unless specific security is needed

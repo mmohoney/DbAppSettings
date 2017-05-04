@@ -7,7 +7,7 @@ namespace DbAppSettings.Test.Model.Service
     [TestFixture()]
     public class DbAppSettingCacheManagerTest
     {
-        private readonly DbAppSettingManagerArguments _arguments = new DbAppSettingManagerArguments() { AppSettingDao = new DummyDbAppSettingDao() };
+        private readonly DbAppSettingManagerArguments _arguments = new DbAppSettingManagerArguments() { DbAppSettingDao = new DummyDbAppSettingDao() };
 
         [Test]
         public void DbAppSettingCacheManager_Create()
@@ -17,6 +17,16 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsNotNull(cacheManager.AppSettingDao);
             Assert.IsFalse(cacheManager.IsCacheInitalized);
         }
+
+        //[Test] 
+        //public void DbAppSettingCacheManager_Create_Default()
+        //{
+        //    DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(new DummyDbAppSettingDao());
+        //    //DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(new DbAppSettingManagerArguments());
+        //    Assert.IsNotNull(cacheManager);
+        //    Assert.IsNotNull(cacheManager.AppSettingDao);
+        //    Assert.IsFalse(cacheManager.IsCacheInitalized);
+        //}
 
         [Test]
         public void DbAppSettingCacheManager_Create_NoDao_UseDefault()
@@ -62,6 +72,11 @@ namespace DbAppSettings.Test.Model.Service
             cacheManager.InitializeCache();
 
             Assert.IsTrue(cacheManager.IsCacheInitalized);
+
+            //if (DbAppSettingsTestSettings.EnableLogging.Value)
+            //{
+            //    MyLogger.Log("Test");
+            //}
         }
     }
 }

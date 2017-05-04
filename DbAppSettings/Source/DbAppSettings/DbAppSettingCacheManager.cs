@@ -18,7 +18,7 @@ namespace DbAppSettings
         internal DbAppSettingCacheManager(DbAppSettingManagerArguments arguments)
         {
             _arguments = arguments;
-            _arguments.AppSettingDao = _arguments.AppSettingDao ?? new DefaultDbAppSettingDao();
+            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultDbAppSettingDao();
             _settingCache = SettingCache.Instance;
         }
 
@@ -29,7 +29,7 @@ namespace DbAppSettings
         /// <param name="settingCache"></param>
         internal DbAppSettingCacheManager(IDbAppSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
-            _arguments = new DbAppSettingManagerArguments() { AppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
+            _arguments = new DbAppSettingManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
             _settingCache = settingCache;
         }
 
@@ -47,13 +47,26 @@ namespace DbAppSettings
         }
 
         /// <summary>
+        /// Static create method used to instantiate the manager. Arguments must be implemented.
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        public static DbAppSettingCacheManager CreateAndIntialize(IDbAppSettingDao dbAppSettingDao)
+        {
+            if (dbAppSettingDao == null)
+                throw new NullReferenceException("dbAppSettingDao cannot be null");
+
+            return new DbAppSettingCacheManager(new DbAppSettingManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
+        }
+
+        /// <summary>
         /// Returns whether or not the SettingCache is intialized
         /// </summary>
         public bool IsCacheInitalized { get; private set; }
         /// <summary>
         /// Implementation of the data access layer
         /// </summary>
-        internal IDbAppSettingDao AppSettingDao => _arguments.AppSettingDao;
+        internal IDbAppSettingDao AppSettingDao => _arguments.DbAppSettingDao;
         
         /// <summary>
         /// Method needs to be invoked in order to intialize cache

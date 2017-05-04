@@ -11,7 +11,7 @@ namespace DbAppSettings.Model.Service
     {
         internal SettingInitialization(DbAppSettingManagerArguments arguments)
         {
-            DbAppSettingDao = arguments.AppSettingDao;
+            DbAppSettingDao = arguments.DbAppSettingDao;
             Applications = arguments.Applications;
             CacheRefreshTimeoutMs = arguments.CacheRefreshTimeoutMs();
         }
