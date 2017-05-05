@@ -1,23 +1,21 @@
 DbAppSettings
 =======================
 
-#### Features
-
+### Features
 - Easy to use global application settings
 - Realize value changes without app recycle/ restart
 - Graceful fallback values if data layer cannot be accessed
-- Data Access layer polled by default every 5 seconds
 
-#### Download
+### Download
 Download the [latest release].
 
-#### Documentation
+### Get it on NuGet
+`Install-Package DbAppSettings.DbAppSettings`
+
+### Documentation
 Visit the [Wiki] for quick setup guide.
 
-For complete examples and unit tests visit [DbAppSettings.Test]. 
-
-#### Quick Example
-
+### Preview Example
 Settings File:
 ```c#
 namespace DbAppSettings.Test.Mock
