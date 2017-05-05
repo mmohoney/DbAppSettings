@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.Service.Interfaces;
 
@@ -6,20 +7,20 @@ namespace DbAppSettings.Test.Mock
 {
     internal class DummySettingInitialization : ISettingInitialization
     {
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, int cacheRefreshTimeoutMs, List<string> applications)
+        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, List<string> applications)
         {
             DbAppSettingDao = appSettingDao;
             Applications = applications;
-            CacheRefreshTimeoutMs = cacheRefreshTimeoutMs;
+            CacheRefreshTimeout = cacheRefreshTimeoutMs;
         }
 
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, int cacheRefreshTimeoutMs, string application)
+        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, string application)
             :this (appSettingDao, cacheRefreshTimeoutMs, new List<string> { application })
         {
 
         }
 
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, int cacheRefreshTimeoutMs)
+        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs)
             : this(appSettingDao, cacheRefreshTimeoutMs, new List<string>())
         {
 
@@ -27,6 +28,6 @@ namespace DbAppSettings.Test.Mock
 
         public IDbAppSettingDao DbAppSettingDao { get; }
         public List<string> Applications { get; }
-        public int CacheRefreshTimeoutMs { get; }
+        public TimeSpan CacheRefreshTimeout { get; }
     }
 }

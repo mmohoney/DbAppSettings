@@ -14,21 +14,15 @@ namespace DbAppSettings.Model.Service
     /// </summary>
     internal class SettingCache : ISettingCache
     {
-        /// <summary>
-        /// Singleton pattern
-        /// </summary>
-        private static readonly SettingCache Singleton = new SettingCache();
         private static readonly object Lock = new object();
         private static readonly Dictionary<string, DbAppSettingDto> SettingDtosByKey = new Dictionary<string, DbAppSettingDto>();
+        private static SettingCache _singleton;
         private static ISettingInitialization _settingInitialization;
         private static bool _isInitalized;
         private static DbAppSettingDictionary _dbAppSettingDictionary;
         private static DateTime? _lastRefreshedTime;
         private static Task _settingWatchTask;
 
-        /// <summary>
-        /// Singleton pattern
-        /// </summary>
         private SettingCache()
         {
             
@@ -37,7 +31,21 @@ namespace DbAppSettings.Model.Service
         /// <summary>
         /// Singleton pattern
         /// </summary>
-        public static SettingCache Instance => Singleton;
+        public static SettingCache Instance
+        {
+            get
+            {
+                if (_singleton == null)
+                {
+                    lock (Lock)
+                    {
+                        if (_singleton == null)
+                            _singleton = new SettingCache();
+                    }
+                }
+                return _singleton;
+            }
+        }
         /// <summary>
         /// Returns whether or not the class is intialized
         /// </summary>
@@ -98,13 +106,27 @@ namespace DbAppSettings.Model.Service
                         _dbAppSettingDictionary = DbAppSettingDictionary.Create();
 
                         //Get all settings from the data access layer
-                        List<DbAppSettingDto> settingDtos = _settingInitialization.DbAppSettingDao.GetAllDbAppSettings().ToList();
-                        if (settingDtos.Any())
-                            SetSettingValues(settingDtos);
+                        try
+                        {
+                            List<DbAppSettingDto> settingDtos = _settingInitialization.DbAppSettingDao.GetAllDbAppSettings().ToList();
+                            if (settingDtos.Any())
+                            {
+                                SetSettingValues(settingDtos);
 
-                        //Store a reference to the latest changed time
-                        _lastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+                                //Store a reference to the latest changed time
+                                _lastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //TODO: Log manager
+                            //cacheManager.NotifyOfException(e);
+                        }
 
+                        //If we were unable to get a refresh time, provide now as a fallback
+                        if (!_lastRefreshedTime.HasValue)
+                            _lastRefreshedTime = DateTime.Now;
+                        
                         //Invoke the watch thread to watch for changes in settings
                         InitalizeSettingWatchTask();
 
@@ -123,12 +145,12 @@ namespace DbAppSettings.Model.Service
             //Task.Factory.StartNew pattern
             _settingWatchTask = Task.Factory.StartNew(() =>
             {
-                //Initially sleep for the refresh time since settings were just retrieved from the data access layer
-                Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
-
                 //Run this indefinitly
                 while (true)
                 {
+                    //Initially sleep for the refresh time since settings were just retrieved from the data access layer
+                    Thread.Sleep(_settingInitialization.CacheRefreshTimeout);
+
                     try
                     {
                         //Return all settings that have changed since the last time a setting was refreshed
@@ -141,12 +163,10 @@ namespace DbAppSettings.Model.Service
                             //Store a reference to the latest changed time
                             _lastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
                         }
-
-                        //Sleep before checking again
-                        Thread.Sleep(_settingInitialization.CacheRefreshTimeoutMs);
                     }
                     catch (Exception e)
                     {
+                        //TODO: Log manager
                         //cacheManager.NotifyOfException(e);
                     }
                 }

@@ -19,8 +19,9 @@ namespace DbAppSettings
         /// </summary>
         public List<string> Applications { get; set; } = new List<string>();
         /// <summary>
-        /// Static function that returns in milliseconds how long to wait before checking the data access layer for new values
+        /// Optional - Function that returns a timespan how long to wait before checking the data access layer for new values
+        /// Defauls to 5 seconds
         /// </summary>
-        public Func<int> CacheRefreshTimeoutMs { get; set; } = () => 5000;
+        public Func<TimeSpan> CacheRefreshTimeout { get; set; } = () => TimeSpan.FromSeconds(5);
     }
 }

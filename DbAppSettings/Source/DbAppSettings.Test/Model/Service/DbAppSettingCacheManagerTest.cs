@@ -18,16 +18,6 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsFalse(cacheManager.IsCacheInitalized);
         }
 
-        //[Test] 
-        //public void DbAppSettingCacheManager_Create_Default()
-        //{
-        //    DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(new DummyDbAppSettingDao());
-        //    //DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(new DbAppSettingManagerArguments());
-        //    Assert.IsNotNull(cacheManager);
-        //    Assert.IsNotNull(cacheManager.AppSettingDao);
-        //    Assert.IsFalse(cacheManager.IsCacheInitalized);
-        //}
-
         [Test]
         public void DbAppSettingCacheManager_Create_NoDao_UseDefault()
         {
@@ -35,30 +25,26 @@ namespace DbAppSettings.Test.Model.Service
             Assert.IsNotNull(cacheManager);
             Assert.IsNotNull(cacheManager.AppSettingDao);
             Assert.IsTrue(cacheManager.AppSettingDao.GetType() == typeof(DefaultDbAppSettingDao));
-            Assert.IsFalse(cacheManager.IsCacheInitalized);
         }
 
-        [Test]
-        public void CacheRefreshTimeoutMs()
-        {
-            int initialValue = _arguments.CacheRefreshTimeoutMs();
+        //[Test]
+        //public void CacheRefreshTimeoutMs()
+        //{
+        //    int initialValue = _arguments.CacheRefreshTimeoutMs();
 
-            _arguments.CacheRefreshTimeoutMs = () => initialValue + 10;
+        //    _arguments.CacheRefreshTimeoutMs = () => initialValue + 10;
 
-            DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(_arguments);
-            Assert.IsNotNull(cacheManager);
-            Assert.IsFalse(cacheManager.IsCacheInitalized);
+        //    DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(_arguments);
+        //    Assert.IsNotNull(cacheManager);
+        //    Assert.IsFalse(cacheManager.IsCacheInitalized);
 
-            Assert.IsTrue(_arguments.CacheRefreshTimeoutMs() == initialValue + 10);
-        }
+        //    Assert.IsTrue(_arguments.CacheRefreshTimeoutMs() == initialValue + 10);
+        //}
 
         [Test]
         public void AppSettingDao()
         {
             DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(_arguments);
-            Assert.IsNotNull(cacheManager);
-            Assert.IsFalse(cacheManager.IsCacheInitalized);
-
             Assert.IsNotNull(cacheManager.AppSettingDao);
         }
 
@@ -72,11 +58,24 @@ namespace DbAppSettings.Test.Model.Service
             cacheManager.InitializeCache();
 
             Assert.IsTrue(cacheManager.IsCacheInitalized);
+        }
 
-            //if (DbAppSettingsTestSettings.EnableLogging.Value)
-            //{
-            //    MyLogger.Log("Test");
-            //}
+        [Test]
+        public void DbAppSettingCacheManager_CreateAndIntialize()
+        {
+            DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(new DummyDbAppSettingDao());
+            Assert.IsNotNull(cacheManager);
+            Assert.IsNotNull(cacheManager.AppSettingDao);
+            Assert.IsTrue(cacheManager.IsCacheInitalized);
+        }
+
+        [Test]
+        public void DbAppSettingCacheManager_CreateAndIntialize_Arguments()
+        {
+            DbAppSettingCacheManager cacheManager = DbAppSettingCacheManager.CreateAndIntialize(_arguments);
+            Assert.IsNotNull(cacheManager);
+            Assert.IsNotNull(cacheManager.AppSettingDao);
+            Assert.IsTrue(cacheManager.IsCacheInitalized);
         }
     }
 }

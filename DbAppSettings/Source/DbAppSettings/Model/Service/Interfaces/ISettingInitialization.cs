@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Interfaces;
 
 namespace DbAppSettings.Model.Service.Interfaces
@@ -20,6 +21,6 @@ namespace DbAppSettings.Model.Service.Interfaces
         /// <summary>
         /// Static function that returns in milliseconds how long to wait before checking the data access layer for new values
         /// </summary>
-        int CacheRefreshTimeoutMs { get; }
+        TimeSpan CacheRefreshTimeout { get; }
     }
 }

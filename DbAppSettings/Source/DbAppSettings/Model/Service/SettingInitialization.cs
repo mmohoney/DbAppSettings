@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.Service.Interfaces;
 
@@ -13,7 +14,7 @@ namespace DbAppSettings.Model.Service
         {
             DbAppSettingDao = arguments.DbAppSettingDao;
             Applications = arguments.Applications;
-            CacheRefreshTimeoutMs = arguments.CacheRefreshTimeoutMs();
+            CacheRefreshTimeout = arguments.CacheRefreshTimeout();
         }
 
         /// <summary>
@@ -26,8 +27,8 @@ namespace DbAppSettings.Model.Service
         /// </summary>
         public List<string> Applications { get; }
         /// <summary>
-        /// Static function that returns in milliseconds how long to wait before checking the data access layer for new values
+        /// Function that returns a timespan how long to wait before checking the data access layer for new values
         /// </summary>
-        public int CacheRefreshTimeoutMs { get; }
+        public TimeSpan CacheRefreshTimeout { get; }
     }
 }
