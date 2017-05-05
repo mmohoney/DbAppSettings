@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using DbAppSettings.Model.DataAccess.Maintenance.Interfaces;
+using DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Interfaces;
+using DbAppSettings.Maintenance.Model.Service.Interfaces;
 using DbAppSettings.Model.DataTransfer;
-using DbAppSettings.Model.Service.Maintenance.Interfaces;
 
-namespace DbAppSettings.Model.Service.Maintenance
+namespace DbAppSettings.Maintenance.Model.Service
 {
     public class DbAppSettingMaintenanceService : IDbAppSettingMaintenanceService
     {

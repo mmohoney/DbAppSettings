@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using DbAppSettings.Model.DataTransfer;
 
-namespace DbAppSettings.Model.DataAccess.Maintenance.Interfaces
+namespace DbAppSettings.Maintenance.Model.Service.Interfaces
 {
-    public interface IDbAppSettingMaintenanceDao
+    public interface IDbAppSettingMaintenanceService
     {
         List<DbAppSettingDto> GetAll();
         void SaveDbAppSetting(DbAppSettingDto dto);

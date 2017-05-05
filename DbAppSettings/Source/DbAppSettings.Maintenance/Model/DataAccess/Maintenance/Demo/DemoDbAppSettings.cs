@@ -1,6 +1,6 @@
 ﻿using DbAppSettings.Model.Domain;
 
-namespace DbAppSettings.Model.DataAccess.Maintenance.Demo
+namespace DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Demo
 {
     internal class DemoDbAppSettings
     {

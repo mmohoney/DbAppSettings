@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DbAppSettings.Model.DataAccess.Maintenance.Interfaces;
+using DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Interfaces;
 using DbAppSettings.Model.DataTransfer;
 
-namespace DbAppSettings.Model.DataAccess.Maintenance.Demo
+namespace DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Demo
 {
     internal class DemoDbAppSettingMaintenanceDao : IDbAppSettingMaintenanceDao
     {

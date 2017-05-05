@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1F4CD95D-4C5E-468F-B990-40922949E8CF}</ProjectGuid>
+    <ProjectGuid>{7B390F06-3DD9-40AD-B7FA-986D440016AC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbAppSettings</RootNamespace>
-    <AssemblyName>DbAppSettings</AssemblyName>
+    <RootNamespace>DbAppSettings.Maintenance</RootNamespace>
+    <AssemblyName>DbAppSettings.Maintenance</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,33 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbAppSettingManagerArguments.cs" />
-    <Compile Include="Model\DataAccess\DefaultDbAppSettingDao.cs" />
-    <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
-    <Compile Include="Model\Domain\DbAppSetting.cs" />
-    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
-    <Compile Include="Model\Service\DbAppSettingAssemblySearcher.cs" />
-    <Compile Include="Model\Domain\DbAppSettingDictionary.cs" />
-    <Compile Include="DbAppSupportedValueTypes.cs" />
-    <Compile Include="DbAppSettingCacheManager.cs" />
-    <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
-    <Compile Include="Model\Service\Interfaces\ISettingInitialization.cs" />
-    <Compile Include="Model\Service\SettingCache.cs" />
-    <Compile Include="Model\Service\SettingInitialization.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Demo\DemoDbAppSettingMaintenanceDao.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Demo\DemoDbAppSettings.cs" />
+    <Compile Include="Model\DataAccess\Maintenance\Interfaces\IDbAppSettingMaintenanceDao.cs" />
+    <Compile Include="Model\Service\DbAppSettingMaintenanceService.cs" />
+    <Compile Include="Model\Service\Interfaces\IDbAppSettingMaintenanceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
+    <Folder Include="Model\DataTransfer\" />
+    <Folder Include="Model\Domain\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DbAppSettings\DbAppSettings.csproj">
+      <Project>{1f4cd95d-4c5e-468f-b990-40922949e8cf}</Project>
+      <Name>DbAppSettings</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
