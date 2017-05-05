@@ -49,7 +49,7 @@ namespace DbAppSettings
         /// <summary>
         /// Static create method used to instantiate the manager. Arguments must be implemented.
         /// </summary>
-        /// <param name="arguments"></param>
+        /// <param name="dbAppSettingDao"></param>
         /// <returns></returns>
         public static DbAppSettingCacheManager CreateAndIntialize(IDbAppSettingDao dbAppSettingDao)
         {
