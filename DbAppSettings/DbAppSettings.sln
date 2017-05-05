@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings", "Source\DbAppSettings\DbAppSettings.csproj", "{1F4CD95D-4C5E-468F-B990-40922949E8CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Test", "Source\DbAppSettings.Test\DbAppSettings.Test.csproj", "{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDbAppSettingsMaintenance", "Source\WebDbAppSettingsMaintenance\WebDbAppSettingsMaintenance.csproj", "{C71AC218-CBB9-43F3-8C7C-646D2388AAA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Maintenance", "Source\DbAppSettings.Maintenance\DbAppSettings.Maintenance.csproj", "{7B390F06-3DD9-40AD-B7FA-986D440016AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{C71AC218-CBB9-43F3-8C7C-646D2388AAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C71AC218-CBB9-43F3-8C7C-646D2388AAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C71AC218-CBB9-43F3-8C7C-646D2388AAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

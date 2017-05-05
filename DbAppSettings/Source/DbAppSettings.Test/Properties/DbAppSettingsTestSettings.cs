@@ -1,6 +1,6 @@
 ﻿using DbAppSettings.Model.Domain;
 
-namespace DbAppSettings.Test.Mock
+namespace DbAppSettings.Test.Properties
 {
     public class DbAppSettingsTestSettings
     {

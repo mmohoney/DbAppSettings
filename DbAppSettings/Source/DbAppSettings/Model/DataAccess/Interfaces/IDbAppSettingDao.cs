@@ -7,7 +7,7 @@ namespace DbAppSettings.Model.DataAccess.Interfaces
     /// <summary>
     /// Represents the data access portion of the settings cache. Needs to be implemented for data access
     /// </summary>
-    public interface IDbAppSettingDao
+    public interface IDbAppSettingDao 
     {
         /// <summary>
         /// Returns all settings from the database. Initially used to load all settings into the cache

@@ -125,6 +125,11 @@ namespace DbAppSettings.Model.Domain
         private bool _hydratedFromDataAccess;
         private TValueType _value;
 
+        protected DbAppSetting()
+        {
+
+        }
+
         /// <summary>
         /// All DbAppSettings should contain a default value that will be returned if a data access value cannot be provided.
         /// This allows safe fallback if a data access connection cannot be made.

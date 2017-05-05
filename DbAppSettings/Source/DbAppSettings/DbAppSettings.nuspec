@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DbAppSettings.DbAppSettings</id>
+    <version>0.2.0</version>
+    <title>DbAppSettings.DbAppSettings</title>
+    <authors>mmohoney</authors>
+    <owners>mmohoney</owners>
+    <licenseUrl>https://github.com/mmohoney/DbAppSettings/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/mmohoney/DbAppSettings</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides up to date application setting values</description>
+    <releaseNotes>First nuget release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>setting settings appsettings dbappsetting dbappsettings</tags>
+  </metadata>
+</package>
