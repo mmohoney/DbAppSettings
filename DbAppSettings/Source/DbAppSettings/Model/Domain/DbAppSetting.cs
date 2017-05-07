@@ -203,11 +203,7 @@ namespace DbAppSettings.Model.Domain
                 Type type = DbAppSupportedValueTypes.Types[TypeString];
 
                 //Logic to populate the value as the value type
-                if (type.IsEnum)
-                {
-                    InternalValue = (TValueType) Enum.Parse(type, value);
-                }
-                else if (type == typeof(StringCollection))
+                if (type == typeof(StringCollection))
                 {
                     InternalValue = (TValueType) (ConvertXmlToStringCollection(value) as object);
                 }
