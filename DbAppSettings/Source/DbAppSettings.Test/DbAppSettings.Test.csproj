@@ -50,7 +50,6 @@
     <Compile Include="Mock\DummySettingInitialization.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
     <Compile Include="Model\Framework\DbAppSettingAssemblySearcherTest.cs" />
-    <Compile Include="Model\Domain\DbAppSettingDictionaryTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />
     <Compile Include="Model\Service\DbAppSettingCacheManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

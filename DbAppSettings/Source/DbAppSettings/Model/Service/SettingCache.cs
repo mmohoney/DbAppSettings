@@ -179,24 +179,6 @@ namespace DbAppSettings.Model.Service
                 else
                     SettingDtosByKey[settingDto.Key] = settingDto;
             }
-
-            //Get all settings in the loaded assemblies
-            List<Type> genericSettingTypes = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            //Iterate through the types
-            foreach (Type type in genericSettingTypes)
-            {
-                //Create an instance of each type
-                object activatedType = Activator.CreateInstance(type);
-
-                //Cast to the lowest base class of a DbAppSetting
-                InternalDbAppSettingBase dbAppSetting = activatedType as InternalDbAppSettingBase;
-                if (dbAppSetting == null)
-                    continue;
-
-                //Attempt to hydrate the setting from the dto if we have not done so already
-                HydrateSettingFromDto(dbAppSetting);
-            }
         }
 
         /// <summary>
