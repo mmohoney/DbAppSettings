@@ -107,7 +107,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(setting.InitialValue == 1);
 
             Assert.IsNotNull(setting.InternalValue);
-            Assert.IsTrue(setting.InitialValue == 1);
+            Assert.IsTrue(setting.InternalValue == 1);
 
             DbAppSettingDto settingDto = new DbAppSettingDto() {Key = "DbAppSettingTest1", Value = "2", Type = typeof(int).FullName };
             setting.From(settingDto);
