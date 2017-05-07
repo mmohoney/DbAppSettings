@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using DbAppSettings.Model.DataTransfer;
@@ -192,28 +193,32 @@ namespace DbAppSettings.Model.Domain
             //Type string
             _typeString = dto.Type;
 
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (!DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
-                throw new Exception("type cannot be null");
-
-            //Get the type from the list of valid types
-            Type type = DbAppSupportedValueTypes.Types[TypeString];
-
             //String value
             string value = dto.Value;
 
-            //Logic to populate the value as the value type
-            if (type.IsEnum)
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
             {
-                InternalValue = (TValueType)Enum.Parse(type, value);
-            }
-            else if (type == typeof(StringCollection))
-            {
-                InternalValue = (TValueType)(ConvertXmlToStringCollection(value) as object);
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[TypeString];
+
+                //Logic to populate the value as the value type
+                if (type.IsEnum)
+                {
+                    InternalValue = (TValueType) Enum.Parse(type, value);
+                }
+                else if (type == typeof(StringCollection))
+                {
+                    InternalValue = (TValueType) (ConvertXmlToStringCollection(value) as object);
+                }
+                else
+                {
+                    InternalValue = (TValueType) TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+                }
             }
             else
             {
-                InternalValue = (TValueType)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+                InternalValue = new JavaScriptSerializer().Deserialize<TValueType>(value);
             }
 
             //Let the class know that it was hydrated from the data access layer

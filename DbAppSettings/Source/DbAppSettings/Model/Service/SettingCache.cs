@@ -19,7 +19,7 @@ namespace DbAppSettings.Model.Service
         private static SettingCache _singleton;
         private static ISettingInitialization _settingInitialization;
         private static bool _isInitalized;
-        private static DbAppSettingDictionary _dbAppSettingDictionary;
+        //private static DbAppSettingDictionary _dbAppSettingDictionary;
         private static DateTime? _lastRefreshedTime;
         private static Task _settingWatchTask;
 
@@ -76,9 +76,9 @@ namespace DbAppSettings.Model.Service
                 }
             }
 
-            //Case where we have the setting cached
-            if (_dbAppSettingDictionary.ContainsKey<T, TValueType>())
-                return _dbAppSettingDictionary.Get<T, TValueType>();
+            ////Case where we have the setting cached
+            //if (_dbAppSettingDictionary.ContainsKey<T, TValueType>())
+            //    return _dbAppSettingDictionary.Get<T, TValueType>();
 
             T newSetting = new T();
 
@@ -102,8 +102,8 @@ namespace DbAppSettings.Model.Service
                     {
                         _settingInitialization = settingInitialization;
 
-                        //Create the dictionary of settings
-                        _dbAppSettingDictionary = DbAppSettingDictionary.Create();
+                        ////Create the dictionary of settings
+                        //_dbAppSettingDictionary = DbAppSettingDictionary.Create();
 
                         //Get all settings from the data access layer
                         try
@@ -224,17 +224,19 @@ namespace DbAppSettings.Model.Service
 
             DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
 
-            //Add or update the internal dictionary of the DbAppSetting after hydration from the dto
-            if (_dbAppSettingDictionary.ContainsKey(dbAppSetting.FullSettingName))
-            {
-                dbAppSetting = _dbAppSettingDictionary.Get(dbAppSetting.FullSettingName);
-                dbAppSetting.From(settingDto);
-            }
-            else
-            {
-                dbAppSetting.From(settingDto);
-                _dbAppSettingDictionary.Add(dbAppSetting.FullSettingName, dbAppSetting);
-            }
+            dbAppSetting.From(settingDto);
+
+            ////Add or update the internal dictionary of the DbAppSetting after hydration from the dto
+            //if (_dbAppSettingDictionary.ContainsKey(dbAppSetting.FullSettingName))
+            //{
+            //    dbAppSetting = _dbAppSettingDictionary.Get(dbAppSetting.FullSettingName);
+            //    dbAppSetting.From(settingDto);
+            //}
+            //else
+            //{
+            //    dbAppSetting.From(settingDto);
+            //    _dbAppSettingDictionary.Add(dbAppSetting.FullSettingName, dbAppSetting);
+            //}
         }
     }
 }
