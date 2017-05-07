@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
@@ -18,9 +19,7 @@ namespace DbAppSettings.Model.Service
         private static readonly Dictionary<string, DbAppSettingDto> SettingDtosByKey = new Dictionary<string, DbAppSettingDto>();
         private static SettingCache _singleton;
         private static ISettingInitialization _settingInitialization;
-        private static bool _isInitalized;
         private static DateTime? _lastRefreshedTime;
-        private static Task _settingWatchTask;
 
         private SettingCache()
         {
@@ -45,11 +44,11 @@ namespace DbAppSettings.Model.Service
         /// <summary>
         /// Returns whether or not the class is intialized
         /// </summary>
-        internal static bool IsInitalized => _isInitalized;
+        internal static bool IsInitalized { get; private set; }
         /// <summary>
         /// Reference to the watch task
         /// </summary>
-        internal static Task SettingWatchTask => _settingWatchTask;
+        internal static Task SettingWatchTask { get; private set; }
         /// <summary>
         /// Returns the count of the dtos in its internal cache
         /// </summary>
@@ -63,11 +62,11 @@ namespace DbAppSettings.Model.Service
         /// <returns></returns>
         internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
         {
-            if(!_isInitalized)
+            if(!IsInitalized)
             {
                 lock (Lock)
                 {
-                    if (!_isInitalized)
+                    if (!IsInitalized)
                         throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitializeCache.");
                 }
             }
@@ -85,11 +84,11 @@ namespace DbAppSettings.Model.Service
         /// <param name="settingInitialization"></param>
         public void InitializeCache(ISettingInitialization settingInitialization)
         {
-            if (!_isInitalized)
+            if (!IsInitalized)
             {
                 lock (Lock)
                 {
-                    if (!_isInitalized)
+                    if (!IsInitalized)
                     {
                         _settingInitialization = settingInitialization;
 
@@ -119,7 +118,7 @@ namespace DbAppSettings.Model.Service
                         InitalizeSettingWatchTask();
 
                         //Set the cache to intialized to allow settings to be fetched
-                        _isInitalized = true;
+                        IsInitalized = true;
                     }
                 }
             }
@@ -131,7 +130,7 @@ namespace DbAppSettings.Model.Service
         private void InitalizeSettingWatchTask()
         {
             //Task.Factory.StartNew pattern
-            _settingWatchTask = Task.Factory.StartNew(() =>
+            SettingWatchTask = Task.Factory.StartNew(() =>
             {
                 //Run this indefinitly
                 while (true)
@@ -209,6 +208,13 @@ namespace DbAppSettings.Model.Service
             //If we have not yet loaded an assembly of a type, ignore this setting
             if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
                 return;
+
+            //If advanced implementation is given, use downcasting to access methods
+            if (_settingInitialization.DbAppSettingDao is IDbAppSettingAdvancedDao)
+            {
+                //If the setting is no found in the cache, save the setting
+                ((IDbAppSettingAdvancedDao)_settingInitialization.DbAppSettingDao).SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+            }
 
             DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
 

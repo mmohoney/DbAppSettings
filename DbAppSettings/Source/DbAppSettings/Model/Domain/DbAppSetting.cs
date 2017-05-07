@@ -63,6 +63,12 @@ namespace DbAppSettings.Model.Domain
         internal abstract void From(DbAppSettingDto dto);
 
         /// <summary>
+        /// Internal method used to convert the domain into the dto representation
+        /// </summary>
+        /// <returns></returns>
+        internal abstract DbAppSettingDto ToDto();
+
+        /// <summary>
         /// Convert a string collection into a json string to pass to the data access layer
         /// </summary>
         /// <param name="stringCollection"></param>
@@ -192,6 +198,27 @@ namespace DbAppSettings.Model.Domain
 
             //Let the class know that it was hydrated from the data access layer
             _hydratedFromDataAccess = true;
+        }
+
+        /// <summary>
+        /// Internal method used to convert the domain into the dto representation
+        /// </summary>
+        /// <returns></returns>
+        internal override DbAppSettingDto ToDto()
+        {
+            string value = string.Empty;
+
+
+
+            DbAppSettingDto dpAppSettingDto = new DbAppSettingDto
+            {
+                ApplicationKey = ApplicationKey,
+                Key = FullSettingName,
+                Type = TypeString,
+                Value = value,
+            };
+
+            return dpAppSettingDto;
         }
     }
 }

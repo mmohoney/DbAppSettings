@@ -47,7 +47,7 @@ namespace DbAppSettings
         }
 
         /// <summary>
-        /// Static create method used to instantiate the manager. Arguments must be implemented.
+        /// Static create method used to instantiate the manager.
         /// </summary>
         /// <param name="dbAppSettingDao"></param>
         /// <returns></returns>
