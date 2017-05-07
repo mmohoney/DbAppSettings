@@ -48,7 +48,6 @@
     <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
     <Compile Include="Model\Domain\DbAppSetting.cs" />
     <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
-    <Compile Include="Model\Service\DbAppSettingAssemblySearcher.cs" />
     <Compile Include="DbAppSupportedValueTypes.cs" />
     <Compile Include="DbAppSettingCacheManager.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />

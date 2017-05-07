@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
-using DbAppSettings.Model.Service;
 using NUnit.Framework;
 
 namespace DbAppSettings.Test.Model.Domain
@@ -17,15 +16,7 @@ namespace DbAppSettings.Test.Model.Domain
 
         private DbAppSettingTestSetting GetSetting()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            DbAppSettingTestSetting setting = newObject as DbAppSettingTestSetting;
+            DbAppSettingTestSetting setting = new DbAppSettingTestSetting();
             Assert.IsNotNull(setting);
 
             return setting;

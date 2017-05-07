@@ -49,7 +49,6 @@
     <Compile Include="Mock\DummySettingCache.cs" />
     <Compile Include="Mock\DummySettingInitialization.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
-    <Compile Include="Model\Framework\DbAppSettingAssemblySearcherTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />
     <Compile Include="Model\Service\DbAppSettingCacheManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\Framework\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
