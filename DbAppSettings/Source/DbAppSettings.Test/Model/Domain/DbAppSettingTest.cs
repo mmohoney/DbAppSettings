@@ -187,18 +187,8 @@ namespace DbAppSettings.Test.Model.Domain
             inputStringCollection.AddRange(randomInts.Select(t => t.ToString()).ToArray());
             Assert.IsTrue(inputStringCollection.Count == randomInts.Length);
 
-            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToXml(inputStringCollection);
+            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToJson(inputStringCollection);
             Assert.IsNotNull(resultXml);
-
-            try
-            {
-                XDocument xd1 = XDocument.Parse(resultXml);
-                Assert.IsNotNull(xd1);
-            }
-            catch (XmlException)
-            {
-                Assert.IsTrue(false);
-            }
         }
 
         [Test]
@@ -214,10 +204,10 @@ namespace DbAppSettings.Test.Model.Domain
             inputStringCollection.AddRange(randomInts.Select(t => t.ToString()).ToArray());
             Assert.IsTrue(inputStringCollection.Count == randomInts.Length);
 
-            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToXml(inputStringCollection);
+            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToJson(inputStringCollection);
             Assert.IsNotNull(resultXml);
 
-            StringCollection resultStringCollection = InternalDbAppSettingBase.ConvertXmlToStringCollection(resultXml);
+            StringCollection resultStringCollection = InternalDbAppSettingBase.ConvertJsonToStringCollection(resultXml);
             Assert.IsNotNull(resultStringCollection);
 
             List<string> inputToList = inputStringCollection.Cast<string>().ToList();
