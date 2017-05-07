@@ -49,7 +49,7 @@
     <Compile Include="Mock\DummyDbAppSettings.cs" />
     <Compile Include="Mock\DummySettingCache.cs" />
     <Compile Include="Mock\DummySettingInitialization.cs" />
-    <Compile Include="Model\Domain\DbAppSettingObjectTest.cs" />
+    <Compile Include="Model\Domain\DbAppSettingTypeTest.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />
     <Compile Include="Model\Service\DbAppSettingCacheManagerTest.cs" />
