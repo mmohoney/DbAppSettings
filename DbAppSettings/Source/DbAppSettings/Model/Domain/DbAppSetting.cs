@@ -206,9 +206,28 @@ namespace DbAppSettings.Model.Domain
         /// <returns></returns>
         internal override DbAppSettingDto ToDto()
         {
-            string value = string.Empty;
+            string value;
 
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
+            {
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[TypeString];
 
+                //Logic to populate the value as the value type
+                if (type == typeof(StringCollection))
+                {
+                    value = ConvertStringCollectionToJson(InternalValue as StringCollection);
+                }
+                else
+                {
+                    value = InternalValue.ToString();
+                }
+            }
+            else
+            {
+                value = new JavaScriptSerializer().Serialize(InternalValue);
+            }
 
             DbAppSettingDto dpAppSettingDto = new DbAppSettingDto
             {
