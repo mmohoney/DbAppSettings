@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,11 +44,10 @@
   <ItemGroup>
     <Compile Include="DbAppSettingManagerArguments.cs" />
     <Compile Include="Model\DataAccess\DefaultDbAppSettingDao.cs" />
+    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingAdvancedDao.cs" />
     <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
     <Compile Include="Model\Domain\DbAppSetting.cs" />
     <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
-    <Compile Include="Model\Service\DbAppSettingAssemblySearcher.cs" />
-    <Compile Include="Model\Domain\DbAppSettingDictionary.cs" />
     <Compile Include="DbAppSupportedValueTypes.cs" />
     <Compile Include="DbAppSettingCacheManager.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />

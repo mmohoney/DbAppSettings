@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,9 +49,8 @@
     <Compile Include="Mock\DummyDbAppSettings.cs" />
     <Compile Include="Mock\DummySettingCache.cs" />
     <Compile Include="Mock\DummySettingInitialization.cs" />
+    <Compile Include="Model\Domain\DbAppSettingTypeTest.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
-    <Compile Include="Model\Framework\DbAppSettingAssemblySearcherTest.cs" />
-    <Compile Include="Model\Domain\DbAppSettingDictionaryTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />
     <Compile Include="Model\Service\DbAppSettingCacheManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,5 +68,6 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

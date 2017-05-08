@@ -255,7 +255,7 @@ namespace DbAppSettings.Test.Model.Service
                 .SetValue(null, null);
 
             typeof(SettingCache)
-                .GetField("_isInitalized", BindingFlags.Static | BindingFlags.NonPublic)
+                .GetProperty("IsInitalized", BindingFlags.Static | BindingFlags.NonPublic)
                 .SetValue(null, false);
 
             typeof(SettingCache)

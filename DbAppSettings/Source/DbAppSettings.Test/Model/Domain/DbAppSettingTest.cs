@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
-using System.Xml.Linq;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
-using DbAppSettings.Model.Service;
 using NUnit.Framework;
 
 namespace DbAppSettings.Test.Model.Domain
@@ -16,6 +13,14 @@ namespace DbAppSettings.Test.Model.Domain
     public class DbAppSettingTest
     {
         public class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int InitialValue => 1; }
+
+        private DbAppSettingTestSetting GetSetting()
+        {
+            DbAppSettingTestSetting setting = new DbAppSettingTestSetting();
+            Assert.IsNotNull(setting);
+
+            return setting;
+        }
 
         [Test]
         public void DbAppSetting_InstantiateTest()
@@ -27,155 +32,95 @@ namespace DbAppSettings.Test.Model.Domain
         [Test]
         public void DbAppSetting_GenericInstantiateTest()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
         }
 
         [Test]
         public void DbAppSetting_AssemblyName()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object assemblyName = myType.GetProperty("AssemblyName").GetValue(newObject, null);
-            Assert.IsNotNull(assemblyName);
-            Assert.IsTrue(assemblyName is string);
-            Assert.AreEqual((string)assemblyName, Assembly.GetExecutingAssembly().GetName().Name);
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.AssemblyName);
+            Assert.AreEqual(setting.AssemblyName, Assembly.GetExecutingAssembly().GetName().Name);
         }
 
         [Test]
         public void DbAppSetting_SettingName()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object settingName = myType.GetProperty("SettingName").GetValue(newObject, null);
-            Assert.IsNotNull(settingName);
-            Assert.IsTrue(settingName is string);
-            Assert.AreEqual((string)settingName, "DbAppSettingTestSetting");
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.SettingName);
+            Assert.AreEqual(setting.SettingName, "DbAppSettingTestSetting");
         }
 
         [Test]
         public void DbAppSetting_FullSettingName()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object fullSettingName = myType.GetProperty("FullSettingName").GetValue(newObject, null);
-            Assert.IsNotNull(fullSettingName);
-            Assert.IsTrue(fullSettingName is string);
-            Assert.AreEqual((string)fullSettingName, $"{Assembly.GetExecutingAssembly().GetName().Name}.DbAppSettingTestSetting");
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.FullSettingName);
+            Assert.AreEqual(setting.FullSettingName, $"{Assembly.GetExecutingAssembly().GetName().Name}.DbAppSettingTestSetting");
         }
 
         [Test]
-        public void DbAppSetting_GenericInstantiateTest_Property_DefaultValue_ByReflection()
+        public void DbAppSetting_InitialValue()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
-            Assert.IsNotNull(defaultValue);
-            Assert.IsTrue(defaultValue is int);
-            Assert.IsTrue((int)defaultValue == 1);
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.InitialValue);
+            Assert.IsTrue(setting.InitialValue == 1);
         }
 
         [Test]
-        public void DbAppSetting_GenericInstantiateTest_Property_Value_ByReflection()
+        public void DbAppSetting_Assembly()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object value = myType.GetProperty("InternalValue", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
-            Assert.IsNotNull(value);
-            Assert.IsTrue(value is int);
-            Assert.IsTrue((int)value == 1);
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNull(setting.ApplicationKey);
         }
 
         [Test]
-        public void DbAppSetting_GenericInstantiateTest_Property_ValueTypeString_ByReflection()
+        public void DbAppSetting_InternalValue()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
-
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
-
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
-
-            object value = myType.GetProperty("TypeString", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
-            Assert.IsNotNull(value);
-            Assert.IsTrue(value is string);
-            Assert.IsTrue((string)value == typeof(int).FullName);
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.InternalValue);
+            Assert.IsTrue(setting.InitialValue == 1);
         }
 
         [Test]
-        public void DbAppSetting_GenericInstantiateTest_Method_From_ByReflection()
+        public void DbAppSetting_TypeString()
         {
-            List<Type> results = DbAppSettingAssemblySearcher.GetGenericDbAppSettings();
+            DbAppSettingTestSetting setting = GetSetting();
+            Assert.IsNotNull(setting);
+            Assert.IsNotNull(setting.TypeString);
+            Assert.IsTrue(setting.TypeString == typeof(int).FullName);
+        }
 
-            Type myType = results.Find(r => r.Name.Contains("DbAppSettingTestSetting"));
-            Assert.IsNotNull(myType);
+        [Test]
+        public void DbAppSetting_From()
+        {
+            DbAppSettingTestSetting setting = GetSetting();
 
-            object newObject = Activator.CreateInstance(myType);
-            Assert.IsNotNull(newObject);
+            Assert.IsNotNull(setting.InitialValue);
+            Assert.IsTrue(setting.InitialValue == 1);
 
-            object defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
-            Assert.IsNotNull(defaultValue);
-            Assert.IsTrue(defaultValue is int);
-            Assert.IsTrue((int)defaultValue == 1);
-
-            object value = myType.GetProperty("InternalValue", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
-            Assert.IsNotNull(value);
-            Assert.IsTrue(value is int);
-            Assert.IsTrue((int)value == 1);
+            Assert.IsNotNull(setting.InternalValue);
+            Assert.IsTrue(setting.InternalValue == 1);
 
             DbAppSettingDto settingDto = new DbAppSettingDto() {Key = "DbAppSettingTest1", Value = "2", Type = typeof(int).FullName };
-            MethodInfo fromMethod = newObject.GetType().GetMethod("From", BindingFlags.Instance | BindingFlags.NonPublic);
-            fromMethod.Invoke(newObject, new object[] { settingDto });
+            setting.From(settingDto);
 
-            defaultValue = myType.GetProperty("InitialValue").GetValue(newObject, null);
-            Assert.IsNotNull(defaultValue);
-            Assert.IsTrue(defaultValue is int);
-            Assert.IsTrue((int)defaultValue == 1);
+            Assert.IsNotNull(setting.InitialValue);
+            Assert.IsTrue(setting.InitialValue == 1);
 
-            value = myType.GetProperty("InternalValue", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(newObject, null);
-            Assert.IsNotNull(value);
-            Assert.IsTrue(value is int);
-            Assert.IsTrue((int)value == 2);
+            Assert.IsNotNull(setting.InternalValue);
+            Assert.IsTrue(setting.InternalValue == 2);
         }
 
         [Test]
-        public void ConvertStringCollectionToXml()
+        public void ConvertStringCollectionToJson()
         {
             Random randNum = new Random();
             int[] randomInts = Enumerable
@@ -187,22 +132,12 @@ namespace DbAppSettings.Test.Model.Domain
             inputStringCollection.AddRange(randomInts.Select(t => t.ToString()).ToArray());
             Assert.IsTrue(inputStringCollection.Count == randomInts.Length);
 
-            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToXml(inputStringCollection);
-            Assert.IsNotNull(resultXml);
-
-            try
-            {
-                XDocument xd1 = XDocument.Parse(resultXml);
-                Assert.IsNotNull(xd1);
-            }
-            catch (XmlException)
-            {
-                Assert.IsTrue(false);
-            }
+            string result = InternalDbAppSettingBase.ConvertStringCollectionToJson(inputStringCollection);
+            Assert.IsNotNull(result);
         }
 
         [Test]
-        public void ConvertXmlToStringCollection()
+        public void ConvertJsonToStringCollection()
         {
             Random randNum = new Random();
             int[] randomInts = Enumerable
@@ -214,10 +149,10 @@ namespace DbAppSettings.Test.Model.Domain
             inputStringCollection.AddRange(randomInts.Select(t => t.ToString()).ToArray());
             Assert.IsTrue(inputStringCollection.Count == randomInts.Length);
 
-            string resultXml = InternalDbAppSettingBase.ConvertStringCollectionToXml(inputStringCollection);
-            Assert.IsNotNull(resultXml);
+            string result = InternalDbAppSettingBase.ConvertStringCollectionToJson(inputStringCollection);
+            Assert.IsNotNull(result);
 
-            StringCollection resultStringCollection = InternalDbAppSettingBase.ConvertXmlToStringCollection(resultXml);
+            StringCollection resultStringCollection = InternalDbAppSettingBase.ConvertJsonToStringCollection(result);
             Assert.IsNotNull(resultStringCollection);
 
             List<string> inputToList = inputStringCollection.Cast<string>().ToList();

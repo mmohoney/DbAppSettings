@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Web.Script.Serialization;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Service;
 
@@ -66,50 +63,33 @@ namespace DbAppSettings.Model.Domain
         internal abstract void From(DbAppSettingDto dto);
 
         /// <summary>
-        /// Convert a string collection into a serializable xml string to pass to the data access layer
+        /// Internal method used to convert the domain into the dto representation
+        /// </summary>
+        /// <returns></returns>
+        internal abstract DbAppSettingDto ToDto();
+
+        /// <summary>
+        /// Convert a string collection into a json string to pass to the data access layer
         /// </summary>
         /// <param name="stringCollection"></param>
         /// <returns></returns>
-        internal static string ConvertStringCollectionToXml(StringCollection stringCollection)
+        internal static string ConvertStringCollectionToJson(StringCollection stringCollection)
         {
-            //Convert to list before hand
             List<string> inputList = stringCollection.Cast<string>().ToList();
-
-            using (Stream stream = new MemoryStream())
-            {
-                using (XmlTextWriter writer = new XmlTextWriter(stream, Encoding.UTF8) { Formatting = Formatting.Indented, Indentation = 5, })
-                {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
-                    serializer.Serialize(writer, inputList);
-
-                    writer.Flush();
-                    stream.Seek(0, SeekOrigin.Begin);
-
-                    using (StreamReader streamReader = new StreamReader(stream))
-                    {
-                        streamReader.BaseStream.Seek(0, SeekOrigin.Begin);
-                        return streamReader.ReadToEnd();
-                    }
-                }
-            }
+            return new JavaScriptSerializer().Serialize(inputList);
         }
 
         /// <summary>
-        /// Convert an xml string into a string collection
+        /// Convert a json into a string collection
         /// </summary>
-        /// <param name="inputXml"></param>
+        /// <param name="json"></param>
         /// <returns></returns>
-        internal static StringCollection ConvertXmlToStringCollection(string inputXml)
+        internal static StringCollection ConvertJsonToStringCollection(string json)
         {
-            using (XmlReader reader = XmlReader.Create(new StringReader(inputXml)))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
-                List<string> resultList = (List<string>)serializer.Deserialize(reader);
-
-                StringCollection stringCollection = new StringCollection();
-                stringCollection.AddRange(resultList.ToArray());
-                return stringCollection;
-            }
+            List<string> resultList = new JavaScriptSerializer().Deserialize<List<string>>(json);
+            StringCollection stringCollection = new StringCollection();
+            stringCollection.AddRange(resultList.ToArray());
+            return stringCollection;
         }
     }
 
@@ -192,32 +172,72 @@ namespace DbAppSettings.Model.Domain
             //Type string
             _typeString = dto.Type;
 
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (!DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
-                throw new Exception("type cannot be null");
-
-            //Get the type from the list of valid types
-            Type type = DbAppSupportedValueTypes.Types[TypeString];
-
             //String value
             string value = dto.Value;
 
-            //Logic to populate the value as the value type
-            if (type.IsEnum)
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
             {
-                InternalValue = (TValueType)Enum.Parse(type, value);
-            }
-            else if (type == typeof(StringCollection))
-            {
-                InternalValue = (TValueType)(ConvertXmlToStringCollection(value) as object);
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[TypeString];
+
+                //Logic to populate the value as the value type
+                if (type == typeof(StringCollection))
+                {
+                    InternalValue = (TValueType) (ConvertJsonToStringCollection(value) as object);
+                }
+                else
+                {
+                    InternalValue = (TValueType) TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+                }
             }
             else
             {
-                InternalValue = (TValueType)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+                InternalValue = new JavaScriptSerializer().Deserialize<TValueType>(value);
             }
 
             //Let the class know that it was hydrated from the data access layer
             _hydratedFromDataAccess = true;
+        }
+
+        /// <summary>
+        /// Internal method used to convert the domain into the dto representation
+        /// </summary>
+        /// <returns></returns>
+        internal override DbAppSettingDto ToDto()
+        {
+            string value;
+
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
+            {
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[TypeString];
+
+                //Logic to populate the value as the value type
+                if (type == typeof(StringCollection))
+                {
+                    value = ConvertStringCollectionToJson(InternalValue as StringCollection);
+                }
+                else
+                {
+                    value = InternalValue.ToString();
+                }
+            }
+            else
+            {
+                value = new JavaScriptSerializer().Serialize(InternalValue);
+            }
+
+            DbAppSettingDto dpAppSettingDto = new DbAppSettingDto
+            {
+                ApplicationKey = ApplicationKey,
+                Key = FullSettingName,
+                Type = TypeString,
+                Value = value,
+            };
+
+            return dpAppSettingDto;
         }
     }
 }
