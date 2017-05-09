@@ -51,6 +51,7 @@
     <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
     <Compile Include="DbAppSupportedValueTypes.cs" />
     <Compile Include="DbAppSettingCacheManager.cs" />
+    <Compile Include="Model\Domain\ImmutableDbAppSetting.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingInitialization.cs" />
     <Compile Include="Model\Service\SettingCache.cs" />

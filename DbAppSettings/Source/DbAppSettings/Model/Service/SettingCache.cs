@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,6 +18,7 @@ namespace DbAppSettings.Model.Service
     {
         private static readonly object Lock = new object();
         private static readonly Dictionary<string, DbAppSettingDto> SettingDtosByKey = new Dictionary<string, DbAppSettingDto>();
+        private static readonly ConcurrentDictionary<string, object> ImmutableSettingsByKey = new ConcurrentDictionary<string, object>();
         private static SettingCache _singleton;
         private static ISettingInitialization _settingInitialization;
         private static DateTime? _lastRefreshedTime;
@@ -73,7 +75,16 @@ namespace DbAppSettings.Model.Service
 
             T newSetting = new T();
 
+            //Case where we have the setting cached
+            if (ImmutableSettingsByKey.ContainsKey(newSetting.FullSettingName))
+                return ImmutableSettingsByKey[newSetting.FullSettingName] as T;
+
             HydrateSettingFromDto(newSetting);
+
+            if (newSetting is ImmutableDbAppSetting<T, TValueType>)
+            {
+                ImmutableSettingsByKey.AddOrUpdate(newSetting.FullSettingName, newSetting, (key, oldValue) => newSetting);
+            }
             
             return newSetting;
         }
@@ -216,8 +227,6 @@ namespace DbAppSettings.Model.Service
                     //TODO: Log manager
                     //cacheManager.NotifyOfException(e);
                 }
-
-                return;
             }
 
             DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
