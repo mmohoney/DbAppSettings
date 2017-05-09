@@ -135,6 +135,10 @@ namespace DbAppSettings.Model.Domain
         /// </summary>
         public TValueType InstanceValue => Value;
         /// <summary>
+        /// Type of TValueType
+        /// </summary>
+        public Type Type => typeof(TValueType);
+        /// <summary>
         /// The default value of the TValueType or the value provided from the data access layer
         /// </summary>
         internal TValueType InternalValue
