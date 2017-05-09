@@ -172,12 +172,15 @@ namespace DbAppSettings.Model.Service
 
             //Always store the dtos by key in case we do not have a loaded assembly when searching for a type. 
             //  This allows hydration without hitting the data access layer
-            foreach (DbAppSettingDto settingDto in settingDtos)
+            lock (Lock)
             {
-                if (!SettingDtosByKey.ContainsKey(settingDto.Key))
-                    SettingDtosByKey.Add(settingDto.Key, settingDto);
-                else
-                    SettingDtosByKey[settingDto.Key] = settingDto;
+                foreach (DbAppSettingDto settingDto in settingDtos)
+                {
+                    if (!SettingDtosByKey.ContainsKey(settingDto.Key))
+                        SettingDtosByKey.Add(settingDto.Key, settingDto);
+                    else
+                        SettingDtosByKey[settingDto.Key] = settingDto;
+                }
             }
         }
 
@@ -189,13 +192,32 @@ namespace DbAppSettings.Model.Service
         {
             //If we have not yet loaded an assembly of a type, ignore this setting
             if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
-                return;
-
-            //If advanced implementation is given, use downcasting to access methods
-            if (_settingInitialization.DbAppSettingDao is IDbAppSettingAdvancedDao)
             {
-                //If the setting is no found in the cache, save the setting
-                ((IDbAppSettingAdvancedDao)_settingInitialization.DbAppSettingDao).SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+                //If advanced implementation is given, use downcasting to access methods
+                if (!(_settingInitialization.DbAppSettingDao is IDbAppSettingAdvancedDao))
+                    return;
+
+                DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
+
+                try
+                {
+                    //If the setting is no found in the cache, save the setting
+                    ((IDbAppSettingAdvancedDao)_settingInitialization.DbAppSettingDao).SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+
+                    //If the setting was just added to the data access layer, add it to the dto cache as well
+                    lock (Lock)
+                    {
+                        if (!SettingDtosByKey.ContainsKey(newSettingDto.Key))
+                            SettingDtosByKey.Add(newSettingDto.Key, newSettingDto);
+                    }
+                }
+                catch (Exception e)
+                {
+                    //TODO: Log manager
+                    //cacheManager.NotifyOfException(e);
+                }
+
+                return;
             }
 
             DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
