@@ -1,8 +1,10 @@
 language: csharp
+mono:
+  - latest
 solution: ./DbAppSettings/DbAppSettings.sln
 install:
   - nuget restore ./DbAppSettings/DbAppSettings.sln
   - nuget install NUnit.Runners -OutputDirectory testrunner
 script:
-  - xbuild ./DbAppSettings/DbAppSettings.sln /p:Configuration=Debug
+  - xbuild /p:Configuration=Debug ./DbAppSettings/DbAppSettings.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
