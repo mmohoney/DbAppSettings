@@ -5,7 +5,7 @@ using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service
 {
-    internal class SettingCache : ISettingCacheV2
+    internal class SettingCache : ISettingCache
     {
         private static readonly object Lock = new object();
         private static SettingCache _singleton;
@@ -16,7 +16,7 @@ namespace DbAppSettings.Model.Service
             
         }
 
-        public static ISettingCacheV2 Instance
+        public static ISettingCache Instance
         {
             get
             {

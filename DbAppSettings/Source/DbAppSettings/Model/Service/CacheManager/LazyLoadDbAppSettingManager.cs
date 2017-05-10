@@ -17,27 +17,28 @@ namespace DbAppSettings.Model.Service.CacheManager
         private readonly ISettingCacheProviderFactory _settingCacheProviderFactory;
         private LazyLoadManagerArguments _lazyLoadManagerArguments;
 
-        internal LazyLoadDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory)
+        internal LazyLoadDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory, ISettingCache settingCache)
         {
             _settingCacheProviderFactory = settingCacheProviderFactory;
+            SettingCacheInstance = settingCache;
         }
 
         internal LazyLoadDbAppSettingManager()
-            :this(new SettingCacheProviderFactory())
+            :this(new SettingCacheProviderFactory(), SettingCache.Instance)
         {
 
         }
 
-        internal ISettingCacheV2 SettingCacheInstance => SettingCache.Instance;
+        internal ISettingCache SettingCacheInstance { get; }
 
-        private LazyLoadDbAppSettingManager Create(LazyLoadManagerArguments lazyLoadManagerArguments)
+        internal LazyLoadDbAppSettingManager Create(LazyLoadManagerArguments lazyLoadManagerArguments)
         {
+            if (SettingCacheInstance.SettingCacheProvider?.IsInitalized ?? false)
+                return this;
+
             _lazyLoadManagerArguments = lazyLoadManagerArguments;
             _lazyLoadManagerArguments.LazyLoadSettingDao = _lazyLoadManagerArguments.LazyLoadSettingDao ?? new DefaultLazyLoadSettingDao();
             _lazyLoadManagerArguments.SaveNewSettingDao = _lazyLoadManagerArguments.SaveNewSettingDao ?? new DefaultSaveNewSettingDao();
-
-            if (SettingCacheInstance.SettingCacheProvider.IsInitalized)
-                return this;
 
             ISettingCacheProvider settingCacheProvider = _settingCacheProviderFactory.GetSettingCacheProvider(lazyLoadManagerArguments);
 

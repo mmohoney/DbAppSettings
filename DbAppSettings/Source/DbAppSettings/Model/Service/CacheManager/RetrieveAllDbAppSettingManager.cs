@@ -17,27 +17,28 @@ namespace DbAppSettings.Model.Service.CacheManager
         private readonly ISettingCacheProviderFactory _settingCacheProviderFactory;
         private RetrieveAllManagerArguments _retrieveAllManagerArguments;
 
-        internal RetrieveAllDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory)
+        internal RetrieveAllDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory, ISettingCache settingCache)
         {
             _settingCacheProviderFactory = settingCacheProviderFactory;
+            SettingCacheInstance = settingCache;
         }
 
         internal RetrieveAllDbAppSettingManager()
-            :this(new SettingCacheProviderFactory())
+            :this(new SettingCacheProviderFactory(), SettingCache.Instance)
         {
 
         }
 
-        internal ISettingCacheV2 SettingCacheInstance => SettingCache.Instance;
+        internal ISettingCache SettingCacheInstance { get; }
 
-        private RetrieveAllDbAppSettingManager Create(RetrieveAllManagerArguments retrieveAllManagerArguments)
+        internal RetrieveAllDbAppSettingManager Create(RetrieveAllManagerArguments retrieveAllManagerArguments)
         {
+            if (SettingCacheInstance.SettingCacheProvider?.IsInitalized ?? false)
+                return this;
+
             _retrieveAllManagerArguments = retrieveAllManagerArguments;
             _retrieveAllManagerArguments.RetrieveAllSettingDao = _retrieveAllManagerArguments.RetrieveAllSettingDao ?? new DefaultRetrieveAllSettingDao();
             _retrieveAllManagerArguments.SaveNewSettingDao = _retrieveAllManagerArguments.SaveNewSettingDao ?? new DefaultSaveNewSettingDao();
-
-            if (SettingCacheInstance.SettingCacheProvider.IsInitalized)
-                return this;
 
             ISettingCacheProvider settingCacheProvider = _settingCacheProviderFactory.GetSettingCacheProvider(retrieveAllManagerArguments);
 
