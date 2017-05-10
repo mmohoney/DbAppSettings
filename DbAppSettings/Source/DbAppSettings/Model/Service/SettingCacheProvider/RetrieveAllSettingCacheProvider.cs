@@ -26,7 +26,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                 try
                 {
                     //Get all settings from the data access layer
-                    List<DbAppSettingDto> settingDtos = _managerArguments.DbAppSettingDao.GetAllDbAppSettings().ToList();
+                    List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetAllDbAppSettings().ToList();
                     if (!settingDtos.Any())
                         return;
 
@@ -48,7 +48,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             try
             {
                 //Return all settings that have changed since the last time a setting was refreshed
-                List<DbAppSettingDto> settingDtos = _managerArguments.DbAppSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
+                List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
                 if (settingDtos.Any())
                 {
                     //Update the settings

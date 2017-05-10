@@ -23,7 +23,7 @@ namespace DbAppSettings.Model.Service.CacheManager
         private void Create(RetrieveAllManagerArguments retrieveAllManagerArguments)
         {
             _retrieveAllManagerArguments = retrieveAllManagerArguments;
-            _retrieveAllManagerArguments.DbAppSettingDao = _retrieveAllManagerArguments.DbAppSettingDao ?? new DefaultRetrieveAllSettingDao();
+            _retrieveAllManagerArguments.RetrieveAllSettingDao = _retrieveAllManagerArguments.RetrieveAllSettingDao ?? new DefaultRetrieveAllSettingDao();
             _retrieveAllManagerArguments.SaveNewSettingDao = _retrieveAllManagerArguments.SaveNewSettingDao ?? new DefaultSaveNewSettingDao();
 
             if (SettingCacheInstance.SettingCacheProvider.IsInitalized)

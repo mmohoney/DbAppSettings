@@ -9,7 +9,7 @@ namespace DbAppSettings.Test.Model.Service
     [TestFixture()]
     public class DbAppSettingCacheManagerTest
     {
-        private readonly RetrieveAllManagerArguments _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = new DummyDbAppSettingDao() };
+        private readonly RetrieveAllManagerArguments _arguments = new RetrieveAllManagerArguments() { RetrieveAllSettingDao = new DummyDbAppSettingDao() };
 
         [Test]
         public void DbAppSettingCacheManager_Create()

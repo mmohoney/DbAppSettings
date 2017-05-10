@@ -13,7 +13,7 @@ namespace DbAppSettings.Model.Service
     {
         internal SettingInitialization(RetrieveAllManagerArguments arguments)
         {
-            DbAppSettingDao = arguments.DbAppSettingDao;
+            DbAppSettingDao = arguments.RetrieveAllSettingDao;
             DbAppSettingSaveNewSettingDao = arguments.SaveNewSettingDao;
             Applications = arguments.Applications;
             CacheRefreshTimeout = arguments.CacheRefreshTimeout();

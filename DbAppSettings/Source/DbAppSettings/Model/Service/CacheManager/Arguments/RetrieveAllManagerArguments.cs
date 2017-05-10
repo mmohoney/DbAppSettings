@@ -10,6 +10,6 @@ namespace DbAppSettings.Model.Service.CacheManager.Arguments
         /// <summary>
         /// Implementation of the data access layer which will load all settings into memory at start up
         /// </summary>
-        public IRetrieveAllSettingDao DbAppSettingDao { get; set; }
+        public IRetrieveAllSettingDao RetrieveAllSettingDao { get; set; }
     }
 }

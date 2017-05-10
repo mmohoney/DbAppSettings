@@ -18,7 +18,7 @@ namespace DbAppSettings.Model.Service.CacheManager
         internal DbAppSettingCacheManager(RetrieveAllManagerArguments arguments)
         {
             _arguments = arguments;
-            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultRetrieveAllSettingDao();
+            _arguments.RetrieveAllSettingDao = _arguments.RetrieveAllSettingDao ?? new DefaultRetrieveAllSettingDao();
             _settingCache = SettingCache.Instance;
         }
 
@@ -29,7 +29,7 @@ namespace DbAppSettings.Model.Service.CacheManager
         /// <param name="settingCache"></param>
         internal DbAppSettingCacheManager(IRetrieveAllSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
-            _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultRetrieveAllSettingDao() };
+            _arguments = new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dbAppSettingDao ?? new DefaultRetrieveAllSettingDao() };
             _settingCache = settingCache;
         }
 
@@ -56,7 +56,7 @@ namespace DbAppSettings.Model.Service.CacheManager
             if (dbAppSettingDao == null)
                 throw new NullReferenceException("dbAppSettingDao cannot be null");
 
-            return new DbAppSettingCacheManager(new RetrieveAllManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
+            return new DbAppSettingCacheManager(new RetrieveAllManagerArguments { RetrieveAllSettingDao = dbAppSettingDao }).InitializeCache();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DbAppSettings.Model.Service.CacheManager
         /// <summary>
         /// Implementation of the data access layer
         /// </summary>
-        internal IRetrieveAllSettingDao AppSettingDao => _arguments.DbAppSettingDao;
+        internal IRetrieveAllSettingDao AppSettingDao => _arguments.RetrieveAllSettingDao;
         
         /// <summary>
         /// Method needs to be invoked in order to intialize cache

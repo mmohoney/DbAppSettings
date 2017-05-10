@@ -18,14 +18,14 @@ namespace DbAppSettings.Model.Service.CacheManager
         internal DbAppSettingCacheManagerV2(RetrieveAllManagerArguments arguments)
         {
             _arguments = arguments;
-            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultRetrieveAllSettingDao();
+            _arguments.RetrieveAllSettingDao = _arguments.RetrieveAllSettingDao ?? new DefaultRetrieveAllSettingDao();
             _settingCache = SettingCache.Instance;
         }
 
         
         internal DbAppSettingCacheManagerV2(IRetrieveAllSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
-            _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultRetrieveAllSettingDao() };
+            _arguments = new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dbAppSettingDao ?? new DefaultRetrieveAllSettingDao() };
             _settingCache = settingCache;
         }
 
@@ -42,13 +42,13 @@ namespace DbAppSettings.Model.Service.CacheManager
             if (dbAppSettingDao == null)
                 throw new NullReferenceException("dbAppSettingDao cannot be null");
 
-            return new DbAppSettingCacheManagerV2(new RetrieveAllManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
+            return new DbAppSettingCacheManagerV2(new RetrieveAllManagerArguments { RetrieveAllSettingDao = dbAppSettingDao }).InitializeCache();
         }
 
       
         public bool IsCacheInitalized { get; private set; }
       
-        internal IRetrieveAllSettingDao AppSettingDao => _arguments.DbAppSettingDao;
+        internal IRetrieveAllSettingDao AppSettingDao => _arguments.RetrieveAllSettingDao;
         
       
         internal DbAppSettingCacheManagerV2 InitializeCache()
