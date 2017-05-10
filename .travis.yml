@@ -1,8 +1,9 @@
 language: csharp
 solution: ./DbAppSettings/DbAppSettings.sln
-install:
+
+before_install:
+  - sudo apt-get install nunit-console
+before_script:
   - nuget restore ./DbAppSettings/DbAppSettings.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
-script:
-  - xbuild ./DbAppSettings/DbAppSettings.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
+after_script:
+  - nunit-console ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
