@@ -3,7 +3,7 @@
 namespace DbAppSettings.Model.DataAccess.Interfaces
 {
     /// <summary>
-    /// Represents the data access portion of the settings cache which will insert new settings into the data access layer
+    /// Represents the data access portion of the settings cache which will insert new settings into the data access layer.
     /// </summary>
     public interface ISaveNewSettingDao
     {
