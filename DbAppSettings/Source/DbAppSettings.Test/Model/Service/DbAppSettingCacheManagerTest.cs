@@ -1,5 +1,6 @@
-﻿using DbAppSettings.Model.DataAccess;
-using DbAppSettings.Model.DataAccess.Implementations;
+﻿using DbAppSettings.Model.DataAccess.Implementations;
+using DbAppSettings.Model.Service.CacheManager;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Test.Mock;
 using NUnit.Framework;
 

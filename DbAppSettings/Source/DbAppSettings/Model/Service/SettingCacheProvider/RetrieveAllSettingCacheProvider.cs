@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {

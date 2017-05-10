@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
@@ -133,7 +134,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                             DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
 
                             //If the setting is no found in the cache, save the setting
-                            ManagerArguments.DbAppSettingSaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+                            ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
 
                             //If the setting was just added to the data access layer, add it to the dto cache as well
                             SettingDtosByKey.AddOrUpdate(newSettingDto.Key, newSettingDto, (key, oldValue) => newSettingDto);

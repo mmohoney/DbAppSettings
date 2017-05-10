@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Interfaces;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Model.Service.Interfaces;
 
 namespace DbAppSettings.Model.Service
@@ -13,7 +14,7 @@ namespace DbAppSettings.Model.Service
         internal SettingInitialization(RetrieveAllManagerArguments arguments)
         {
             DbAppSettingDao = arguments.DbAppSettingDao;
-            DbAppSettingSaveNewSettingDao = arguments.DbAppSettingSaveNewSettingDao;
+            DbAppSettingSaveNewSettingDao = arguments.SaveNewSettingDao;
             Applications = arguments.Applications;
             CacheRefreshTimeout = arguments.CacheRefreshTimeout();
         }

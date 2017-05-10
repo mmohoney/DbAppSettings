@@ -1,10 +1,11 @@
 ﻿using System;
 using DbAppSettings.Model.Domain;
+using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service
 {
-    internal class SettingCacheV2
+    internal class SettingCacheV2 : ISettingCacheV2
     {
         private static readonly object Lock = new object();
         private static SettingCacheV2 _singleton;
@@ -15,7 +16,7 @@ namespace DbAppSettings.Model.Service
             
         }
 
-        private static SettingCacheV2 Instance
+        public static ISettingCacheV2 Instance
         {
             get
             {
@@ -31,7 +32,7 @@ namespace DbAppSettings.Model.Service
             }
         }
 
-        private ISettingCacheProvider SettingCacheProvider => _settingCacheProvider;
+        public ISettingCacheProvider SettingCacheProvider => _settingCacheProvider;
 
         internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
         {

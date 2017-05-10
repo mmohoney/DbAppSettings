@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DbAppSettings.Model.DataAccess.Interfaces;
 
-namespace DbAppSettings
+namespace DbAppSettings.Model.Service.CacheManager.Arguments
 {
     /// <summary>
     /// Base class of the manager arguments
@@ -20,7 +20,7 @@ namespace DbAppSettings
         /// <summary>
         /// *Optional Property*
         /// If any applications are passed in. The SettingCache will only pull up to date values for the specified applications. 
-        /// Generally this will not be needed unless specific security is needed
+        /// Generally this will not be needed unless specific security is needed.
         /// </summary>
         public List<string> Applications { get; set; } = new List<string>();
 
@@ -34,6 +34,6 @@ namespace DbAppSettings
         /// <summary>
         /// Implementation of the data access layer to save new settings that are not currently in the data access
         /// </summary>
-        public ISaveNewSettingDao DbAppSettingSaveNewSettingDao { get; set; }
+        public ISaveNewSettingDao SaveNewSettingDao { get; set; }
     }
 }

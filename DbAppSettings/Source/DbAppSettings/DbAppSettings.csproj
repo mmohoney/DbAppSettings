@@ -43,18 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LazyLoadManagerArguments.cs" />
+    <Compile Include="Model\Service\CacheManager\Arguments\LazyLoadManagerArguments.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultLazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultSaveNewSettingDao.cs" />
+    <Compile Include="Model\Service\CacheManager\DbAppSettingCacheManagerV2.cs" />
+    <Compile Include="Model\Service\CacheManager\RetrieveAllDbAppSettingManager.cs" />
+    <Compile Include="Model\Service\CacheManager\LazyLoadDbAppSettingManager.cs" />
     <Compile Include="Model\Service\Factory\SettingCacheProviderFactory.cs" />
+    <Compile Include="Model\Service\Interfaces\ISettingCacheV2.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\Interfaces\ISettingCacheProvider.cs" />
     <Compile Include="Model\Service\Factory\Interfaces\ISettingCacheProviderFactory.cs" />
     <Compile Include="Model\Service\SettingCacheV2.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\LazyLoadSettingCacheProvider.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\RetrieveAllSettingCacheProvider.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\SettingCacheProviderBase.cs" />
-    <Compile Include="RetrieveAllManagerArguments.cs" />
-    <Compile Include="CacheManagerArguments.cs" />
+    <Compile Include="Model\Service\CacheManager\Arguments\RetrieveAllManagerArguments.cs" />
+    <Compile Include="Model\Service\CacheManager\Arguments\CacheManagerArguments.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultRetrieveAllSettingDao.cs" />
     <Compile Include="Model\DataAccess\Interfaces\ILazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Interfaces\ISaveNewSettingDao.cs" />
@@ -62,7 +66,7 @@
     <Compile Include="Model\Domain\DbAppSetting.cs" />
     <Compile Include="Model\DataAccess\Interfaces\IRetrieveAllSettingDao.cs" />
     <Compile Include="Model\Domain\DbAppSupportedValueTypes.cs" />
-    <Compile Include="DbAppSettingCacheManager.cs" />
+    <Compile Include="Model\Service\CacheManager\DbAppSettingCacheManager.cs" />
     <Compile Include="Model\Domain\ImmutableDbAppSetting.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingInitialization.cs" />

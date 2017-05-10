@@ -1,11 +1,10 @@
 ﻿using System;
-using DbAppSettings.Model.DataAccess;
 using DbAppSettings.Model.DataAccess.Implementations;
 using DbAppSettings.Model.DataAccess.Interfaces;
-using DbAppSettings.Model.Service;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Model.Service.Interfaces;
 
-namespace DbAppSettings
+namespace DbAppSettings.Model.Service.CacheManager
 {
     /// <summary>
     /// Wrapper class that needs to be implemented to wire up the SettingCache. Wraps all necessary methods to invoke

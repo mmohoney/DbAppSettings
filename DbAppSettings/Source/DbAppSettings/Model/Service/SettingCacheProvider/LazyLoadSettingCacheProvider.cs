@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {
@@ -31,7 +32,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             try
             {
                 //Return all settings that have changed since the last time a setting was refreshed
-                List<DbAppSettingDto> settingDtos = _managerArguments.DbAppSettingLazyLoadDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
+                List<DbAppSettingDto> settingDtos = _managerArguments.LazyLoadSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
                 if (settingDtos.Any())
                 {
                     //Update the settings
