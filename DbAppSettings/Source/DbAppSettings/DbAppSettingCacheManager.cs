@@ -1,5 +1,6 @@
 ﻿using System;
 using DbAppSettings.Model.DataAccess;
+using DbAppSettings.Model.DataAccess.Implementations;
 using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.Service;
 using DbAppSettings.Model.Service.Interfaces;
@@ -18,7 +19,7 @@ namespace DbAppSettings
         internal DbAppSettingCacheManager(RetrieveAllManagerArguments arguments)
         {
             _arguments = arguments;
-            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultDbAppSettingDao();
+            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultRetrieveAllSettingDao();
             _settingCache = SettingCache.Instance;
         }
 
@@ -29,7 +30,7 @@ namespace DbAppSettings
         /// <param name="settingCache"></param>
         internal DbAppSettingCacheManager(IRetrieveAllSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
-            _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
+            _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultRetrieveAllSettingDao() };
             _settingCache = settingCache;
         }
 

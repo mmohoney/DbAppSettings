@@ -1,12 +1,14 @@
 ﻿using System;
+using DbAppSettings.Model.Service.Factory.Interfaces;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider;
+using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service.Factory
 {
-    internal class SettingCacheProviderFactory
+    internal class SettingCacheProviderFactory : ISettingCacheProviderFactory
     {
-        ISettingCacheProvider GetSettingCacheProvider(CacheManagerArguments cacheManagerArguments)
+        public ISettingCacheProvider GetSettingCacheProvider(CacheManagerArguments cacheManagerArguments)
         {
             if (cacheManagerArguments is RetrieveAllManagerArguments)
             {

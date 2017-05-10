@@ -44,15 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LazyLoadManagerArguments.cs" />
+    <Compile Include="Model\DataAccess\Implementations\DefaultLazyLoadSettingDao.cs" />
+    <Compile Include="Model\DataAccess\Implementations\DefaultSaveNewSettingDao.cs" />
     <Compile Include="Model\Service\Factory\SettingCacheProviderFactory.cs" />
-    <Compile Include="Model\Service\Interfaces\ISettingCacheProvider.cs" />
+    <Compile Include="Model\Service\SettingCacheProvider\Interfaces\ISettingCacheProvider.cs" />
+    <Compile Include="Model\Service\Factory\Interfaces\ISettingCacheProviderFactory.cs" />
     <Compile Include="Model\Service\SettingCacheV2.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\LazyLoadSettingCacheProvider.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\RetrieveAllSettingCacheProvider.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\SettingCacheProviderBase.cs" />
     <Compile Include="RetrieveAllManagerArguments.cs" />
     <Compile Include="CacheManagerArguments.cs" />
-    <Compile Include="Model\DataAccess\DefaultDbAppSettingDao.cs" />
+    <Compile Include="Model\DataAccess\Implementations\DefaultRetrieveAllSettingDao.cs" />
     <Compile Include="Model\DataAccess\Interfaces\ILazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Interfaces\ISaveNewSettingDao.cs" />
     <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
@@ -79,8 +82,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\DataAccess\Implementations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

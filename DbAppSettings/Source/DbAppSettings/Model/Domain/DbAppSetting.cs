@@ -20,7 +20,7 @@ namespace DbAppSettings.Model.Domain
         private string _settingName;
 
         /// <summary>
-        /// Don't allow instantiation outside of inherited classes
+        /// Protected constructor 
         /// </summary>
         protected InternalDbAppSettingBase()
         {
@@ -105,6 +105,9 @@ namespace DbAppSettings.Model.Domain
         private bool _hydratedFromDataAccess;
         private TValueType _value;
 
+        /// <summary>
+        /// Protected constructor 
+        /// </summary>
         protected DbAppSetting()
         {
 
@@ -129,7 +132,7 @@ namespace DbAppSettings.Model.Domain
         /// Ties a setting to an application. The cache will only load settings for the specified application. Will be null until
         /// hydrated from the data access layer
         /// </summary>
-        public string ApplicationKey { get; protected set; }
+        public string ApplicationKey { get; private set; }
         /// <summary>
         /// The instance level value representing either a default value, or an up to date value from the data access layer
         /// </summary>
@@ -149,7 +152,7 @@ namespace DbAppSettings.Model.Domain
                     return InitialValue;
                 return _value;
             }
-            set { _value = value; }
+            private set => _value = value;
         }
         /// <summary>
         /// The string representation of the type

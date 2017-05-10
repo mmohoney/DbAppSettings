@@ -1,4 +1,5 @@
 ﻿using DbAppSettings.Model.DataAccess;
+using DbAppSettings.Model.DataAccess.Implementations;
 using DbAppSettings.Test.Mock;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace DbAppSettings.Test.Model.Service
             DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(new RetrieveAllManagerArguments());
             Assert.IsNotNull(cacheManager);
             Assert.IsNotNull(cacheManager.AppSettingDao);
-            Assert.IsTrue(cacheManager.AppSettingDao.GetType() == typeof(DefaultDbAppSettingDao));
+            Assert.IsTrue(cacheManager.AppSettingDao.GetType() == typeof(DefaultRetrieveAllSettingDao));
         }
 
         //[Test]

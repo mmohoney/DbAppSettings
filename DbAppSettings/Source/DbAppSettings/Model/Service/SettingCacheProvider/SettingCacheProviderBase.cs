@@ -2,13 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
-using DbAppSettings.Model.Service.Interfaces;
+using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {
@@ -36,6 +34,8 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Returns the count of the dtos in its internal cache
         /// </summary>
         internal static int SettingDtosByKeyCount => SettingDtosByKey.Count;
+
+        bool ISettingCacheProvider.IsInitalized => IsInitalized;
 
         public void InitalizeSettingCacheProvider()
         {

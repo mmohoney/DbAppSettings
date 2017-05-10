@@ -8,6 +8,7 @@ using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
+using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service
 {

@@ -1,23 +1,21 @@
-﻿using DbAppSettings.Model.Domain;
-using DbAppSettings.Model.Service.Interfaces;
+﻿using System;
+using DbAppSettings.Model.Domain;
+using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service
 {
-    /// <summary>
-    /// Represents a cache of DbAppSettings
-    /// </summary>
     internal class SettingCacheV2
     {
         private static readonly object Lock = new object();
         private static SettingCacheV2 _singleton;
-        private ISettingCacheProvider _settingProvider;
+        private static ISettingCacheProvider _settingCacheProvider;
 
         private SettingCacheV2()
         {
             
         }
 
-        public static SettingCacheV2 Instance
+        private static SettingCacheV2 Instance
         {
             get
             {
@@ -32,17 +30,28 @@ namespace DbAppSettings.Model.Service
                 return _singleton;
             }
         }
-      
+
+        private ISettingCacheProvider SettingCacheProvider => _settingCacheProvider;
+
         internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
         {
-            return Instance._settingProvider.GetDbAppSetting<T, TValueType>();
+            if (!Instance.SettingCacheProvider.IsInitalized)
+            {
+                lock (Lock)
+                {
+                    if (!Instance.SettingCacheProvider.IsInitalized)
+                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
+                }
+            }
+
+            return Instance.SettingCacheProvider.GetDbAppSetting<T, TValueType>();
         }
 
         public void InitializeCache(ISettingCacheProvider settingCacheProvider)
         {
-            _settingProvider = settingCacheProvider;
+            _settingCacheProvider = settingCacheProvider;
 
-            _settingProvider.InitalizeSettingCacheProvider();
+            _settingCacheProvider.InitalizeSettingCacheProvider();
         }
     }
 }
