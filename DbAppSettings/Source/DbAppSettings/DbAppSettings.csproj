@@ -46,7 +46,6 @@
     <Compile Include="Model\Service\CacheManager\Arguments\LazyLoadManagerArguments.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultLazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultSaveNewSettingDao.cs" />
-    <Compile Include="Model\Service\CacheManager\DbAppSettingCacheManagerV2.cs" />
     <Compile Include="Model\Service\CacheManager\RetrieveAllDbAppSettingManager.cs" />
     <Compile Include="Model\Service\CacheManager\LazyLoadDbAppSettingManager.cs" />
     <Compile Include="Model\Service\Factory\SettingCacheProviderFactory.cs" />

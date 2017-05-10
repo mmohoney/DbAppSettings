@@ -7,6 +7,9 @@ using DbAppSettings.Model.Service.CacheManager.Arguments;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {
+    /// <summary>
+    /// Lazy load implementation of the setting cache provider. Will only retrieve settings on demand.
+    /// </summary>
     internal class LazyLoadSettingCacheProvider : SettingCacheProviderBase
     {
         private readonly LazyLoadManagerArguments _managerArguments;
@@ -20,11 +23,8 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
         protected override void InitializeSettingCacheProvider()
         {
-            //Run in sync mode
-            lock (Lock)
-            {
-                return;
-            }
+            //Nothing to intially do in the lazy implementation
+            return;
         }
 
         protected override void SettingWatchTaskAction()
@@ -33,14 +33,14 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             {
                 //Return all settings that have changed since the last time a setting was refreshed
                 List<DbAppSettingDto> settingDtos = _managerArguments.LazyLoadSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
-                if (settingDtos.Any())
-                {
-                    //Update the settings
-                    SetSettingValues(settingDtos);
+                if (!settingDtos.Any())
+                    return;
 
-                    //Store a reference to the latest changed time
-                    LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
-                }
+                //Update the settings
+                SetSettingValues(settingDtos);
+
+                //Store a reference to the latest changed time
+                LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
             }
             catch (Exception e)
             {
@@ -51,7 +51,16 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
         {
-            throw new NotImplementedException();
+            if (!IsInitalized)
+            {
+                lock (Lock)
+                {
+                    if (!IsInitalized)
+                        throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
+                }
+            }
+
+            return null;
         }
     }
 }

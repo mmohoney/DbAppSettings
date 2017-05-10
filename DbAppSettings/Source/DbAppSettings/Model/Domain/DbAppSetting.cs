@@ -122,7 +122,7 @@ namespace DbAppSettings.Model.Domain
         /// <summary>
         /// The static level representing either a default value, or an up to date value from the data access layer
         /// </summary>
-        public static TValueType Value => SettingCache.GetDbAppSetting<T, TValueType>().InternalValue;
+        public static TValueType Value => SettingCacheV2.GetDbAppSetting<T, TValueType>().InternalValue;
         /// <summary>
         /// The static level representing the initial value
         /// </summary>

@@ -7,6 +7,9 @@ using DbAppSettings.Model.Service.CacheManager.Arguments;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {
+    /// <summary>
+    /// Retrieve all implementation of the setting cache provider. Will intially get all settings and load them into memory.
+    /// </summary>
     internal class RetrieveAllSettingCacheProvider : SettingCacheProviderBase
     {
         private readonly RetrieveAllManagerArguments _managerArguments;
@@ -20,26 +23,22 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
         protected override void InitializeSettingCacheProvider()
         {
-            //Run in sync mode
-            lock (Lock)
+            try
             {
-                try
-                {
-                    //Get all settings from the data access layer
-                    List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetAllDbAppSettings().ToList();
-                    if (!settingDtos.Any())
-                        return;
+                //Get all settings from the data access layer
+                List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetAllDbAppSettings().ToList();
+                if (!settingDtos.Any())
+                    return;
 
-                    SetSettingValues(settingDtos);
+                SetSettingValues(settingDtos);
 
-                    //Store the latest changed timestamp
-                    LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
-                }
-                catch (Exception e)
-                {
-                    //TODO: Log manager
-                    //cacheManager.NotifyOfException(e);
-                }
+                //Store the latest changed timestamp
+                LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+            }
+            catch (Exception e)
+            {
+                //TODO: Log manager
+                //cacheManager.NotifyOfException(e);
             }
         }
 
@@ -49,14 +48,14 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             {
                 //Return all settings that have changed since the last time a setting was refreshed
                 List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
-                if (settingDtos.Any())
-                {
-                    //Update the settings
-                    SetSettingValues(settingDtos);
+                if (!settingDtos.Any())
+                    return;
 
-                    //Store a reference to the latest changed time
-                    LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
-                }
+                //Update the settings
+                SetSettingValues(settingDtos);
+
+                //Store a reference to the latest changed time
+                LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
             }
             catch (Exception e)
             {

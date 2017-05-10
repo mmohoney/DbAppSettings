@@ -17,33 +17,19 @@ namespace DbAppSettings.Model.Service.CacheManager
         private readonly ISettingCacheProviderFactory _settingCacheProviderFactory;
         private LazyLoadManagerArguments _lazyLoadManagerArguments;
 
-        /// <summary>
-        /// Internal for unit testing.
-        /// </summary>
         internal LazyLoadDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory)
         {
             _settingCacheProviderFactory = settingCacheProviderFactory;
         }
 
-        /// <summary>
-        /// Internal for unit testing.
-        /// </summary>
         internal LazyLoadDbAppSettingManager()
             :this(new SettingCacheProviderFactory())
         {
 
         }
 
-        /// <summary>
-        /// Internal for unit testing
-        /// </summary>
         internal ISettingCacheV2 SettingCacheInstance => SettingCacheV2.Instance;
 
-        /// <summary>
-        /// Wires up the underlying caches. Defaults any arguments not provided.
-        /// </summary>
-        /// <param name="lazyLoadManagerArguments">Arguments</param>
-        /// <returns></returns>
         private LazyLoadDbAppSettingManager Create(LazyLoadManagerArguments lazyLoadManagerArguments)
         {
             _lazyLoadManagerArguments = lazyLoadManagerArguments;

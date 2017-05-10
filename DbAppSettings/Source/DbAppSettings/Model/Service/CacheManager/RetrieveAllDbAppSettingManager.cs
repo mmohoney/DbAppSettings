@@ -17,33 +17,19 @@ namespace DbAppSettings.Model.Service.CacheManager
         private readonly ISettingCacheProviderFactory _settingCacheProviderFactory;
         private RetrieveAllManagerArguments _retrieveAllManagerArguments;
 
-        /// <summary>
-        /// Internal for unit testing.
-        /// </summary>
         internal RetrieveAllDbAppSettingManager(ISettingCacheProviderFactory settingCacheProviderFactory)
         {
             _settingCacheProviderFactory = settingCacheProviderFactory;
         }
 
-        /// <summary>
-        /// Internal for unit testing.
-        /// </summary>
         internal RetrieveAllDbAppSettingManager()
             :this(new SettingCacheProviderFactory())
         {
 
         }
 
-        /// <summary>
-        /// Internal for unit testing
-        /// </summary>
         internal ISettingCacheV2 SettingCacheInstance => SettingCacheV2.Instance;
 
-        /// <summary>
-        /// Wires up the underlying caches. Defaults any arguments not provided.
-        /// </summary>
-        /// <param name="retrieveAllManagerArguments">Arguments</param>
-        /// <returns></returns>
         private RetrieveAllDbAppSettingManager Create(RetrieveAllManagerArguments retrieveAllManagerArguments)
         {
             _retrieveAllManagerArguments = retrieveAllManagerArguments;

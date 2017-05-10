@@ -6,6 +6,9 @@ using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service.Factory
 {
+    /// <summary>
+    /// Factory to get the underlying cache provider
+    /// </summary>
     internal class SettingCacheProviderFactory : ISettingCacheProviderFactory
     {
         public ISettingCacheProvider GetSettingCacheProvider(CacheManagerArguments cacheManagerArguments)

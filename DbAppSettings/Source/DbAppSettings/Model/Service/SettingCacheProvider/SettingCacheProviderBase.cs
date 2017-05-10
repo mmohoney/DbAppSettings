@@ -11,33 +11,34 @@ using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider
 {
+    /// <summary>
+    /// Cache Provider Base
+    /// </summary>
     internal abstract class SettingCacheProviderBase : ISettingCacheProvider
     {
         protected static readonly object Lock = new object();
         protected static readonly ConcurrentDictionary<string, DbAppSettingDto> SettingDtosByKey = new ConcurrentDictionary<string, DbAppSettingDto>();
         protected static DateTime? LastRefreshedTime;
 
+        protected SettingCacheProviderBase()
+        {
+            
+        }
 
         protected abstract CacheManagerArguments ManagerArguments { get; }
 
         protected abstract void InitializeSettingCacheProvider();
         protected abstract void SettingWatchTaskAction();
 
-        /// <summary>
-        /// Returns whether or not the class is intialized
-        /// </summary>
         internal static bool IsInitalized { get; set; }
-        /// <summary>
-        /// Reference to the watch task
-        /// </summary>
         internal static Task SettingWatchTask { get; set; }
-        /// <summary>
-        /// Returns the count of the dtos in its internal cache
-        /// </summary>
         internal static int SettingDtosByKeyCount => SettingDtosByKey.Count;
 
         bool ISettingCacheProvider.IsInitalized => IsInitalized;
 
+        /// <summary>
+        /// Intialize the setting cache provider
+        /// </summary>
         public void InitalizeSettingCacheProvider()
         {
             if (!IsInitalized)
@@ -50,8 +51,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                         InitializeSettingCacheProvider();
 
                         //If we were unable to get a refresh time, provide now as a fallback
-                        if (!LastRefreshedTime.HasValue)
-                            LastRefreshedTime = DateTime.Now;
+                        LastRefreshedTime = LastRefreshedTime ?? DateTime.Now;
 
                         //Invoke the watch thread to watch for changes in settings
                         InitalizeSettingWatchTask();
@@ -68,7 +68,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// <summary>
         /// Background thread to watch for settings that change in the data access layer
         /// </summary>
-        protected void InitalizeSettingWatchTask()
+        internal void InitalizeSettingWatchTask()
         {
             //Task.Factory.StartNew pattern
             SettingWatchTask = Task.Factory.StartNew(() =>
@@ -96,7 +96,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Adds or updates settings in the internal dictionary of settings
         /// </summary>
         /// <param name="settingDtos"></param>
-        protected void SetSettingValues(List<DbAppSettingDto> settingDtos)
+        internal void SetSettingValues(List<DbAppSettingDto> settingDtos)
         {
             //If any applications are provided, filter the results to only those settings
             if (ManagerArguments.Applications.Any())
