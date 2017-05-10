@@ -9,9 +9,9 @@ namespace DbAppSettings.Model.Service.Interfaces
     /// </summary>
     internal interface ISettingInitialization
     {
-        IDbAppSettingDao DbAppSettingDao { get; }
-        IDbAppSettingSaveNewSettingDao DbAppSettingSaveNewSettingDao { get; }
-        IDbAppSettingLazyLoadDao DbAppSettingLazyLoadDao { get; }
+        IRetrieveAllSettingDao DbAppSettingDao { get; }
+        ISaveNewSettingDao DbAppSettingSaveNewSettingDao { get; }
+        ILazyLoadSettingDao DbAppSettingLazyLoadDao { get; }
         List<string> Applications { get; }
         TimeSpan CacheRefreshTimeout { get; }
     }

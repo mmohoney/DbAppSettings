@@ -5,17 +5,15 @@ using DbAppSettings.Model.DataTransfer;
 namespace DbAppSettings.Model.DataAccess.Interfaces
 {
     /// <summary>
-    /// Represents the data access portion which implements the lazy load features. 
-    /// Provides the cache with a way to load only specific settings on demand rather than all during intialization.
+    /// Represents the data access portion of the settings cache. Provides the cache with all settings from the data access at intialization.
     /// </summary>
-    public interface IDbAppSettingLazyLoadDao
+    public interface IRetrieveAllSettingDao
     {
         /// <summary>
-        /// Returns the up to date representation of the argument supplied
+        /// Returns all settings from the data access.
         /// </summary>
-        /// <param name="dbAppSettingDto">the value needing retrieval</param>
-        /// <returns>the up to date representation</returns>
-        IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto);
+        /// <returns>all settings</returns>
+        IEnumerable<DbAppSettingDto> GetAllDbAppSettings();
 
         /// <summary>
         /// Returns all settings from the data access that have changed since the last time a value was retrieved.

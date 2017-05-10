@@ -7,28 +7,28 @@ namespace DbAppSettings.Test.Mock
 {
     internal class DummySettingInitialization : ISettingInitialization
     {
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, List<string> applications)
+        internal DummySettingInitialization(IRetrieveAllSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, List<string> applications)
         {
             DbAppSettingDao = appSettingDao;
             Applications = applications;
             CacheRefreshTimeout = cacheRefreshTimeoutMs;
         }
 
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, string application)
+        internal DummySettingInitialization(IRetrieveAllSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs, string application)
             :this (appSettingDao, cacheRefreshTimeoutMs, new List<string> { application })
         {
 
         }
 
-        internal DummySettingInitialization(IDbAppSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs)
+        internal DummySettingInitialization(IRetrieveAllSettingDao appSettingDao, TimeSpan cacheRefreshTimeoutMs)
             : this(appSettingDao, cacheRefreshTimeoutMs, new List<string>())
         {
 
         }
 
-        public IDbAppSettingDao DbAppSettingDao { get; }
-        public IDbAppSettingSaveNewSettingDao DbAppSettingSaveNewSettingDao { get; }
-        public IDbAppSettingLazyLoadDao DbAppSettingLazyLoadDao { get; }
+        public IRetrieveAllSettingDao DbAppSettingDao { get; }
+        public ISaveNewSettingDao DbAppSettingSaveNewSettingDao { get; }
+        public ILazyLoadSettingDao DbAppSettingLazyLoadDao { get; }
         public List<string> Applications { get; }
         public TimeSpan CacheRefreshTimeout { get; }
     }

@@ -23,6 +23,8 @@ namespace DbAppSettings.Model.Service
         private static ISettingInitialization _settingInitialization;
         private static DateTime? _lastRefreshedTime;
 
+        private ISettingCacheProvider _settingProvider;
+
         private SettingCache()
         {
             
@@ -69,7 +71,7 @@ namespace DbAppSettings.Model.Service
                 lock (Lock)
                 {
                     if (!IsInitalized)
-                        throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitializeCache.");
+                        throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
                 }
             }
 
@@ -202,7 +204,7 @@ namespace DbAppSettings.Model.Service
                 return;
             }
 
-            IDbAppSettingSaveNewSettingDao saveSettingDao = _settingInitialization.DbAppSettingSaveNewSettingDao;
+            ISaveNewSettingDao saveSettingDao = _settingInitialization.DbAppSettingSaveNewSettingDao;
             if (saveSettingDao == null)
                 return;
 

@@ -194,7 +194,7 @@ namespace DbAppSettings.Test.Model.Service
         }
     }
 
-    public class NoSettingsSettingCacheTestDbAppSettingDao : IDbAppSettingDao
+    public class NoSettingsSettingCacheTestDbAppSettingDao : IRetrieveAllSettingDao
     {
         public int HitCountGetAllDbAppSettings { get; set; }
         public int HitCountGetChangedDbAppSettings { get; set; }
@@ -213,7 +213,7 @@ namespace DbAppSettings.Test.Model.Service
     }
 
 
-    public class ExceptionDummySettingCacheTestDbAppSettingDao : IDbAppSettingDao
+    public class ExceptionDummySettingCacheTestDbAppSettingDao : IRetrieveAllSettingDao
     {
         public int HitCountGetAllDbAppSettings { get; set; }
         public int HitCountGetChangedDbAppSettings { get; set; }
@@ -231,7 +231,7 @@ namespace DbAppSettings.Test.Model.Service
         }
     }
 
-    public class DummySettingCacheTestDbAppSettingDao : IDbAppSettingDao
+    public class DummySettingCacheTestDbAppSettingDao : IRetrieveAllSettingDao
     {
         public int HitCount { get; set; }
 

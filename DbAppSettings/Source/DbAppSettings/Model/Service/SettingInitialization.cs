@@ -18,9 +18,9 @@ namespace DbAppSettings.Model.Service
             CacheRefreshTimeout = arguments.CacheRefreshTimeout();
         }
 
-        public IDbAppSettingDao DbAppSettingDao { get; set; }
-        public IDbAppSettingSaveNewSettingDao DbAppSettingSaveNewSettingDao { get; set; }
-        public IDbAppSettingLazyLoadDao DbAppSettingLazyLoadDao { get; }
+        public IRetrieveAllSettingDao DbAppSettingDao { get; set; }
+        public ISaveNewSettingDao DbAppSettingSaveNewSettingDao { get; set; }
+        public ILazyLoadSettingDao DbAppSettingLazyLoadDao { get; }
         public List<string> Applications { get; set; } 
         public TimeSpan CacheRefreshTimeout { get; }
     }

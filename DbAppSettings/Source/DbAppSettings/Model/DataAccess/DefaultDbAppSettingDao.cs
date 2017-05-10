@@ -8,7 +8,7 @@ namespace DbAppSettings.Model.DataAccess
     /// <summary>
     /// Default data access layer to use if no Dao is provided. In this case, the default values will always be returned
     /// </summary>
-    internal class DefaultDbAppSettingDao : IDbAppSettingDao
+    internal class DefaultDbAppSettingDao : IRetrieveAllSettingDao
     {
         /// <summary>
         /// Returns all settings from the database. Initially used to load all settings into the cache

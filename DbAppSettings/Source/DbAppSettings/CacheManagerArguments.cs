@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using DbAppSettings.Model.DataAccess.Interfaces;
 
 namespace DbAppSettings
 {
     /// <summary>
     /// Base class of the manager arguments
     /// </summary>
-    public abstract class ManagerArguments
+    public abstract class CacheManagerArguments
     {
         /// <summary>
         /// Protected constructor
         /// </summary>
-        protected ManagerArguments()
+        protected CacheManagerArguments()
         {
             
         }
@@ -29,5 +30,10 @@ namespace DbAppSettings
         /// Function that returns a timespan how long to wait before checking the data access layer for new values
         /// </summary>
         public Func<TimeSpan> CacheRefreshTimeout { get; set; } = () => TimeSpan.FromSeconds(5);
+
+        /// <summary>
+        /// Implementation of the data access layer to save new settings that are not currently in the data access
+        /// </summary>
+        public ISaveNewSettingDao DbAppSettingSaveNewSettingDao { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using DbAppSettings.Model.DataTransfer;
 
 namespace DbAppSettings.Test.Mock
 {
-    public class DummyDbAppSettingDao : IDbAppSettingDao
+    public class DummyDbAppSettingDao : IRetrieveAllSettingDao
     {
         public IEnumerable<DbAppSettingDto> GetAllDbAppSettings()
         {

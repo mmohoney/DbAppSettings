@@ -27,7 +27,7 @@ namespace DbAppSettings
         /// </summary>
         /// <param name="dbAppSettingDao"></param>
         /// <param name="settingCache"></param>
-        internal DbAppSettingCacheManager(IDbAppSettingDao dbAppSettingDao, ISettingCache settingCache)
+        internal DbAppSettingCacheManager(IRetrieveAllSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
             _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
             _settingCache = settingCache;
@@ -51,7 +51,7 @@ namespace DbAppSettings
         /// </summary>
         /// <param name="dbAppSettingDao"></param>
         /// <returns></returns>
-        public static DbAppSettingCacheManager CreateAndIntialize(IDbAppSettingDao dbAppSettingDao)
+        public static DbAppSettingCacheManager CreateAndIntialize(IRetrieveAllSettingDao dbAppSettingDao)
         {
             if (dbAppSettingDao == null)
                 throw new NullReferenceException("dbAppSettingDao cannot be null");
@@ -66,7 +66,7 @@ namespace DbAppSettings
         /// <summary>
         /// Implementation of the data access layer
         /// </summary>
-        internal IDbAppSettingDao AppSettingDao => _arguments.DbAppSettingDao;
+        internal IRetrieveAllSettingDao AppSettingDao => _arguments.DbAppSettingDao;
         
         /// <summary>
         /// Method needs to be invoked in order to intialize cache
