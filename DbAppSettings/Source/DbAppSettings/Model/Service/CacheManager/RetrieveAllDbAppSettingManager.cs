@@ -28,7 +28,7 @@ namespace DbAppSettings.Model.Service.CacheManager
 
         }
 
-        internal ISettingCacheV2 SettingCacheInstance => SettingCacheV2.Instance;
+        internal ISettingCacheV2 SettingCacheInstance => SettingCache.Instance;
 
         private RetrieveAllDbAppSettingManager Create(RetrieveAllManagerArguments retrieveAllManagerArguments)
         {

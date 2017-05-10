@@ -18,7 +18,6 @@ namespace DbAppSettings.Test.Model.Domain
         {
             DbAppSettingTestSetting setting = new DbAppSettingTestSetting();
             Assert.IsNotNull(setting);
-
             return setting;
         }
 
@@ -73,7 +72,7 @@ namespace DbAppSettings.Test.Model.Domain
         }
 
         [Test]
-        public void DbAppSetting_Assembly()
+        public void DbAppSetting_ApplicationKey()
         {
             DbAppSettingTestSetting setting = GetSetting();
             Assert.IsNotNull(setting);
