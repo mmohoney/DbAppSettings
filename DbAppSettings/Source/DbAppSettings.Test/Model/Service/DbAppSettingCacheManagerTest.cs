@@ -7,7 +7,7 @@ namespace DbAppSettings.Test.Model.Service
     [TestFixture()]
     public class DbAppSettingCacheManagerTest
     {
-        private readonly DbAppSettingManagerArguments _arguments = new DbAppSettingManagerArguments() { DbAppSettingDao = new DummyDbAppSettingDao() };
+        private readonly RetrieveAllManagerArguments _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = new DummyDbAppSettingDao() };
 
         [Test]
         public void DbAppSettingCacheManager_Create()
@@ -21,7 +21,7 @@ namespace DbAppSettings.Test.Model.Service
         [Test]
         public void DbAppSettingCacheManager_Create_NoDao_UseDefault()
         {
-            DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(new DbAppSettingManagerArguments());
+            DbAppSettingCacheManager cacheManager = new DbAppSettingCacheManager(new RetrieveAllManagerArguments());
             Assert.IsNotNull(cacheManager);
             Assert.IsNotNull(cacheManager.AppSettingDao);
             Assert.IsTrue(cacheManager.AppSettingDao.GetType() == typeof(DefaultDbAppSettingDao));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
@@ -260,7 +261,7 @@ namespace DbAppSettings.Test.Model.Service
 
             typeof(SettingCache)
                 .GetField("SettingDtosByKey", BindingFlags.Static | BindingFlags.NonPublic)
-                .SetValue(null, new Dictionary<string, DbAppSettingDto>());
+                .SetValue(null, new ConcurrentDictionary<string, DbAppSettingDto>());
         }
     }
 }

@@ -27,6 +27,8 @@ namespace DbAppSettings.Test.Mock
         }
 
         public IDbAppSettingDao DbAppSettingDao { get; }
+        public IDbAppSettingSaveNewSettingDao DbAppSettingSaveNewSettingDao { get; }
+        public IDbAppSettingLazyLoadDao DbAppSettingLazyLoadDao { get; }
         public List<string> Applications { get; }
         public TimeSpan CacheRefreshTimeout { get; }
     }

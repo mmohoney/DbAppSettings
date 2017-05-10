@@ -43,13 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbAppSettingManagerArguments.cs" />
+    <Compile Include="LazyLoadManagerArguments.cs" />
+    <Compile Include="RetrieveAllManagerArguments.cs" />
+    <Compile Include="ManagerArguments.cs" />
     <Compile Include="Model\DataAccess\DefaultDbAppSettingDao.cs" />
-    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingAdvancedDao.cs" />
+    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingLazyLoadDao.cs" />
+    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingSaveNewSettingDao.cs" />
     <Compile Include="Model\DataTransfer\DbAppSettingDto.cs" />
     <Compile Include="Model\Domain\DbAppSetting.cs" />
     <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingDao.cs" />
-    <Compile Include="DbAppSupportedValueTypes.cs" />
+    <Compile Include="Model\Domain\DbAppSupportedValueTypes.cs" />
     <Compile Include="DbAppSettingCacheManager.cs" />
     <Compile Include="Model\Domain\ImmutableDbAppSetting.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />

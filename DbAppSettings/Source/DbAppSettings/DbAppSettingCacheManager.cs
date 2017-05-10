@@ -12,10 +12,10 @@ namespace DbAppSettings
     /// </summary>
     public class DbAppSettingCacheManager
     {
-        private readonly DbAppSettingManagerArguments _arguments;
+        private readonly RetrieveAllManagerArguments _arguments;
         private readonly ISettingCache _settingCache;
 
-        internal DbAppSettingCacheManager(DbAppSettingManagerArguments arguments)
+        internal DbAppSettingCacheManager(RetrieveAllManagerArguments arguments)
         {
             _arguments = arguments;
             _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultDbAppSettingDao();
@@ -29,7 +29,7 @@ namespace DbAppSettings
         /// <param name="settingCache"></param>
         internal DbAppSettingCacheManager(IDbAppSettingDao dbAppSettingDao, ISettingCache settingCache)
         {
-            _arguments = new DbAppSettingManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
+            _arguments = new RetrieveAllManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
             _settingCache = settingCache;
         }
 
@@ -38,7 +38,7 @@ namespace DbAppSettings
         /// </summary>
         /// <param name="arguments"></param>
         /// <returns></returns>
-        public static DbAppSettingCacheManager CreateAndIntialize(DbAppSettingManagerArguments arguments)
+        public static DbAppSettingCacheManager CreateAndIntialize(RetrieveAllManagerArguments arguments)
         {
             if (arguments == null)
                 throw new NullReferenceException("arguments cannot be null");
@@ -56,7 +56,7 @@ namespace DbAppSettings
             if (dbAppSettingDao == null)
                 throw new NullReferenceException("dbAppSettingDao cannot be null");
 
-            return new DbAppSettingCacheManager(new DbAppSettingManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
+            return new DbAppSettingCacheManager(new RetrieveAllManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
         }
 
         /// <summary>
