@@ -1,7 +1,8 @@
 language: csharp
-solution: "./DbAppSettings/DbAppSettings.sln"
+solution: ./DbAppSettings/DbAppSettings.sln
 install:
-  - travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./DbAppSettings/DbAppSettings.sln
+  - nuget restore ./DbAppSettings/DbAppSettings.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild ./DbAppSettings/DbAppSettings.sln
-  - mono ./DbAppSettings/packages/xunit.runner.console*/tools/xunit.console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
