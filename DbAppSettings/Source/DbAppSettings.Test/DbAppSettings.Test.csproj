@@ -49,6 +49,10 @@
     <Compile Include="Mock\DummyDbAppSettings.cs" />
     <Compile Include="Mock\DummySettingCache.cs" />
     <Compile Include="Mock\DummySettingInitialization.cs" />
+    <Compile Include="Model\DataAccess\DefaultLazyLoadSettingDaoTest.cs" />
+    <Compile Include="Model\DataAccess\DefaultRetrieveAllSettingDaoTest.cs" />
+    <Compile Include="Model\DataAccess\DefaultSaveNewSettingDaoTest.cs" />
+    <Compile Include="Model\DataTransfer\DbAppSettingDtoTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTypeTest.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />

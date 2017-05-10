@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Domain\ImmutableDbAppSetting.cs" />
     <Compile Include="Model\Service\CacheManager\Arguments\LazyLoadManagerArguments.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultLazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultSaveNewSettingDao.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Model\DataAccess\Interfaces\IRetrieveAllSettingDao.cs" />
     <Compile Include="Model\Domain\DbAppSupportedValueTypes.cs" />
     <Compile Include="Model\Service\CacheManager\DbAppSettingCacheManager.cs" />
-    <Compile Include="Model\Domain\ImmutableDbAppSetting.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingInitialization.cs" />
     <Compile Include="Model\Service\SettingCache.cs" />
