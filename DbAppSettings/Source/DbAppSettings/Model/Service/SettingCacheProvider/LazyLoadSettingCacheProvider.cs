@@ -19,15 +19,15 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             _managerArguments = managerArguments;
         }
 
-        protected override CacheManagerArguments ManagerArguments => _managerArguments;
+        internal override CacheManagerArguments ManagerArguments => _managerArguments;
 
-        protected override void InitializeSettingCacheProvider()
+        internal override void InitializeSettingCacheProvider()
         {
             //Nothing to intially do in the lazy implementation
             return;
         }
 
-        protected override void SettingWatchTaskAction()
+        internal override void SettingWatchTaskAction()
         {
             try
             {
@@ -51,11 +51,11 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
         {
-            if (!IsInitalized)
+            if (!Initalized)
             {
                 lock (Lock)
                 {
-                    if (!IsInitalized)
+                    if (!Initalized)
                         throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
                 }
             }

@@ -7,7 +7,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider.Interfaces
     /// </summary>
     internal interface ISettingCacheProvider
     {
-        bool IsInitalized { get; }
+        bool IsInitalized{ get; }
 
         void InitalizeSettingCacheProvider();
 

@@ -16,36 +16,36 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
     /// </summary>
     internal abstract class SettingCacheProviderBase : ISettingCacheProvider
     {
-        protected static readonly object Lock = new object();
-        protected static readonly ConcurrentDictionary<string, DbAppSettingDto> SettingDtosByKey = new ConcurrentDictionary<string, DbAppSettingDto>();
-        protected static DateTime? LastRefreshedTime;
+        internal static readonly object Lock = new object();
+        internal static readonly ConcurrentDictionary<string, DbAppSettingDto> SettingDtosByKey = new ConcurrentDictionary<string, DbAppSettingDto>();
+        internal static DateTime? LastRefreshedTime;
 
         protected SettingCacheProviderBase()
         {
             
         }
 
-        protected abstract CacheManagerArguments ManagerArguments { get; }
+        internal abstract CacheManagerArguments ManagerArguments { get; }
 
-        protected abstract void InitializeSettingCacheProvider();
-        protected abstract void SettingWatchTaskAction();
+        internal abstract void InitializeSettingCacheProvider();
+        internal abstract void SettingWatchTaskAction();
 
-        internal static bool IsInitalized { get; set; }
+        internal static bool Initalized { get; set; }
         internal static Task SettingWatchTask { get; set; }
         internal static int SettingDtosByKeyCount => SettingDtosByKey.Count;
 
-        bool ISettingCacheProvider.IsInitalized => IsInitalized;
+        public bool IsInitalized => Initalized;
 
         /// <summary>
         /// Intialize the setting cache provider
         /// </summary>
         public void InitalizeSettingCacheProvider()
         {
-            if (!IsInitalized)
+            if (!Initalized)
             {
                 lock (Lock)
                 {
-                    if (!IsInitalized)
+                    if (!Initalized)
                     {
                         //Call each implementation
                         InitializeSettingCacheProvider();
@@ -57,7 +57,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                         InitalizeSettingWatchTask();
 
                         //Set the cache to intialized to allow settings to be fetched
-                        IsInitalized = true;
+                        Initalized = true;
                     }
                 }
             }
@@ -82,6 +82,8 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                     try
                     {
                         SettingWatchTaskAction();
+
+                        LastRefreshedTime = LastRefreshedTime > DateTime.MinValue ? LastRefreshedTime : DateTime.Now;
                     }
                     catch (Exception e)
                     {
