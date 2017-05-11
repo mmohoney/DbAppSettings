@@ -34,6 +34,11 @@ namespace DbAppSettings.MyAssembly
             {
                 //Do other work
             }
+
+            if (MyAssemblySettings.EnableLogging.Value)
+            {
+                //Log some statements
+            }
         }
     }
 }
