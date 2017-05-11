@@ -100,10 +100,6 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// <param name="settingDtos"></param>
         internal void SetSettingValues(List<DbAppSettingDto> settingDtos)
         {
-            //If any applications are provided, filter the results to only those settings
-            if (ManagerArguments.Applications.Any())
-                settingDtos = settingDtos.Where(d => ManagerArguments.Applications.Contains(d.ApplicationKey)).ToList();
-
             //Always store the dtos by key. This allows hydration without hitting the data access layer
             foreach (DbAppSettingDto settingDto in settingDtos)
                 SettingDtosByKey.AddOrUpdate(settingDto.Key, settingDto, (key, oldValue) => settingDto);
