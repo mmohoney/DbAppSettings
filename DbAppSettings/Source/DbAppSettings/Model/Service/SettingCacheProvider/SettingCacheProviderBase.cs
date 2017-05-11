@@ -164,7 +164,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Save the settign to the data access layer
         /// </summary>
         /// <param name="dbAppSetting"></param>
-        internal void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        internal virtual void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
         {
             lock (Lock)
             {
