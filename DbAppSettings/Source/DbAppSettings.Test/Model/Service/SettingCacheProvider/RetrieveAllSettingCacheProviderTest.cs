@@ -6,7 +6,6 @@ using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Model.Service.SettingCacheProvider;
-using DbAppSettings.Test.Mock;
 using NUnit.Framework;
 
 namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
@@ -14,6 +13,8 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
     [TestFixture]
     public class RetrieveAllSettingCacheProviderTest : ProviderTestBase
     {
+        class DummyDbAppSettingDaoTestSetting1 : DbAppSetting<DummyDbAppSettingDaoTestSetting1, int> { public override int InitialValue => 1; }
+
         class DummyRetrieveAllSettingDao : IRetrieveAllSettingDao
         {
             public int GetAllDbAppSettingsHitCount { get; set; }
@@ -42,7 +43,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             {
                 return new List<DbAppSettingDto>
                 {
-                    new DbAppSettingDto() { Key = new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1().FullSettingName, Value = "2", Type = typeof(int).FullName, ApplicationKey = "DbAppSettingApp" },
+                    new DbAppSettingDto() { Key = new DummyDbAppSettingDaoTestSetting1().FullSettingName, Value = "2", Type = typeof(int).FullName, ApplicationKey = "DbAppSettingApp" },
                 };
             }
         }

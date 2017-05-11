@@ -46,9 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mock\DummyDbAppSettingDao.cs" />
-    <Compile Include="Mock\DummyDbAppSettings.cs" />
-    <Compile Include="Mock\DummyLazyLoadSettingDao.cs" />
     <Compile Include="Mock\DummySettingCacheProvider.cs" />
     <Compile Include="Model\DataAccess\DefaultLazyLoadSettingDaoTest.cs" />
     <Compile Include="Model\DataAccess\DefaultRetrieveAllSettingDaoTest.cs" />

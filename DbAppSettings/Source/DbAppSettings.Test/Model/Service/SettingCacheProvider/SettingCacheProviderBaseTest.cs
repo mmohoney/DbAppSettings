@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using DbAppSettings.Model.DataTransfer;
-using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.SettingCacheProvider;
 using DbAppSettings.Test.Mock;
 using NUnit.Framework;
