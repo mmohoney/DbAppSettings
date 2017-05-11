@@ -108,20 +108,6 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
         }
 
-        //[Test]
-        //public void SettingWatchTaskAction_LastRefreshedTime()
-        //{
-        //    DummyReturnOneLazyLoadSettingDao dao = new DummyReturnOneLazyLoadSettingDao();
-        //    LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0)});
-        //    Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
-
-        //    provider.InitalizeSettingWatchTask();
-
-        //    SpinWait.SpinUntil(() => SettingCacheProviderBase.LastRefreshedTime.HasValue && SettingCacheProviderBase.LastRefreshedTime.Value > DateTime.MinValue);
-
-        //    Assert.IsNotNull(SettingCacheProviderBase.LastRefreshedTime);
-        //}
-
         [Test]
         public void GetDbAppSetting_NotInitialized()
         {

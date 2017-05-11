@@ -87,20 +87,6 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
         }
 
-        //[Test]
-        //public void SettingWatchTaskAction_LastRefreshedTime()
-        //{
-        //    DummyReturnOneRetrieveAllSettingDao dao = new DummyReturnOneRetrieveAllSettingDao();
-        //    RetrieveAllSettingCacheProvider provider = new RetrieveAllSettingCacheProvider(new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
-        //    Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
-
-        //    provider.InitalizeSettingWatchTask();
-
-        //    SpinWait.SpinUntil(() => SettingCacheProviderBase.LastRefreshedTime.HasValue && SettingCacheProviderBase.LastRefreshedTime.Value > DateTime.MinValue);
-
-        //    Assert.IsNotNull(SettingCacheProviderBase.LastRefreshedTime);
-        //}
-
         [Test]
         public void GetDbAppSetting_NotInitialized()
         {

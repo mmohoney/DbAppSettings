@@ -45,4 +45,66 @@ namespace DbAppSettings.Test.Mock
             return;
         }
     }
+
+    internal class DummySettingCacheProvider2 : SettingCacheProviderBase
+    {
+        private readonly DummyCacheManagerArguments _managerArguments;
+
+        internal DummySettingCacheProvider2(DummyCacheManagerArguments managerArguments)
+        {
+            _managerArguments = managerArguments;
+        }
+
+        internal override CacheManagerArguments ManagerArguments => _managerArguments;
+
+        internal override void InitializeSettingCacheProvider()
+        {
+            return;
+        }
+
+        public int GetChangedSettingsHitCount = 0;
+        internal override List<DbAppSettingDto> GetChangedSettings()
+        {
+            GetChangedSettingsHitCount++;
+            return new List<DbAppSettingDto>();
+        }
+
+        public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int InitialValue => 1; }
+
+    internal class DummySettingCacheProvider3 : SettingCacheProviderBase
+    {
+        private readonly DummyCacheManagerArguments _managerArguments;
+
+        internal DummySettingCacheProvider3(DummyCacheManagerArguments managerArguments)
+        {
+            _managerArguments = managerArguments;
+        }
+
+        internal override CacheManagerArguments ManagerArguments => _managerArguments;
+
+        internal override void InitializeSettingCacheProvider()
+        {
+            return;
+        }
+
+        public int GetChangedSettingsHitCount = 0;
+        internal override List<DbAppSettingDto> GetChangedSettings()
+        {
+            GetChangedSettingsHitCount++;
+            var dto = new DbAppSettingTestSetting().ToDto();
+            dto.ModifiedDate = DateTime.Today.AddDays(1);
+            return new List<DbAppSettingDto> { dto };
+        }
+
+        public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
