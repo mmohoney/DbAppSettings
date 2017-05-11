@@ -10,7 +10,7 @@ namespace DbAppSettings.Test.Mock
 {
     public class DummyLazyLoadSettingDao : ILazyLoadSettingDao
     {
-        public IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+        public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
         {
             throw new NotImplementedException();
         }

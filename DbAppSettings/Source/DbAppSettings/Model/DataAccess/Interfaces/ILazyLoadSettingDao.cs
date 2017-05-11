@@ -15,7 +15,7 @@ namespace DbAppSettings.Model.DataAccess.Interfaces
         /// </summary>
         /// <param name="dbAppSettingDto">the value needing retrieval</param>
         /// <returns>the up to date representation</returns>
-        IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto);
+        DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto);
 
         /// <summary>
         /// Returns all settings from the data access that have changed since the last time a value was retrieved.

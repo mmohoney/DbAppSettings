@@ -10,9 +10,9 @@ namespace DbAppSettings.Model.DataAccess.Implementations
     /// </summary>
     internal class DefaultLazyLoadSettingDao : ILazyLoadSettingDao
     {
-        public IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+        public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
         {
-            return new List<DbAppSettingDto>();
+            return null;
         }
 
         public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)

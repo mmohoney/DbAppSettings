@@ -58,7 +58,9 @@
     <Compile Include="Model\Service\CacheManager\RetrieveAllDbAppSettingManagerTest.cs" />
     <Compile Include="Model\Service\CacheManager\SettingManagerTestBase.cs" />
     <Compile Include="Model\Service\Factory\SettingCacheProviderFactoryTest.cs" />
+    <Compile Include="Model\Service\SettingCacheProvider\RetrieveAllSettingCacheProviderTest.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\LazyLoadSettingCacheProviderTest.cs" />
+    <Compile Include="Model\Service\SettingCacheProvider\ProviderTestBase.cs" />
     <Compile Include="Model\Service\SettingCacheTest.cs" />
     <Compile Include="Model\Domain\DbAppSettingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

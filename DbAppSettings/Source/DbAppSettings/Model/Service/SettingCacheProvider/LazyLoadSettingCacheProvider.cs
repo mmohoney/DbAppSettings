@@ -60,7 +60,27 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                 }
             }
 
-            return null;
+            T newSetting = new T();
+
+            lock (Lock)
+            {
+                if (SettingDtosByKey.ContainsKey(newSetting.FullSettingName))
+                {
+                    DbAppSettingDto settingDto = SettingDtosByKey[newSetting.FullSettingName];
+                    newSetting.From(settingDto);
+                    return newSetting;
+                }
+
+                DbAppSettingDto updatedSettingDto = _managerArguments.LazyLoadSettingDao.GetDbAppSetting(newSetting.ToDto());
+                if (updatedSettingDto == null)
+                    return newSetting;
+
+                SetSettingValues(new List<DbAppSettingDto>{ updatedSettingDto });
+
+                HydrateSettingFromDto(newSetting);
+
+                return newSetting;
+            }
         }
     }
 }

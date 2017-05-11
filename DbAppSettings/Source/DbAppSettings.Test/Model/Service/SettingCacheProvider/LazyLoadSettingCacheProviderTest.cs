@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DbAppSettings.Model.Service.SettingCacheProvider;
 using DbAppSettings.Test.Mock;
@@ -11,15 +12,15 @@ using NUnit.Framework;
 namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
 {
     [TestFixture]
-    public class LazyLoadSettingCacheProviderTest
+    public class LazyLoadSettingCacheProviderTest : ProviderTestBase
     {
         class DummyLazyLoadSettingDao : ILazyLoadSettingDao
         {
             public int GetDbAppSettingHitCount { get; set; }
-            public IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+            public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
             {
                 GetDbAppSettingHitCount++;
-                return new List<DbAppSettingDto>();
+                return new DbAppSettingDto();
             }
 
             public int GetChangedDbAppSettingsHitCount { get; set; }
@@ -32,9 +33,30 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
 
         class DummyReturnOneLazyLoadSettingDao : ILazyLoadSettingDao
         {
-            public IEnumerable<DbAppSettingDto> GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+            public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
             {
-                return new List<DbAppSettingDto>();
+                return new DbAppSettingDto();
+            }
+
+            public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)
+            {
+                return new List<DbAppSettingDto>
+                {
+                    new DbAppSettingDto() { Key = new DummyDbAppSettings.DummyDbAppSettingDaoTestSetting1().FullSettingName, Value = "2", Type = typeof(int).FullName, ApplicationKey = "DbAppSettingApp" },
+                };
+            }
+        }
+
+        class DummyReturnDbAppSettingTestSettingLazyLoadSettingDao : ILazyLoadSettingDao
+        {
+            public int GetDbAppSettingHitCount { get; set; }
+            public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+            {
+                GetDbAppSettingHitCount++;
+
+                DbAppSettingDto dto = new DbAppSettingTestSetting().ToDto();
+                dto.Value = "100";
+                return dto;
             }
 
             public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)
@@ -98,6 +120,51 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             SpinWait.SpinUntil(() => SettingCacheProviderBase.SettingDtosByKey.Count > 0);
 
             Assert.IsNotNull(SettingCacheProviderBase.LastRefreshedTime);
+        }
+
+        [Test]
+        public void GetDbAppSetting_NotInitialized()
+        {
+            Assert.Throws(typeof(Exception), () =>
+            {
+                DummyReturnOneLazyLoadSettingDao dao = new DummyReturnOneLazyLoadSettingDao();
+                LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+
+                provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
+            });
+        }
+
+        [Test]
+        public void GetDbAppSettingInitialized()
+        {
+            DummyReturnDbAppSettingTestSettingLazyLoadSettingDao dao = new DummyReturnDbAppSettingTestSettingLazyLoadSettingDao();
+            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+            SettingCacheProviderBase.Initalized = true;
+
+            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 0);
+            DbAppSetting<DbAppSettingTestSetting, int> result = provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
+            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
+            Assert.IsTrue(result.InternalValue == 100);
+            Assert.IsTrue(dao.GetDbAppSettingHitCount == 1);
+        }
+
+        [Test]
+        public void GetDbAppSettingInitialized_SecondHit()
+        {
+            DummyReturnDbAppSettingTestSettingLazyLoadSettingDao dao = new DummyReturnDbAppSettingTestSettingLazyLoadSettingDao();
+            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+            SettingCacheProviderBase.Initalized = true;
+
+            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 0);
+            DbAppSetting<DbAppSettingTestSetting, int> result = provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
+            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
+            Assert.IsTrue(result.InternalValue == 100);
+            Assert.IsTrue(dao.GetDbAppSettingHitCount == 1);
+
+            DbAppSetting<DbAppSettingTestSetting, int> result2 = provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
+            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
+            Assert.IsTrue(result.InternalValue == 100);
+            Assert.IsTrue(dao.GetDbAppSettingHitCount == 1);
         }
     }
 }

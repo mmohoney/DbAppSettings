@@ -16,9 +16,8 @@ namespace DbAppSettings.Test.Model.DataAccess
             DefaultLazyLoadSettingDao dao = new DefaultLazyLoadSettingDao();
             Assert.IsNotNull(dao);
 
-            IEnumerable<DbAppSettingDto> results = dao.GetDbAppSetting(new DbAppSettingDto());
-            Assert.IsNotNull(results);
-            Assert.IsTrue(!results.Any());
+            DbAppSettingDto results = dao.GetDbAppSetting(new DbAppSettingDto());
+            Assert.IsNull(results);
         }
 
         [Test]
