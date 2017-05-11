@@ -107,7 +107,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             Assert.Throws(typeof(Exception), () =>
             {
                 DummyReturnOneRetrieveAllSettingDao dao = new DummyReturnOneRetrieveAllSettingDao();
-                RetrieveAllSettingCacheProvider provider = new RetrieveAllSettingCacheProvider(new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dao });
+                RetrieveAllSettingCacheProvider provider = new RetrieveAllSettingCacheProvider(new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
 
                 provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
             });
@@ -117,7 +117,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
         public void GetDbAppSettingInitialized()
         {
             DummyReturnOneRetrieveAllSettingDao dao = new DummyReturnOneRetrieveAllSettingDao();
-            RetrieveAllSettingCacheProvider provider = new RetrieveAllSettingCacheProvider(new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dao });
+            RetrieveAllSettingCacheProvider provider = new RetrieveAllSettingCacheProvider(new RetrieveAllManagerArguments() { RetrieveAllSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             SettingCacheProviderBase.Initalized = true;
 
             DbAppSettingDto dto = new DbAppSettingTestSetting().ToDto();

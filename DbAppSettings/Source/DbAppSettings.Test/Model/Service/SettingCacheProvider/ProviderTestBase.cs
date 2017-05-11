@@ -30,6 +30,15 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
                     .GetProperty("Initalized", BindingFlags.Static | BindingFlags.NonPublic)
                     .SetValue(null, false);
 
+                SettingCacheProviderBase.CancelTask();
+                SpinWait.SpinUntil(() =>
+                {
+                    if (SettingCacheProviderBase.SettingWatchTask == null)
+                        return true;
+
+                    return SettingCacheProviderBase.SettingWatchTask.IsCompleted;
+                });
+
                 typeof(SettingCacheProviderBase)
                     .GetProperty("SettingWatchTask", BindingFlags.Static | BindingFlags.NonPublic)
                     .SetValue(null, null);

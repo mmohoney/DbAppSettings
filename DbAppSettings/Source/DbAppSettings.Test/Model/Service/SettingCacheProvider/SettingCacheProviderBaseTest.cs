@@ -1,55 +1,26 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using DbAppSettings.Model.Service.CacheManager.Arguments;
-//using DbAppSettings.Model.Service.SettingCacheProvider;
-//using DbAppSettings.Test.Mock;
-//using NUnit.Framework;
+﻿using System;
+using DbAppSettings.Model.Service.SettingCacheProvider;
+using DbAppSettings.Test.Mock;
+using NUnit.Framework;
 
-//namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
-//{
-//    [TestFixture]
-//    public class SettingCacheProviderBaseTest
-//    {
-//        [Test]
-//        public void SettingWatchTaskAction_NoResults()
-//        {
-//            DummyLazyLoadSettingDao dao = new DummyLazyLoadSettingDao();
-//            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
-//            provider.InitalizeSettingWatchTask();
+namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
+{
+    [TestFixture]
+    public class SettingCacheProviderBaseTest : ProviderTestBase
+    {
+        [Test]
+        public void InitalizeSettingCacheProvider_LastRefreshedTime()
+        {
+            DummySettingCacheProvider provider = new DummySettingCacheProvider(new DummyCacheManagerArguments() { CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
+            Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
 
-//            SpinWait.SpinUntil(() => dao.GetChangedDbAppSettingsHitCount > 0);
+            provider.InitalizeSettingCacheProvider();
 
-//            Assert.IsTrue(dao.GetChangedDbAppSettingsHitCount == 1);
-//        }
+            Assert.IsTrue(provider.InitializeSettingCacheProviderHitCount == 1);
+            Assert.IsNotNull(SettingCacheProviderBase.LastRefreshedTime);
+            Assert.IsTrue(SettingCacheProviderBase.LastRefreshedTime > DateTime.MinValue);
+            Assert.IsTrue(SettingCacheProviderBase.Initalized);
 
-//        [Test]
-//        public void SettingWatchTaskAction_Results()
-//        {
-//            DummyReturnOneLazyLoadSettingDao dao = new DummyReturnOneLazyLoadSettingDao();
-//            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
-//            provider.SettingWatchTaskAction();
-
-//            SpinWait.SpinUntil(() => SettingCacheProviderBase.SettingDtosByKey.Count > 0);
-
-//            Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
-//        }
-
-//        [Test]
-//        public void SettingWatchTaskAction_LastRefreshedTime()
-//        {
-//            DummyReturnOneLazyLoadSettingDao dao = new DummyReturnOneLazyLoadSettingDao();
-//            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
-//            Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
-
-//            provider.SettingWatchTaskAction();
-
-//            SpinWait.SpinUntil(() => SettingCacheProviderBase.SettingDtosByKey.Count > 0);
-
-//            Assert.IsNotNull(SettingCacheProviderBase.LastRefreshedTime);
-//        }
-//    }
-//}
+        }
+    }
+}

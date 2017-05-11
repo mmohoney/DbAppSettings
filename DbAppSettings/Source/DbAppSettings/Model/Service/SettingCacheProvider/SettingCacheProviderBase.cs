@@ -27,6 +27,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         public abstract DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
 
         internal static bool Initalized { get; set; }
+        internal static CancellationTokenSource CancellationTokenSource { get; set; }
         internal static Task SettingWatchTask { get; set; }
         internal static int SettingDtosByKeyCount => SettingDtosByKey.Count;
 
@@ -62,16 +63,23 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// <summary>
         /// Background thread to watch for settings that change in the data access layer
         /// </summary>
-        internal void InitalizeSettingWatchTask()
+        internal virtual void InitalizeSettingWatchTask()
         {
             lock (Lock)
             {
+                //Create the cancel token
+                CancellationTokenSource = new CancellationTokenSource();
+
                 //Task.Factory.StartNew pattern
                 SettingWatchTask = Task.Factory.StartNew(() =>
                 {
                     //Run this indefinitly
                     while (true)
                     {
+                        //If we have been requested to cancel, stop the infinite loop
+                        if (CancellationTokenSource.Token.IsCancellationRequested)
+                            break;
+
                         //Initially sleep for the refresh time since settings were just retrieved from the data access layer
                         Thread.Sleep(ManagerArguments.CacheRefreshTimeout());
 
@@ -99,8 +107,17 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                             //cacheManager.NotifyOfException(e);
                         }
                     }
-                });
+                }, CancellationTokenSource.Token);
             }
+        }
+
+        /// <summary>
+        /// Internal use to cancel the setting watch task
+        /// </summary>
+        internal static void CancelTask()
+        {
+            if (CancellationTokenSource != null)
+                CancellationTokenSource.Cancel();
         }
 
         /// <summary>

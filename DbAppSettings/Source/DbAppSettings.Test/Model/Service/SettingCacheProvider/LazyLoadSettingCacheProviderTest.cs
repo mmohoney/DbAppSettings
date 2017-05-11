@@ -128,7 +128,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             Assert.Throws(typeof(Exception), () =>
             {
                 DummyReturnOneLazyLoadSettingDao dao = new DummyReturnOneLazyLoadSettingDao();
-                LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+                LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
 
                 provider.GetDbAppSetting<DbAppSettingTestSetting, int>();
             });
@@ -138,7 +138,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
         public void GetDbAppSettingInitialized()
         {
             DummyReturnDbAppSettingTestSettingLazyLoadSettingDao dao = new DummyReturnDbAppSettingTestSettingLazyLoadSettingDao();
-            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             SettingCacheProviderBase.Initalized = true;
 
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 0);
@@ -152,7 +152,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
         public void GetDbAppSettingInitialized_SecondHit()
         {
             DummyReturnDbAppSettingTestSettingLazyLoadSettingDao dao = new DummyReturnDbAppSettingTestSettingLazyLoadSettingDao();
-            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao });
+            LazyLoadSettingCacheProvider provider = new LazyLoadSettingCacheProvider(new LazyLoadManagerArguments() { LazyLoadSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             SettingCacheProviderBase.Initalized = true;
 
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 0);
