@@ -4,7 +4,7 @@ mono:
 solution: ./DbAppSettings/DbAppSettings.sln
 install:
   - nuget restore ./DbAppSettings/DbAppSettings.sln
-  - nuget install NUnit.Runners -OutputDirectory testrunner
+  - nuget install NUnit.Runners -Version 3.6.1 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug ./DbAppSettings/DbAppSettings.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.6.1/tools/nunit3-console.exe ./DbAppSettings/Source/DbAppSettings.Test/bin/Debug/DbAppSettings.Test.dll
