@@ -152,8 +152,9 @@ namespace DbAppSettings.Model.Domain
                     return InitialValue;
                 return _value;
             }
-            private set => _value = value;
+            private set { _value = value; }
         }
+
         /// <summary>
         /// The string representation of the type
         /// </summary>
