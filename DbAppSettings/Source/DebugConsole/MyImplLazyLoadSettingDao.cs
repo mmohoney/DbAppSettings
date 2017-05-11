@@ -5,23 +5,23 @@ using DbAppSettings.Model.DataTransfer;
 
 namespace DebugConsole
 {
-public class MyImplLazyLoadSettingDao : ILazyLoadSettingDao
-{
-    public static readonly DbAppSettingDto Setting = new DebugConsoleSettings.EnableLogging().ToDto();
-
-    public MyImplLazyLoadSettingDao()
+    public class MyImplLazyLoadSettingDao : ILazyLoadSettingDao
     {
-        Setting.Value = true.ToString();
-    }
+        public static readonly DbAppSettingDto Setting = new DebugConsoleSettings.EnableLogging().ToDto();
 
-    public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
-    {
-        return Setting;
-    }
+        public MyImplLazyLoadSettingDao()
+        {
+            Setting.Value = true.ToString();    //Initially set to true in DAL
+        }
 
-    public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)
-    {
-        return new List<DbAppSettingDto>{ Setting };
+        public DbAppSettingDto GetDbAppSetting(DbAppSettingDto dbAppSettingDto)
+        {
+            return Setting;
+        }
+
+        public IEnumerable<DbAppSettingDto> GetChangedDbAppSettings(DateTime? latestDbAppSettingChangedDate)
+        {
+            return new List<DbAppSettingDto>{ Setting };
+        }
     }
-}
 }
