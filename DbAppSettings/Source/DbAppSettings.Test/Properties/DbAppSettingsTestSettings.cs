@@ -2,7 +2,7 @@
 
 namespace DbAppSettings.Test.Properties
 {
-    public class MySettingsClass
+    public class MySettingsClass    //Does not need to be declared here
     {
         public int PropertyOne => 1;
         public string PropertyTwo => "Settings are fun.";
