@@ -42,30 +42,15 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             }
         }
 
-        internal override void SettingWatchTaskAction()
+        internal override List<DbAppSettingDto> GetChangedSettings()
         {
-            try
-            {
-                //Return all settings that have changed since the last time a setting was refreshed
-                List<DbAppSettingDto> settingDtos = _managerArguments.RetrieveAllSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
-                if (!settingDtos.Any())
-                    return;
-
-                //Update the settings
-                SetSettingValues(settingDtos);
-
-                //Store a reference to the latest changed time
-                LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
-            }
-            catch (Exception e)
-            {
-                //TODO: Log manager
-                //cacheManager.NotifyOfException(e);
-            }
+            //Return all settings that have changed since the last time a setting was refreshed
+            return _managerArguments.RetrieveAllSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
         }
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
         {
+            //Throw exception if we have not initialized the cache
             if (!Initalized)
             {
                 lock (Lock)
@@ -77,6 +62,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
             T newSetting = new T();
 
+            //Get the setting from the cache
             HydrateSettingFromDto(newSetting);
 
             return newSetting;

@@ -5,6 +5,9 @@ using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
 
 namespace DbAppSettings.Model.Service
 {
+    /// <summary>
+    /// Singleton instance exposed for DbAppSetting to get it's value
+    /// </summary>
     internal class SettingCache : ISettingCache
     {
         private static readonly object Lock = new object();
@@ -36,12 +39,13 @@ namespace DbAppSettings.Model.Service
 
         internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
         {
+            //Throw exception if we have not initialized the cache
             if (!Instance.SettingCacheProvider.IsInitalized)
             {
                 lock (Lock)
                 {
                     if (!Instance.SettingCacheProvider.IsInitalized)
-                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
+                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager CreateAndIntialize methods.");
                 }
             }
 

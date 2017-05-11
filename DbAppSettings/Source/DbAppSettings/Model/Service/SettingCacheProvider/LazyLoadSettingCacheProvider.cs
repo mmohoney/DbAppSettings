@@ -27,30 +27,15 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             return;
         }
 
-        internal override void SettingWatchTaskAction()
+        internal override List<DbAppSettingDto> GetChangedSettings()
         {
-            try
-            {
-                //Return all settings that have changed since the last time a setting was refreshed
-                List<DbAppSettingDto> settingDtos = _managerArguments.LazyLoadSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
-                if (!settingDtos.Any())
-                    return;
-
-                //Update the settings
-                SetSettingValues(settingDtos);
-
-                //Store a reference to the latest changed time
-                LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
-            }
-            catch (Exception e)
-            {
-                //TODO: Log manager
-                //cacheManager.NotifyOfException(e);
-            }
+            //Return all settings that have changed since the last time a setting was refreshed
+            return _managerArguments.LazyLoadSettingDao.GetChangedDbAppSettings(LastRefreshedTime).ToList();
         }
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
         {
+            //Throw exception if we have not initialized the cache
             if (!Initalized)
             {
                 lock (Lock)
@@ -62,8 +47,17 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
             T newSetting = new T();
 
+            //Check if setting exists without locking
+            DbAppSettingDto outDto;
+            if (SettingDtosByKey.TryGetValue(newSetting.FullSettingName, out outDto))
+            {
+                newSetting.From(outDto);
+                return newSetting;
+            }
+
             lock (Lock)
             {
+                //Check if setting exists with locking
                 if (SettingDtosByKey.ContainsKey(newSetting.FullSettingName))
                 {
                     DbAppSettingDto settingDto = SettingDtosByKey[newSetting.FullSettingName];
@@ -71,11 +65,10 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                     return newSetting;
                 }
 
+                //If setting does not exist yet, go get it from the database
                 DbAppSettingDto updatedSettingDto = _managerArguments.LazyLoadSettingDao.GetDbAppSetting(newSetting.ToDto());
-                if (updatedSettingDto == null)
-                    return newSetting;
-
-                SetSettingValues(new List<DbAppSettingDto>{ updatedSettingDto });
+                if (updatedSettingDto != null)
+                    SetSettingValues(new List<DbAppSettingDto>{ updatedSettingDto });
 
                 HydrateSettingFromDto(newSetting);
 

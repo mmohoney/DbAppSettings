@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DbAppSettings.Model.DataTransfer;
@@ -19,15 +20,11 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         internal static readonly ConcurrentDictionary<string, DbAppSettingDto> SettingDtosByKey = new ConcurrentDictionary<string, DbAppSettingDto>();
         internal static DateTime? LastRefreshedTime;
 
-        protected SettingCacheProviderBase()
-        {
-            
-        }
-
         internal abstract CacheManagerArguments ManagerArguments { get; }
 
         internal abstract void InitializeSettingCacheProvider();
-        internal abstract void SettingWatchTaskAction();
+        internal abstract List<DbAppSettingDto> GetChangedSettings();
+        public abstract DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
 
         internal static bool Initalized { get; set; }
         internal static Task SettingWatchTask { get; set; }
@@ -62,35 +59,48 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             }
         }
 
-        public abstract DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
-
         /// <summary>
         /// Background thread to watch for settings that change in the data access layer
         /// </summary>
         internal void InitalizeSettingWatchTask()
         {
-            //Task.Factory.StartNew pattern
-            SettingWatchTask = Task.Factory.StartNew(() =>
+            lock (Lock)
             {
-                //Run this indefinitly
-                while (true)
+                //Task.Factory.StartNew pattern
+                SettingWatchTask = Task.Factory.StartNew(() =>
                 {
-                    //Initially sleep for the refresh time since settings were just retrieved from the data access layer
-                    Thread.Sleep(ManagerArguments.CacheRefreshTimeout());
-
-                    try
+                    //Run this indefinitly
+                    while (true)
                     {
-                        SettingWatchTaskAction();
+                        //Initially sleep for the refresh time since settings were just retrieved from the data access layer
+                        Thread.Sleep(ManagerArguments.CacheRefreshTimeout());
 
-                        LastRefreshedTime = LastRefreshedTime > DateTime.MinValue ? LastRefreshedTime : DateTime.Now;
+                        try
+                        {
+                            //Return all settings that have changed since the last time a setting was refreshed
+                            List<DbAppSettingDto> settingDtos = GetChangedSettings().ToList();
+                            if (!settingDtos.Any())
+                                return;
+
+                            //Update the settings
+                            SetSettingValues(settingDtos);
+
+                            //Store a reference to the latest changed time
+                            LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+
+                            //If we were unable to get a refresh time, provide now as a fallback
+                            LastRefreshedTime = LastRefreshedTime > DateTime.MinValue
+                                ? LastRefreshedTime
+                                : DateTime.Now;
+                        }
+                        catch (Exception e)
+                        {
+                            //TODO: Log manager
+                            //cacheManager.NotifyOfException(e);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        //TODO: Log manager
-                        //cacheManager.NotifyOfException(e);
-                    }
-                }
-            });
+                });
+            }
         }
 
         /// <summary>
@@ -108,43 +118,57 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Check the if the cache contains the value from the dictionary and return the up to date value if so
         /// </summary>
         /// <param name="dbAppSetting"></param>
-        protected void HydrateSettingFromDto(InternalDbAppSettingBase dbAppSetting)
+        internal void HydrateSettingFromDto(InternalDbAppSettingBase dbAppSetting)
         {
-            //If we have loaded the dto, hydrate it from the cache
-            if (SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
+            //Check if setting exists without locking
+            DbAppSettingDto outDto;
+            if (SettingDtosByKey.TryGetValue(dbAppSetting.FullSettingName, out outDto))
             {
-                DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
-                dbAppSetting.From(settingDto);
+                dbAppSetting.From(outDto);
                 return;
             }
 
-            //If we have not yet loaded an assembly of a type, ignore this setting
-            if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
+            //Check if setting exists with locking
+            lock (Lock)
             {
-                lock (Lock)
+                if (SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
                 {
-                    if (!SettingDtosByKey.ContainsKey(dbAppSetting.FullSettingName))
-                    {
-                        try
-                        {
-                            //Convert to a dto to save
-                            DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
+                    DbAppSettingDto settingDto = SettingDtosByKey[dbAppSetting.FullSettingName];
+                    dbAppSetting.From(settingDto);
+                    return;
+                }
 
-                            //If the setting is no found in the cache, save the setting
-                            ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+                //If the setting was not found in the cache, we need to save it to the data access layer
+                SaveNewSettingIfNotExists(dbAppSetting);
+            }
+        }
 
-                            //If the setting was just added to the data access layer, add it to the dto cache as well
-                            SettingDtosByKey.AddOrUpdate(newSettingDto.Key, newSettingDto, (key, oldValue) => newSettingDto);
+        /// <summary>
+        /// Save the settign to the data access layer
+        /// </summary>
+        /// <param name="dbAppSetting"></param>
+        internal void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        {
+            lock (Lock)
+            {
+                try
+                {
+                    //Convert to a dto to save
+                    DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
 
-                            //Hydrate it from itself as it is now present in the cache
-                            dbAppSetting.From(newSettingDto);
-                        }
-                        catch (Exception e)
-                        {
-                            //TODO: Log manager
-                            //cacheManager.NotifyOfException(e);
-                        }
-                    }
+                    //If the setting is no found in the cache, save the setting
+                    ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+
+                    //If the setting was just added to the data access layer, add it to the dto cache as well
+                    SettingDtosByKey.AddOrUpdate(newSettingDto.Key, newSettingDto, (key, oldValue) => newSettingDto);
+
+                    //Hydrate it from itself as it is now present in the cache
+                    dbAppSetting.From(newSettingDto);
+                }
+                catch (Exception e)
+                {
+                    //TODO: Log manager
+                    //cacheManager.NotifyOfException(e);
                 }
             }
         }
