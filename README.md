@@ -12,7 +12,7 @@ Download the [latest release].
 ### Get it on NuGet
 `Install-Package DbAppSettings.DbAppSettings`
 
-### Documentation
+### Documentation/ Release Notes
 Visit the [Wiki] for quick setup guide.
 
 ### Example
@@ -51,4 +51,4 @@ public void DoSomeWork()
 
 [latest release]: https://github.com/mmohoney/DbAppSettings/releases
 [DbAppSettings.Test]: https://github.com/mmohoney/DbAppSettings/tree/master/DbAppSettings/Source/DbAppSettings.Test
-[wiki]: https://github.com/mmohoney/DbAppSettings/wiki/Setup-v1.x
+[wiki]: https://github.com/mmohoney/DbAppSettings/wiki
