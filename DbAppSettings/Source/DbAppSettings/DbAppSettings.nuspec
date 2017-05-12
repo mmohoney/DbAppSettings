@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DbAppSettings.DbAppSettings</id>
-    <version>0.4.1</version>
+    <version>1.0.1-beta</version>
     <title>DbAppSettings.DbAppSettings</title>
     <authors>mmohoney</authors>
     <owners>mmohoney</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/mmohoney/DbAppSettings</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides up to date application setting values</description>
-    <releaseNotes>First nuget release</releaseNotes>
+    <releaseNotes>See release notes at: https://github.com/mmohoney/DbAppSettings/wiki</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>setting settings appsettings dbappsetting dbappsettings</tags>
   </metadata>
