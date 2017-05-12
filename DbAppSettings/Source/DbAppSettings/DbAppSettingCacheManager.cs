@@ -17,9 +17,6 @@ namespace DbAppSettings
         /// <returns></returns>
         public static void CreateAndIntialize(IRetrieveAllSettingDao retrieveAllSettingDao)
         {
-            if (retrieveAllSettingDao == null)
-                throw new NullReferenceException("retrieveAllSettingDao cannot be null");
-
             new RetrieveAllDbAppSettingManager().Create(new RetrieveAllManagerArguments { RetrieveAllSettingDao = retrieveAllSettingDao });
         }
 
@@ -43,9 +40,6 @@ namespace DbAppSettings
         /// <returns></returns>
         public static void CreateAndIntialize(ILazyLoadSettingDao lazyLoadSettingDao)
         {
-            if (lazyLoadSettingDao == null)
-                throw new NullReferenceException("lazyLoadSettingDao cannot be null");
-
             new LazyLoadDbAppSettingManager().Create(new LazyLoadManagerArguments { LazyLoadSettingDao = lazyLoadSettingDao });
         }
 

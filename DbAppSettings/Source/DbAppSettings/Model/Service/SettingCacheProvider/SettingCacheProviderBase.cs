@@ -94,7 +94,9 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                             SetSettingValues(settingDtos);
 
                             //Store a reference to the latest changed time
-                            LastRefreshedTime = settingDtos.Max(d => d.ModifiedDate);
+                            DateTime newMax = settingDtos.Max(d => d.ModifiedDate);
+                            if (LastRefreshedTime < newMax)
+                                LastRefreshedTime = newMax;
 
                             //If we were unable to get a refresh time, provide now as a fallback
                             LastRefreshedTime = LastRefreshedTime > DateTime.MinValue
