@@ -73,7 +73,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
 
             SpinWait.SpinUntil(() => dao.GetChangedDbAppSettingsHitCount > 0);
 
-            Assert.IsTrue(dao.GetChangedDbAppSettingsHitCount == 1);
+            Assert.IsTrue(dao.GetChangedDbAppSettingsHitCount > 1);
         }
 
         [Test]
