@@ -12,29 +12,43 @@ Download the [latest release].
 ### Get it on NuGet
 `Install-Package DbAppSettings.DbAppSettings`
 
-### Documentation
+### Documentation/ Release Notes
 Visit the [Wiki] for quick setup guide.
 
-### Preview Example
+### Example
 Settings File:
 ```c#
-namespace DbAppSettings.Test.Mock
+namespace DbAppSettings.MyAssembly
 {
-    public class DbAppSettingsTestSettings
+    public class MyAssemblySettings
     {
         public class EnableLogging : DbAppSetting<EnableLogging, bool> { public override bool InitialValue => false; }
-        public class MySecondSetting : DbAppSetting<MySecondSetting, int> { public override int InitialValue => 1; }
+        public class MyOtherSetting : DbAppSetting<MyOtherSetting, SettingsObject> { public override SettingsObject InitialValue => new SettingsObject(); }
+    }
+
+    public class SettingsObject
+    {
+        public int PropertyOne => 1;
+        public string PropertyTwo => "String settings";
     }
 }
 ```
 Setting Usage:
 ```c#
-if (DbAppSettingsTestSettings.EnableLogging.Value)
+public void DoSomeWork()
 {
-    MyLogger.Log("Test");
+    if (MyAssemblySettings.MyOtherSetting.Value.PropertyOne == 1)
+    {
+        //Do other work
+    }
+
+    if (MyAssemblySettings.EnableLogging.Value)
+    {
+        //Log some statements
+    }
 }
 ```
 
 [latest release]: https://github.com/mmohoney/DbAppSettings/releases
 [DbAppSettings.Test]: https://github.com/mmohoney/DbAppSettings/tree/master/DbAppSettings/Source/DbAppSettings.Test
-[wiki]: https://github.com/mmohoney/DbAppSettings/wiki/Setup
+[wiki]: https://github.com/mmohoney/DbAppSettings/wiki

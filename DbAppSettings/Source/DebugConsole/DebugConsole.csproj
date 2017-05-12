@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{52744C0A-0F6C-4952-B6F0-C0FFF7A5ACC2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbAppSettings.Test</RootNamespace>
-    <AssemblyName>DbAppSettings.Test</AssemblyName>
+    <ProjectGuid>{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DebugConsole</RootNamespace>
+    <AssemblyName>DebugConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +24,7 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,12 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,27 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mock\DummySettingCacheProvider.cs" />
-    <Compile Include="Model\DataAccess\DefaultLazyLoadSettingDaoTest.cs" />
-    <Compile Include="Model\DataAccess\DefaultRetrieveAllSettingDaoTest.cs" />
-    <Compile Include="Model\DataAccess\DefaultSaveNewSettingDaoTest.cs" />
-    <Compile Include="Model\DataTransfer\DbAppSettingDtoTest.cs" />
-    <Compile Include="Model\Domain\DbAppSettingTypeTest.cs" />
-    <Compile Include="Model\Service\CacheManager\LazyLoadDbAppSettingManagerTest.cs" />
-    <Compile Include="Model\Service\CacheManager\RetrieveAllDbAppSettingManagerTest.cs" />
-    <Compile Include="Model\Service\CacheManager\SettingManagerTestBase.cs" />
-    <Compile Include="Model\Service\Factory\SettingCacheProviderFactoryTest.cs" />
-    <Compile Include="Model\Service\SettingCacheProvider\RetrieveAllSettingCacheProviderTest.cs" />
-    <Compile Include="Model\Service\SettingCacheProvider\LazyLoadSettingCacheProviderTest.cs" />
-    <Compile Include="Model\Service\SettingCacheProvider\ProviderTestBase.cs" />
-    <Compile Include="Model\Service\SettingCacheProvider\SettingCacheProviderBaseTest.cs" />
-    <Compile Include="Model\Service\SettingCacheTest.cs" />
-    <Compile Include="Model\Domain\DbAppSettingTest.cs" />
+    <Compile Include="DebugConsoleSettings.cs" />
+    <Compile Include="MyImplLazyLoadSettingDao.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\DbAppSettingsTestSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbAppSettings\DbAppSettings.csproj">
@@ -74,9 +57,5 @@
       <Name>DbAppSettings</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

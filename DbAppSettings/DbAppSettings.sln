@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDbAppSettingsMaintenance
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Maintenance", "Source\DbAppSettings.Maintenance\DbAppSettings.Maintenance.csproj", "{7B390F06-3DD9-40AD-B7FA-986D440016AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugConsole", "Source\DebugConsole\DebugConsole.csproj", "{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B390F06-3DD9-40AD-B7FA-986D440016AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

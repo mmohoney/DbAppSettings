@@ -20,7 +20,7 @@ namespace DbAppSettings.Model.Domain
         private string _settingName;
 
         /// <summary>
-        /// Don't allow instantiation outside of inherited classes
+        /// Protected constructor 
         /// </summary>
         protected InternalDbAppSettingBase()
         {
@@ -102,9 +102,11 @@ namespace DbAppSettings.Model.Domain
     public abstract class DbAppSetting<T, TValueType> : InternalDbAppSettingBase where T : DbAppSetting<T, TValueType>, new()
     {
         private string _typeString;
-        private bool _hydratedFromDataAccess;
         private TValueType _value;
 
+        /// <summary>
+        /// Protected constructor 
+        /// </summary>
         protected DbAppSetting()
         {
 
@@ -126,10 +128,14 @@ namespace DbAppSettings.Model.Domain
         public static TValueType DefaultValue => new T().InitialValue;
 
         /// <summary>
+        /// Returns whether or not the domain was hydrated from the data access layer
+        /// </summary>
+        internal bool HydratedFromDataAccess { get; private set; }
+        /// <summary>
         /// Ties a setting to an application. The cache will only load settings for the specified application. Will be null until
         /// hydrated from the data access layer
         /// </summary>
-        public string ApplicationKey { get; protected set; }
+        public string ApplicationKey { get; private set; }
         /// <summary>
         /// The instance level value representing either a default value, or an up to date value from the data access layer
         /// </summary>
@@ -145,12 +151,13 @@ namespace DbAppSettings.Model.Domain
         {
             get
             {
-                if (!_hydratedFromDataAccess)
+                if (!HydratedFromDataAccess)
                     return InitialValue;
                 return _value;
             }
-            set { _value = value; }
+            private set { _value = value; }
         }
+
         /// <summary>
         /// The string representation of the type
         /// </summary>
@@ -201,7 +208,7 @@ namespace DbAppSettings.Model.Domain
             }
 
             //Let the class know that it was hydrated from the data access layer
-            _hydratedFromDataAccess = true;
+            HydratedFromDataAccess = true;
         }
 
         /// <summary>

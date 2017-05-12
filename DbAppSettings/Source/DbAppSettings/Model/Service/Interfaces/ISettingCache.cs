@@ -1,14 +1,14 @@
-﻿namespace DbAppSettings.Model.Service.Interfaces
+﻿using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
+
+namespace DbAppSettings.Model.Service.Interfaces
 {
     /// <summary>
-    /// Represents a cache of DbAppSettings
+    /// Setting cache 
     /// </summary>
     internal interface ISettingCache
     {
-        /// <summary>
-        /// Initialize the cache
-        /// </summary>
-        /// <param name="cacheManager"></param>
-        void InitializeCache(ISettingInitialization cacheManager);
+        ISettingCacheProvider SettingCacheProvider { get; }
+
+        void InitializeCache(ISettingCacheProvider settingCacheProvider);
     }
 }

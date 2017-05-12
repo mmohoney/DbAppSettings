@@ -13,13 +13,7 @@ namespace DbAppSettings.Test.Model.Domain
     [TestFixture]
     public class DbAppSettingTypeTest
     {
-        public class MyTestClass
-        {
-            public int SomeProperty { get; set; } = 1;
-            public string SomeOtherProperty { get; set; } = "Test";
-        }
-
-        public class boolSetting : DbAppSetting<boolSetting, bool> { public override bool InitialValue => true; }
+        class boolSetting : DbAppSetting<boolSetting, bool> { public override bool InitialValue => true; }
         [Test]
         public void DbAppSetting_bool()
         {
@@ -41,7 +35,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class byteSetting : DbAppSetting<byteSetting, byte> { public override byte InitialValue => Encoding.ASCII.GetBytes("test")[0]; }
+        class byteSetting : DbAppSetting<byteSetting, byte> { public override byte InitialValue => Encoding.ASCII.GetBytes("test")[0]; }
         [Test]
         public void DbAppSetting_byte()
         {
@@ -63,7 +57,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class charSetting : DbAppSetting<charSetting, char> { public override char InitialValue => 'a'; }
+        class charSetting : DbAppSetting<charSetting, char> { public override char InitialValue => 'a'; }
         [Test]
         public void DbAppSetting_char()
         {
@@ -85,7 +79,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class decimalSetting : DbAppSetting<decimalSetting, decimal> { public override decimal InitialValue => 1.25M; }
+        class decimalSetting : DbAppSetting<decimalSetting, decimal> { public override decimal InitialValue => 1.25M; }
         [Test]
         public void DbAppSetting_decimal()
         {
@@ -107,7 +101,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class doubleSetting : DbAppSetting<doubleSetting, double> { public override double InitialValue => 1.25; }
+        class doubleSetting : DbAppSetting<doubleSetting, double> { public override double InitialValue => 1.25; }
         [Test]
         public void DbAppSetting_double()
         {
@@ -129,7 +123,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class floatSetting : DbAppSetting<floatSetting, float> { public override float InitialValue => 1.25F; }
+        class floatSetting : DbAppSetting<floatSetting, float> { public override float InitialValue => 1.25F; }
         [Test]
         public void DbAppSetting_float()
         {
@@ -151,7 +145,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class intSetting : DbAppSetting<intSetting, int> { public override int InitialValue => 1; }
+        class intSetting : DbAppSetting<intSetting, int> { public override int InitialValue => 1; }
         [Test]
         public void DbAppSetting_int()
         {
@@ -173,7 +167,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class longSetting : DbAppSetting<longSetting, long> { public override long InitialValue => 2147483648; }
+        class longSetting : DbAppSetting<longSetting, long> { public override long InitialValue => 2147483648; }
         [Test]
         public void DbAppSetting_long()
         {
@@ -195,7 +189,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class sbyteSetting : DbAppSetting<sbyteSetting, sbyte> { public override sbyte InitialValue => -127; }
+        class sbyteSetting : DbAppSetting<sbyteSetting, sbyte> { public override sbyte InitialValue => -127; }
         [Test]
         public void DbAppSetting_sbyte()
         {
@@ -217,7 +211,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class shortSetting : DbAppSetting<shortSetting, short> { public override short InitialValue => 1; }
+        class shortSetting : DbAppSetting<shortSetting, short> { public override short InitialValue => 1; }
         [Test]
         public void DbAppSetting_short()
         {
@@ -239,7 +233,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class stringSetting : DbAppSetting<stringSetting, string> { public override string InitialValue => "test"; }
+        class stringSetting : DbAppSetting<stringSetting, string> { public override string InitialValue => "test"; }
         [Test]
         public void DbAppSetting_string()
         {
@@ -261,7 +255,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class StringCollectionSetting : DbAppSetting<StringCollectionSetting, StringCollection> { public override StringCollection InitialValue => new StringCollection { "One", "Two", "Three" }; }
+        class StringCollectionSetting : DbAppSetting<StringCollectionSetting, StringCollection> { public override StringCollection InitialValue => new StringCollection { "One", "Two", "Three" }; }
         [Test]
         public void DbAppSetting_StringCollection()
         {
@@ -286,7 +280,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(newStringList.SequenceEqual(internalValueList));
         }
 
-        public class DateTimeSetting : DbAppSetting<DateTimeSetting, DateTime> { public override DateTime InitialValue => DateTime.Today; }
+        class DateTimeSetting : DbAppSetting<DateTimeSetting, DateTime> { public override DateTime InitialValue => DateTime.Today; }
         [Test]
         public void DbAppSetting_DateTime()
         {
@@ -308,7 +302,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class GuidSetting : DbAppSetting<GuidSetting, Guid> { public override Guid InitialValue => new Guid("9245fe4a-d402-451c-b9ed-9c1a04247482"); }
+        class GuidSetting : DbAppSetting<GuidSetting, Guid> { public override Guid InitialValue => new Guid("9245fe4a-d402-451c-b9ed-9c1a04247482"); }
         [Test]
         public void DbAppSetting_Guid()
         {
@@ -330,7 +324,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class TimeSpanSetting : DbAppSetting<TimeSpanSetting, TimeSpan> { public override TimeSpan InitialValue => new TimeSpan(1, 1, 1, 1); }
+        class TimeSpanSetting : DbAppSetting<TimeSpanSetting, TimeSpan> { public override TimeSpan InitialValue => new TimeSpan(1, 1, 1, 1); }
         [Test]
         public void DbAppSetting_TimeSpan()
         {
@@ -352,7 +346,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class uintSetting : DbAppSetting<uintSetting, uint> { public override uint InitialValue => 4294967295; }
+        class uintSetting : DbAppSetting<uintSetting, uint> { public override uint InitialValue => 4294967295; }
         [Test]
         public void DbAppSetting_uint()
         {
@@ -374,7 +368,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class ulongSetting : DbAppSetting<ulongSetting, ulong> { public override ulong InitialValue => 18446744073709551615; }
+        class ulongSetting : DbAppSetting<ulongSetting, ulong> { public override ulong InitialValue => 18446744073709551615; }
         [Test]
         public void DbAppSetting_ulong()
         {
@@ -396,7 +390,7 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class ushortSetting : DbAppSetting<ushortSetting, ushort> { public override ushort InitialValue => 65535; }
+        class ushortSetting : DbAppSetting<ushortSetting, ushort> { public override ushort InitialValue => 65535; }
         [Test]
         public void DbAppSetting_ushort()
         {
@@ -418,7 +412,12 @@ namespace DbAppSettings.Test.Model.Domain
             Assert.IsTrue(toDto.Value.Equals(settingDto.Value, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public class MyTestClassSetting : DbAppSetting<MyTestClassSetting, MyTestClass> { public override MyTestClass InitialValue => new MyTestClass(); }
+        class MyTestClass
+        {
+            public int SomeProperty { get; set; } = 1;
+            public string SomeOtherProperty { get; set; } = "Test";
+        }
+        class MyTestClassSetting : DbAppSetting<MyTestClassSetting, MyTestClass> { public override MyTestClass InitialValue => new MyTestClass(); }
         [Test]
         public void DbAppSetting_customObect()
         {

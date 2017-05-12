@@ -1,88 +1,59 @@
 ﻿using System;
-using DbAppSettings.Model.DataAccess;
 using DbAppSettings.Model.DataAccess.Interfaces;
-using DbAppSettings.Model.Service;
-using DbAppSettings.Model.Service.Interfaces;
+using DbAppSettings.Model.Service.CacheManager;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
 
 namespace DbAppSettings
 {
     /// <summary>
-    /// Wrapper class that needs to be implemented to wire up the SettingCache. Wraps all necessary methods to invoke
-    /// and initalize the cache
+    /// Class used to instantiate the setting cachs. Wraps all necessary methods to invoke the caches.
     /// </summary>
     public class DbAppSettingCacheManager
     {
-        private readonly DbAppSettingManagerArguments _arguments;
-        private readonly ISettingCache _settingCache;
-
-        internal DbAppSettingCacheManager(DbAppSettingManagerArguments arguments)
-        {
-            _arguments = arguments;
-            _arguments.DbAppSettingDao = _arguments.DbAppSettingDao ?? new DefaultDbAppSettingDao();
-            _settingCache = SettingCache.Instance;
-        }
-
         /// <summary>
-        /// Internally used for testing
+        /// Basic way of intializing the underlying caches by providing just the data access layer needed to get all settings.
         /// </summary>
-        /// <param name="dbAppSettingDao"></param>
-        /// <param name="settingCache"></param>
-        internal DbAppSettingCacheManager(IDbAppSettingDao dbAppSettingDao, ISettingCache settingCache)
-        {
-            _arguments = new DbAppSettingManagerArguments() { DbAppSettingDao = dbAppSettingDao ?? new DefaultDbAppSettingDao() };
-            _settingCache = settingCache;
-        }
-
-        /// <summary>
-        /// Static create method used to instantiate the manager. Arguments must be implemented.
-        /// </summary>
-        /// <param name="arguments"></param>
+        /// <param name="retrieveAllSettingDao">Implementation of the get all interface. Cannot be null.</param>
         /// <returns></returns>
-        public static DbAppSettingCacheManager CreateAndIntialize(DbAppSettingManagerArguments arguments)
+        public static void CreateAndIntialize(IRetrieveAllSettingDao retrieveAllSettingDao)
         {
-            if (arguments == null)
-                throw new NullReferenceException("arguments cannot be null");
-            
-            return new DbAppSettingCacheManager(arguments).InitializeCache();
+            new RetrieveAllDbAppSettingManager().Create(new RetrieveAllManagerArguments { RetrieveAllSettingDao = retrieveAllSettingDao });
         }
 
         /// <summary>
-        /// Static create method used to instantiate the manager.
+        /// Provides a more advanced way of intializing the underlying caches by providing overrides and additional data access methods.
         /// </summary>
-        /// <param name="dbAppSettingDao"></param>
+        /// <param name="retrieveAllManagerArguments">Arguments cannot be null.</param>
         /// <returns></returns>
-        public static DbAppSettingCacheManager CreateAndIntialize(IDbAppSettingDao dbAppSettingDao)
+        public static void CreateAndIntialize(RetrieveAllManagerArguments retrieveAllManagerArguments)
         {
-            if (dbAppSettingDao == null)
-                throw new NullReferenceException("dbAppSettingDao cannot be null");
+            if (retrieveAllManagerArguments == null)
+                throw new NullReferenceException("retrieveAllManagerArguments cannot be null");
 
-            return new DbAppSettingCacheManager(new DbAppSettingManagerArguments { DbAppSettingDao = dbAppSettingDao }).InitializeCache();
+            new RetrieveAllDbAppSettingManager().Create(retrieveAllManagerArguments);
         }
 
         /// <summary>
-        /// Returns whether or not the SettingCache is intialized
+        /// Basic way of intializing the underlying caches by providing just the data access layer needed to lazy load the settings.
         /// </summary>
-        public bool IsCacheInitalized { get; private set; }
-        /// <summary>
-        /// Implementation of the data access layer
-        /// </summary>
-        internal IDbAppSettingDao AppSettingDao => _arguments.DbAppSettingDao;
-        
-        /// <summary>
-        /// Method needs to be invoked in order to intialize cache
-        /// </summary>
+        /// <param name="lazyLoadSettingDao">Implementation of the lazy load interface. Cannot be null.</param>
         /// <returns></returns>
-        internal DbAppSettingCacheManager InitializeCache()
+        public static void CreateAndIntialize(ILazyLoadSettingDao lazyLoadSettingDao)
         {
-            if (IsCacheInitalized)
-                return this;
+            new LazyLoadDbAppSettingManager().Create(new LazyLoadManagerArguments { LazyLoadSettingDao = lazyLoadSettingDao });
+        }
 
-            ISettingInitialization settingInitialization = new SettingInitialization(_arguments);
-            _settingCache.InitializeCache(settingInitialization);
+        /// <summary>
+        /// Provides a more advanced way of intializing the underlying caches by providing overrides and additional data access methods.
+        /// </summary>
+        /// <param name="lazyLoadManagerArguments">Arguments cannot be null.</param>
+        /// <returns></returns>
+        public static void CreateAndIntialize(LazyLoadManagerArguments lazyLoadManagerArguments)
+        {
+            if (lazyLoadManagerArguments == null)
+                throw new NullReferenceException("lazyLoadManagerArguments cannot be null");
 
-            IsCacheInitalized = true;
-
-            return this;
+            new LazyLoadDbAppSettingManager().Create(lazyLoadManagerArguments);
         }
     }
 }

@@ -12,13 +12,12 @@ namespace DbAppSettings.Test.Model.Domain
     [TestFixture]
     public class DbAppSettingTest
     {
-        public class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int InitialValue => 1; }
+        class DbAppSettingTestSetting : DbAppSetting<DbAppSettingTestSetting, int> { public override int InitialValue => 1; }
 
         private DbAppSettingTestSetting GetSetting()
         {
             DbAppSettingTestSetting setting = new DbAppSettingTestSetting();
             Assert.IsNotNull(setting);
-
             return setting;
         }
 
@@ -73,7 +72,7 @@ namespace DbAppSettings.Test.Model.Domain
         }
 
         [Test]
-        public void DbAppSetting_Assembly()
+        public void DbAppSetting_ApplicationKey()
         {
             DbAppSettingTestSetting setting = GetSetting();
             Assert.IsNotNull(setting);
