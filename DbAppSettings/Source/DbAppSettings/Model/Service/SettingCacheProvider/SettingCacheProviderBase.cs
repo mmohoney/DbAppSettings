@@ -88,7 +88,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                             //Return all settings that have changed since the last time a setting was refreshed
                             List<DbAppSettingDto> settingDtos = GetChangedSettings().ToList();
                             if (!settingDtos.Any())
-                                return;
+                                continue;
 
                             //Update the settings
                             SetSettingValues(settingDtos);
