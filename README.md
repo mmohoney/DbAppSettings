@@ -1,6 +1,8 @@
 DbAppSettings
 =======================
 
+[![Build Status](https://travis-ci.org/mmohoney/DbAppSettings.svg?branch=master)](https://travis-ci.org/mmohoney/DbAppSettings)
+
 ### Features
 - Easy to use global application settings
 - Realize value changes without app recycle/ restart
