@@ -9,6 +9,8 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider.Interfaces
     {
         bool IsInitalized{ get; }
 
+        void IntializationCheck();
+
         void InitalizeSettingCacheProvider();
 
         DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();

@@ -23,6 +23,10 @@ namespace DbAppSettings.Test.Model.Service.CacheManager
         {
             public bool IsInitalized => true;
 
+            public void IntializationCheck()
+            {
+            }
+
             public void InitalizeSettingCacheProvider()
             {
                 throw new NotImplementedException();

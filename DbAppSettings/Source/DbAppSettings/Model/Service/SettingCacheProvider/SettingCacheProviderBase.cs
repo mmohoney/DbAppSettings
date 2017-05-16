@@ -35,6 +35,22 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         public bool IsInitalized => Initalized;
 
         /// <summary>
+        /// Verifies if the cache is initialized. Throws exception if not.
+        /// </summary>
+        public void IntializationCheck()
+        {
+            //Throw exception if we have not initialized the cache
+            if (!Initalized)
+            {
+                lock (Lock)
+                {
+                    if (!Initalized)
+                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager CreateAndIntialize methods.");
+                }
+            }
+        }
+
+        /// <summary>
         /// Intialize the setting cache provider
         /// </summary>
         public void InitalizeSettingCacheProvider()
