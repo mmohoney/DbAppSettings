@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using DbAppSettings;
+using DbAppSettings.Model.Service.CacheManager.Arguments;
+using DebugConsole.Properties;
 
 namespace DebugConsole
 {
@@ -8,21 +11,17 @@ namespace DebugConsole
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"Setting default value: { new DebugConsoleSettings.EnableLogging().InitialValue }");
+            DbAppSettingCacheManager.CreateAndIntialize(new LazyLoadManagerArguments
+            {
+                LazyLoadSettingDao = new MySettingClassLazyLoadSettingDao(),
+                SaveNewSettingDao = new MySettingClassSaveNewSettingDao()
+            });
 
-            //Intialize the cache and our DAL
-            DbAppSettingCacheManager.CreateAndIntialize(new MyImplLazyLoadSettingDao());
+            bool initialValue = DbAppSetting.GetValue(() => Settings.Default.BoolSetting);
 
-            Console.WriteLine($"Setting value: { new DebugConsoleSettings.EnableLogging().InstanceValue }");
+            MySettingClassLazyLoadSettingDao.CachedKeys.First().Value.Value = "False";
 
-            //Update the DAL value and wait until the cache is refreshed
-            MyImplLazyLoadSettingDao.Setting.Value = false.ToString();
-            SpinWait.SpinUntil(() => !DebugConsoleSettings.EnableLogging.Value);
-
-            Console.WriteLine($"Setting value: { new DebugConsoleSettings.EnableLogging().InstanceValue }");
-
-            Console.WriteLine("Done...");
-            Console.ReadLine();
+            bool secondValue = DbAppSetting.GetValue(() => Settings.Default.BoolSetting);
         }
     }
 

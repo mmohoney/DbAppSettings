@@ -26,18 +26,18 @@ namespace DebugConsole.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("TestValue")]
-        public string TestSetting {
+        public string StringSetting {
             get {
-                return ((string)(this["TestSetting"]));
+                return ((string)(this["StringSetting"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool BoolSettig {
+        public bool BoolSetting {
             get {
-                return ((bool)(this["BoolSettig"]));
+                return ((bool)(this["BoolSetting"]));
             }
         }
     }
