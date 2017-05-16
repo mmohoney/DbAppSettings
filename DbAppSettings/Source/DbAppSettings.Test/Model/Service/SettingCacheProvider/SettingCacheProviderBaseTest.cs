@@ -122,11 +122,10 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             var domain = new DbAppSettingTestSetting();
             var dto = domain.ToDto();
 
-            provider.SaveNewSettingIfNotExists(domain);
+            provider.SaveNewSettingIfNotExists(dto);
 
             Assert.IsTrue(dao.SaveNewSettingIfNotExistsHitCount == 1);
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
-            Assert.IsTrue(domain.HydratedFromDataAccess);
         }
     }
 }

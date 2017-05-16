@@ -137,7 +137,7 @@ namespace DbAppSettings.Test.Mock
             throw new NotImplementedException();
         }
 
-        internal override void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        internal override void SaveNewSettingIfNotExists(DbAppSettingDto dbAppSettingDto)
         {
             throw new NotImplementedException();
         }

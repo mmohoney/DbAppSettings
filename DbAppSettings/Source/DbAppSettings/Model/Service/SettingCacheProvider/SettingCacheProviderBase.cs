@@ -175,31 +175,34 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                 }
 
                 //If the setting was not found in the cache, we need to save it to the data access layer
-                SaveNewSettingIfNotExists(dbAppSetting);
+                DbAppSettingDto dbAppSettingDto = dbAppSetting.ToDto();
+                SaveNewSettingIfNotExists(dbAppSettingDto);
+                dbAppSetting.From(dbAppSettingDto);
             }
         }
 
         /// <summary>
         /// Save the settign to the data access layer
         /// </summary>
-        /// <param name="dbAppSetting"></param>
-        internal virtual void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting) 
+        ///// <param name="dbAppSetting"></param>
+        /// <param name="dbAppSettingDto"></param>
+        internal virtual void SaveNewSettingIfNotExists(DbAppSettingDto dbAppSettingDto) 
         {
             lock (Lock)
             {
                 try
                 {
                     //Convert to a dto to save
-                    DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
+                    //DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
 
                     //If the setting is no found in the cache, save the setting
-                    ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+                    ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSettingDto);
 
                     //If the setting was just added to the data access layer, add it to the dto cache as well
-                    SettingDtosByKey.AddOrUpdate(newSettingDto.Key, newSettingDto, (key, oldValue) => newSettingDto);
+                    SettingDtosByKey.AddOrUpdate(dbAppSettingDto.Key, dbAppSettingDto, (key, oldValue) => dbAppSettingDto);
 
                     //Hydrate it from itself as it is now present in the cache
-                    dbAppSetting.From(newSettingDto);
+                    //dbAppSetting.From(newSettingDto);
                 }
                 catch (Exception e)
                 {
