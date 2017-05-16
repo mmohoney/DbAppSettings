@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service;
 
 namespace DbAppSettings
@@ -20,7 +22,16 @@ namespace DbAppSettings
                 return default(TValueType);
 
             string fullSettingName = $"{assembly}.{propertyName}";
-            TValueType value = SettingCache.GetDbAppSettingValue<TValueType>(fullSettingName);
+            TValueType defaultValue = expression.Compile()();
+
+            DbAppSettingDto placeHolderDto = new DbAppSettingDto
+            {
+                Key = fullSettingName,
+                Type = typeof(TValueType).ToString(),
+                Value = InternalDbAppSettingBase.ConvertValueToString(typeof(TValueType).ToString(), defaultValue),
+            };
+
+            TValueType value = SettingCache.GetDbAppSettingValue<TValueType>(placeHolderDto);
             return value;
         }
     }

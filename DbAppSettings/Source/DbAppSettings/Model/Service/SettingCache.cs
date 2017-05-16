@@ -1,4 +1,5 @@
 ﻿using System;
+using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
@@ -44,14 +45,14 @@ namespace DbAppSettings.Model.Service
             return Instance.SettingCacheProvider.GetDbAppSetting<T, TValueType>();
         }
 
-        internal static TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        internal static TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
         {
-            Instance.SettingCacheProvider.IntializationCheck();
-
-            if (string.IsNullOrWhiteSpace(fullSettingName))
+            if (dbAppSettingDto == null)
                 return default(TValueType);
 
-            return Instance.SettingCacheProvider.GetDbAppSettingValue<TValueType>(fullSettingName);
+            Instance.SettingCacheProvider.IntializationCheck();
+
+            return Instance.SettingCacheProvider.GetDbAppSettingValue<TValueType>(dbAppSettingDto);
         }
 
         public void InitializeCache(ISettingCacheProvider settingCacheProvider)

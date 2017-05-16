@@ -99,22 +99,19 @@ namespace DbAppSettings.Model.Domain
         /// <param name="typeString"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        internal static TValueType GetValue<TValueType>(string typeString, string value)
+        internal static TValueType GetValueFromString<TValueType>(string typeString, string value)
         {
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (DbAppSupportedValueTypes.Types.ContainsKey(typeString))
-            {
-                //Get the type from the list of valid types
-                Type type = DbAppSupportedValueTypes.Types[typeString];
+            if (!DbAppSupportedValueTypes.Types.ContainsKey(typeString))
+                return new JavaScriptSerializer().Deserialize<TValueType>(value);
 
-                //Logic to populate the value as the value type
-                if (type == typeof(StringCollection))
-                    return (TValueType)(ConvertJsonToStringCollection(value) as object);
+            //Get the type from the list of valid types
+            Type type = DbAppSupportedValueTypes.Types[typeString];
 
-                return (TValueType)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-            }
+            //Logic to populate the value as the value type
+            if (type == typeof(StringCollection))
+                return (TValueType)(ConvertJsonToStringCollection(value) as object);
 
-            return new JavaScriptSerializer().Deserialize<TValueType>(value);
+            return (TValueType)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
         }
 
         /// <summary>
@@ -124,22 +121,19 @@ namespace DbAppSettings.Model.Domain
         /// <param name="typeString"></param>
         /// <param name="internalValue"></param>
         /// <returns></returns>
-        internal static string ConvertValue<TValueType>(string typeString, TValueType internalValue)
+        internal static string ConvertValueToString<TValueType>(string typeString, TValueType internalValue)
         {
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (DbAppSupportedValueTypes.Types.ContainsKey(typeString))
-            {
-                //Get the type from the list of valid types
-                Type type = DbAppSupportedValueTypes.Types[typeString];
+            if (!DbAppSupportedValueTypes.Types.ContainsKey(typeString))
+                return new JavaScriptSerializer().Serialize(internalValue);
 
-                //Logic to populate the value as the value type
-                if (type == typeof(StringCollection))
-                    return ConvertStringCollectionToJson(internalValue as StringCollection);
+            //Get the type from the list of valid types
+            Type type = DbAppSupportedValueTypes.Types[typeString];
 
-                return internalValue.ToString();
-            }
+            //Logic to populate the value as the value type
+            if (type == typeof(StringCollection))
+                return ConvertStringCollectionToJson(internalValue as StringCollection);
 
-            return new JavaScriptSerializer().Serialize(internalValue);
+            return internalValue.ToString();
         }
     }
 
@@ -237,7 +231,7 @@ namespace DbAppSettings.Model.Domain
             string value = dto.Value;
 
             //Get the internal value
-            InternalValue = GetValue<TValueType>(TypeString, value);
+            InternalValue = GetValueFromString<TValueType>(TypeString, value);
 
             //Let the class know that it was hydrated from the data access layer
             HydratedFromDataAccess = true;
@@ -254,7 +248,7 @@ namespace DbAppSettings.Model.Domain
                 ApplicationKey = ApplicationKey,
                 Key = FullSettingName,
                 Type = TypeString,
-                Value = ConvertValue(TypeString, InternalValue),
+                Value = ConvertValueToString(TypeString, InternalValue),
             };
 
             return dpAppSettingDto;

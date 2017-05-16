@@ -1,4 +1,5 @@
-﻿using DbAppSettings.Model.Domain;
+﻿using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Domain;
 
 namespace DbAppSettings.Model.Service.SettingCacheProvider.Interfaces
 {
@@ -15,6 +16,6 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider.Interfaces
 
         DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
 
-        TValueType GetDbAppSettingValue<TValueType>(string fullSettingName);
+        TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto);
     }
 }

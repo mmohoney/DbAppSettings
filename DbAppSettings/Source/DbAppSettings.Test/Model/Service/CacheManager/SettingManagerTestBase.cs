@@ -1,4 +1,5 @@
 ﻿using System;
+using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
@@ -37,7 +38,7 @@ namespace DbAppSettings.Test.Model.Service.CacheManager
                 throw new NotImplementedException();
             }
 
-            public TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+            public TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
             {
                 throw new NotImplementedException();
             }

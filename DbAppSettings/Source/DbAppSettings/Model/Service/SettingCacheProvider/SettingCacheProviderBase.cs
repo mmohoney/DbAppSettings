@@ -80,24 +80,17 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Get the cached value for the setting key regardless of the concrete class
         /// </summary>
         /// <typeparam name="TValueType"></typeparam>
-        /// <param name="fullSettingName"></param>
+        /// <param name="dbAppSettingDto"></param>
         /// <returns></returns>
-        public TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        public TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
         {
-            if (string.IsNullOrWhiteSpace(fullSettingName))
+            if (dbAppSettingDto == null)
                 return default(TValueType);
 
-            DbAppSettingDto placeHolderDto = new DbAppSettingDto
-            {
-                Key = fullSettingName,
-                Type = typeof(TValueType).ToString(),
-                Value = "test",
-            };
+            dbAppSettingDto = GetValueFromCache(dbAppSettingDto);
 
-            placeHolderDto = GetValueFromCache(placeHolderDto);
-
-            return placeHolderDto != null
-                ? InternalDbAppSettingBase.GetValue<TValueType>(placeHolderDto.Type, placeHolderDto.Value)
+            return dbAppSettingDto != null
+                ? InternalDbAppSettingBase.GetValueFromString<TValueType>(dbAppSettingDto.Type, dbAppSettingDto.Value)
                 : default(TValueType);
         }
 
