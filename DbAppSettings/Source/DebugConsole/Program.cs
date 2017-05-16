@@ -1,13 +1,49 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq.Expressions;
 using System.Threading;
 using DbAppSettings;
+using DebugConsole.Properties;
 
 namespace DebugConsole
 {
     class Program
     {
+        public static TV Get<T, TV>(T item, Func<T, IComparable> getProp) where T : ApplicationSettingsBase
+        {
+            return default(TV);
+        }
+         
+
+        public static T GetValue<T>(Expression<Func<T>> expression)
+        {
+            string name = ((MemberExpression)expression.Body).Member.Name;
+            T value = expression.Compile()();
+            return value;
+        }
+
         static void Main(string[] args)
         {
+
+            bool boolSettign = GetValue(() => Settings.Default.BoolSettig);
+
+
+            string result = Settings.Default.TestSetting;
+
+            string get = Get<Settings, string>(Settings.Default, x => x.TestSetting);
+
+
+            return;
+
+
+
+
+
+
+
+
+
+
             Console.WriteLine($"Setting default value: { new DebugConsoleSettings.EnableLogging().InitialValue }");
 
             //Intialize the cache and our DAL

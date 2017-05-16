@@ -32,6 +32,11 @@ namespace DbAppSettings.Test.Model.Service.CacheManager
             {
                 throw new NotImplementedException();
             }
+
+            public TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         internal class DummySettingCacheIntailized : ISettingCache

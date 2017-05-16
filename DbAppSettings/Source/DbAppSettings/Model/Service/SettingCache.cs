@@ -37,7 +37,7 @@ namespace DbAppSettings.Model.Service
 
         public ISettingCacheProvider SettingCacheProvider => _settingCacheProvider;
 
-        internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
+        internal static void CheckIntialization()
         {
             //Throw exception if we have not initialized the cache
             if (!Instance.SettingCacheProvider.IsInitalized)
@@ -48,8 +48,23 @@ namespace DbAppSettings.Model.Service
                         throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager CreateAndIntialize methods.");
                 }
             }
+        }
+
+        internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
+        {
+            CheckIntialization();
 
             return Instance.SettingCacheProvider.GetDbAppSetting<T, TValueType>();
+        }
+
+        internal static TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        {
+            CheckIntialization();
+
+            if (string.IsNullOrWhiteSpace(fullSettingName))
+                return default(TValueType);
+
+            return Instance.SettingCacheProvider.GetDbAppSettingValue<TValueType>(fullSettingName);
         }
 
         public void InitializeCache(ISettingCacheProvider settingCacheProvider)

@@ -67,5 +67,20 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
             return newSetting;
         }
+
+        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        {
+            if (string.IsNullOrWhiteSpace(fullSettingName))
+                return default(TValueType);
+
+            DbAppSettingDto placeHolderDto = new DbAppSettingDto
+            {
+                Key = fullSettingName,
+                Type = typeof(TValueType).ToString(),
+                Value = "test",
+            };
+
+            return default(TValueType);
+        }
     }
 }

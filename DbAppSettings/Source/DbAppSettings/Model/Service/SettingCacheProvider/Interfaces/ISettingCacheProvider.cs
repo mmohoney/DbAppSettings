@@ -12,5 +12,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider.Interfaces
         void InitalizeSettingCacheProvider();
 
         DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
+
+        TValueType GetDbAppSettingValue<TValueType>(string fullSettingName);
     }
 }

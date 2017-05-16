@@ -25,6 +25,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         internal abstract void InitializeSettingCacheProvider();
         internal abstract List<DbAppSettingDto> GetChangedSettings();
         public abstract DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
+        public abstract TValueType GetDbAppSettingValue<TValueType>(string fullSettingName);
 
         internal static bool Initalized { get; set; }
         internal static CancellationTokenSource CancellationTokenSource { get; set; }
@@ -166,7 +167,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         /// Save the settign to the data access layer
         /// </summary>
         /// <param name="dbAppSetting"></param>
-        internal virtual void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        internal virtual void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting) 
         {
             lock (Lock)
             {

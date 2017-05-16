@@ -55,6 +55,11 @@ namespace DbAppSettings.Test.Mock
             throw new NotImplementedException();
         }
 
+        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        {
+            throw new NotImplementedException();
+        }
+
         internal override void InitalizeSettingWatchTask()
         {
             return;
@@ -85,6 +90,11 @@ namespace DbAppSettings.Test.Mock
         }
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
         {
             throw new NotImplementedException();
         }
@@ -122,6 +132,11 @@ namespace DbAppSettings.Test.Mock
             throw new NotImplementedException();
         }
 
+        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        {
+            throw new NotImplementedException();
+        }
+
         internal override void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
         {
             throw new NotImplementedException();
@@ -150,6 +165,11 @@ namespace DbAppSettings.Test.Mock
         }
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
         {
             throw new NotImplementedException();
         }
