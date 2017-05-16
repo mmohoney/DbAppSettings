@@ -25,7 +25,6 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         internal abstract void InitializeSettingCacheProvider();
         internal abstract List<DbAppSettingDto> GetChangedSettings();
         public abstract DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new();
-        public abstract TValueType GetDbAppSettingValue<TValueType>(string fullSettingName);
 
         internal static bool Initalized { get; set; }
         internal static CancellationTokenSource CancellationTokenSource { get; set; }
@@ -75,6 +74,31 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the cached value for the setting key regardless of the concrete class
+        /// </summary>
+        /// <typeparam name="TValueType"></typeparam>
+        /// <param name="fullSettingName"></param>
+        /// <returns></returns>
+        public TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
+        {
+            if (string.IsNullOrWhiteSpace(fullSettingName))
+                return default(TValueType);
+
+            DbAppSettingDto placeHolderDto = new DbAppSettingDto
+            {
+                Key = fullSettingName,
+                Type = typeof(TValueType).ToString(),
+                Value = "test",
+            };
+
+            placeHolderDto = GetValueFromCache(placeHolderDto);
+
+            return placeHolderDto != null
+                ? InternalDbAppSettingBase.GetValue<TValueType>(placeHolderDto.Type, placeHolderDto.Value)
+                : default(TValueType);
         }
 
         /// <summary>
@@ -182,9 +206,31 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         }
 
         /// <summary>
+        /// Check the if the cache contains the value from the dictionary and return the up to date value if so
+        /// </summary>
+        /// <param name="placeHolderDbAppSettingDto"></param>
+        internal DbAppSettingDto GetValueFromCache(DbAppSettingDto placeHolderDbAppSettingDto)
+        {
+            //Check if setting exists without locking
+            DbAppSettingDto outDto;
+            if (SettingDtosByKey.TryGetValue(placeHolderDbAppSettingDto.Key, out outDto))
+                return outDto;
+
+            //Check if setting exists with locking
+            lock (Lock)
+            {
+                if (SettingDtosByKey.ContainsKey(placeHolderDbAppSettingDto.Key))
+                    return SettingDtosByKey[placeHolderDbAppSettingDto.Key];
+
+                //If the setting was not found in the cache, we need to save it to the data access layer
+                SaveNewSettingIfNotExists(placeHolderDbAppSettingDto);
+                return placeHolderDbAppSettingDto;
+            }
+        }
+
+        /// <summary>
         /// Save the settign to the data access layer
         /// </summary>
-        ///// <param name="dbAppSetting"></param>
         /// <param name="dbAppSettingDto"></param>
         internal virtual void SaveNewSettingIfNotExists(DbAppSettingDto dbAppSettingDto) 
         {
@@ -192,17 +238,11 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
             {
                 try
                 {
-                    //Convert to a dto to save
-                    //DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
-
                     //If the setting is no found in the cache, save the setting
                     ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSettingDto);
 
                     //If the setting was just added to the data access layer, add it to the dto cache as well
                     SettingDtosByKey.AddOrUpdate(dbAppSettingDto.Key, dbAppSettingDto, (key, oldValue) => dbAppSettingDto);
-
-                    //Hydrate it from itself as it is now present in the cache
-                    //dbAppSetting.From(newSettingDto);
                 }
                 catch (Exception e)
                 {

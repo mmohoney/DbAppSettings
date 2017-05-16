@@ -66,14 +66,5 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                 return newSetting;
             }
         }
-
-        public override TValueType GetDbAppSettingValue<TValueType>(string fullSettingName)
-        {
-            if (string.IsNullOrWhiteSpace(fullSettingName))
-                return default(TValueType);
-
-
-                return default(TValueType);
-        }
     }
 }

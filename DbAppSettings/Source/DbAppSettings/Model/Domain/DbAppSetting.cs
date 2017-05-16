@@ -91,6 +91,56 @@ namespace DbAppSettings.Model.Domain
             stringCollection.AddRange(resultList.ToArray());
             return stringCollection;
         }
+
+        /// <summary>
+        /// Convert the string representation of the value to the given type
+        /// </summary>
+        /// <typeparam name="TValueType"></typeparam>
+        /// <param name="typeString"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        internal static TValueType GetValue<TValueType>(string typeString, string value)
+        {
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(typeString))
+            {
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[typeString];
+
+                //Logic to populate the value as the value type
+                if (type == typeof(StringCollection))
+                    return (TValueType)(ConvertJsonToStringCollection(value) as object);
+
+                return (TValueType)TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
+            }
+
+            return new JavaScriptSerializer().Deserialize<TValueType>(value);
+        }
+
+        /// <summary>
+        /// Convert the given type value to the string representation of the value
+        /// </summary>
+        /// <typeparam name="TValueType"></typeparam>
+        /// <param name="typeString"></param>
+        /// <param name="internalValue"></param>
+        /// <returns></returns>
+        internal static string ConvertValue<TValueType>(string typeString, TValueType internalValue)
+        {
+            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
+            if (DbAppSupportedValueTypes.Types.ContainsKey(typeString))
+            {
+                //Get the type from the list of valid types
+                Type type = DbAppSupportedValueTypes.Types[typeString];
+
+                //Logic to populate the value as the value type
+                if (type == typeof(StringCollection))
+                    return ConvertStringCollectionToJson(internalValue as StringCollection);
+
+                return internalValue.ToString();
+            }
+
+            return new JavaScriptSerializer().Serialize(internalValue);
+        }
     }
 
     /// <summary>
@@ -186,26 +236,8 @@ namespace DbAppSettings.Model.Domain
             //String value
             string value = dto.Value;
 
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
-            {
-                //Get the type from the list of valid types
-                Type type = DbAppSupportedValueTypes.Types[TypeString];
-
-                //Logic to populate the value as the value type
-                if (type == typeof(StringCollection))
-                {
-                    InternalValue = (TValueType) (ConvertJsonToStringCollection(value) as object);
-                }
-                else
-                {
-                    InternalValue = (TValueType) TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
-                }
-            }
-            else
-            {
-                InternalValue = new JavaScriptSerializer().Deserialize<TValueType>(value);
-            }
+            //Get the internal value
+            InternalValue = GetValue<TValueType>(TypeString, value);
 
             //Let the class know that it was hydrated from the data access layer
             HydratedFromDataAccess = true;
@@ -217,35 +249,12 @@ namespace DbAppSettings.Model.Domain
         /// <returns></returns>
         internal override DbAppSettingDto ToDto()
         {
-            string value;
-
-            //Types cannot be null. If we encounter this case, we need to fail as types cannot be hydrated
-            if (DbAppSupportedValueTypes.Types.ContainsKey(TypeString))
-            {
-                //Get the type from the list of valid types
-                Type type = DbAppSupportedValueTypes.Types[TypeString];
-
-                //Logic to populate the value as the value type
-                if (type == typeof(StringCollection))
-                {
-                    value = ConvertStringCollectionToJson(InternalValue as StringCollection);
-                }
-                else
-                {
-                    value = InternalValue.ToString();
-                }
-            }
-            else
-            {
-                value = new JavaScriptSerializer().Serialize(InternalValue);
-            }
-
             DbAppSettingDto dpAppSettingDto = new DbAppSettingDto
             {
                 ApplicationKey = ApplicationKey,
                 Key = FullSettingName,
                 Type = TypeString,
-                Value = value,
+                Value = ConvertValue(TypeString, InternalValue),
             };
 
             return dpAppSettingDto;
