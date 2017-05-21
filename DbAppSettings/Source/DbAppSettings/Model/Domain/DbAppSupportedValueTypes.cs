@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace DbAppSettings.Model.Domain
 {
@@ -24,7 +25,7 @@ namespace DbAppSettings.Model.Domain
             { typeof(sbyte).FullName,  typeof(sbyte) },
             { typeof(short).FullName,  typeof(short) },
             { typeof(string).FullName,  typeof(string) },
-            { typeof(System.Collections.Specialized.StringCollection).FullName,  typeof(System.Collections.Specialized.StringCollection) },
+            { typeof(StringCollection).FullName,  typeof(StringCollection) },
             { typeof(DateTime).FullName,  typeof(DateTime) },
             { typeof(Guid).FullName, typeof(Guid) },
             { typeof(TimeSpan).FullName,  typeof(TimeSpan) },

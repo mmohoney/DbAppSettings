@@ -4,11 +4,11 @@
     var model = config.page.viewModel;
     var urls = config.page.urls;
     var table = {};
+    var getApplications = function() { return; };
     var getAssemblies = function () { return; };
     var getSettings = function () { return; };
 
-    //self.valueTypes = ko.observableArray(model.ValueTypes);
-    //self.stringCollection = ko.observable(config.page.data.collectionName);
+    self.types = ko.observableArray(model.Types);
 
     //Applications
     var applicationDescription = 'Select an Application...';
@@ -83,7 +83,7 @@
         Assembly: ko.observable(''),
         Key: ko.observable(''),
         Value: ko.observable(''),
-        ValueType: ko.observable(0),
+        Type: ko.observable(0),
 
     });
 
@@ -94,7 +94,7 @@
         self.editSetting().Assembly(self.typeSelection());
         self.editSetting().Key('');
         self.editSetting().Value('');
-        self.editSetting().ValueType(self.valueTypes()[0]);
+        self.editSetting().Type(self.types()[0]);
     };
 
     self.editSettingClick = function () {
@@ -107,7 +107,11 @@
         self.editSetting().Assembly(ko.unwrap(obj.Assembly));
         self.editSetting().Key(ko.unwrap(obj.Key));
         self.editSetting().Value(ko.unwrap(obj.Value));
-        self.editSetting().ValueType(ko.unwrap(obj.ValueType));
+        self.editSetting().Type(ko.unwrap(obj.Type));
+    };
+
+    getApplications = function() {
+
     };
 
     getAssemblies = function () {
@@ -137,7 +141,7 @@
                 self.assemblies(data);
 
                 var found = false;
-                if (previousAssemblySelection != null) {
+                if (previousAssemblySelection !== null) {
                     ko.utils.arrayForEach(self.assemblies(), function (assm) {
                         if (ko.unwrap(assm) === previousAssemblySelection) {
                             self.assemblySelection(assm);
@@ -145,7 +149,7 @@
                         }
                     });
                 }
-                if (previousAssemblySelection == null || !found) {
+                if (previousAssemblySelection === null || !found) {
                     self.assemblySelection(null);
                 }
 
@@ -185,27 +189,19 @@
     };
 
     self.saveSetting = function () {
-        var confirmed = function () {
-            $.loadingOverlay("Saving Setting...");
-
-            $.ajax({
-                url: urls.SaveSetting,
-                data: JSON.stringify({ setting: ko.mapping.toJS(self.editSetting) }),
-                contentType: 'application/json; charset=utf-8',
-                type: 'POST'
-            }).then(function (result) {
-                if (result.Success === false) {
-                    $.loadingOverlay.close();
-                    $.dialog.showWarning(result.Message);
-                } else {
-                    $('.modal').modal('hide');
-                    getSolutions();
-                }
+        $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
+            .fail(function (err) {
+                //TODO 
+                //display error
+            })
+            .done(function (data) {
+                $('.modal').modal('hide');
+                getApplications();
+            })
+            .always(function (data) {
+                //TODO
+                //overlay
             });
-        };
-
-        var message = "Save Setting, continue?";
-        $.dialog.showConfirm(message, "Save Setting?", confirmed);
     };
 
     //self.removeSetting = function (obj) {
