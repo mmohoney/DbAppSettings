@@ -22,7 +22,9 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Controllers
         // GET: Maintenance/Maintenance
         public ActionResult Index()
         {
-            return View();
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
+            List<string> applications = allSettings.Select(s => s.ApplicationKey).Distinct().OrderBy(a => a).ToList();
+            return View(new DbAppSettingsViewModel() { Applications = applications});
         }
 
         [HttpPost]
@@ -43,7 +45,7 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetAllDbAppSettingsForApplicationAndAssemblie(string applicationKey, string assembly)
+        public ActionResult GetAllDbAppSettingsForApplicationAndAssembly(string applicationKey, string assembly)
         {
             List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
             List<DbAppSettingDto> settingsForApplications = allSettings.Where(a => a.ApplicationKey == applicationKey).ToList();

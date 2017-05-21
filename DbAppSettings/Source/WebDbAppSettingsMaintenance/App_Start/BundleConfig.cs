@@ -29,6 +29,20 @@ namespace WebDbAppSettingsMaintenance
 
             bundles.Add(new ScriptBundle("~/bundles/Maintenance/js").IncludeDirectory(
                     "~/Areas/Maintenance/Scripts", "*.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
+                    "~/Scripts/knockout-3.4.2.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
+                    "~/Scripts/knockout-3.4.2.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/dataTables/js").Include(
+                "~/Scripts/DataTables/jquery.dataTables.js",
+                "~/Scripts/DataTables/dataTables.bootstrap.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/dataTables/css").Include(
+                "~/Content/DataTables/css/jquery.dataTables.css",
+                "~/Content/DataTables/css/dataTables.bootstrap.css"));
         }
     }
 }
