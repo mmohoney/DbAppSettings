@@ -32,8 +32,9 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Models
             return new DbAppSettingDto
             {
                 ApplicationKey = Application,
-                Key = $"{Assembly}.{Key}",
-                Value =Value,
+                Key = Key,
+                Type = Type,
+                Value = Value,
             };
         }
     }

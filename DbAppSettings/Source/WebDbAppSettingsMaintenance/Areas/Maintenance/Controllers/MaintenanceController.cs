@@ -66,7 +66,7 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Controllers
 
             _dbAppSettingMaintenanceService.SaveDbAppSetting(toSave);
 
-            return new JsonResult();
+            return new JsonResult() { Data = true};
         }
 
         [HttpPost]

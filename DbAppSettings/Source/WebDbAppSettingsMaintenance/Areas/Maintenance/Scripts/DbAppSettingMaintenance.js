@@ -80,17 +80,18 @@
     self.settingModelText = ko.observable('');
     self.editingExistingKey = ko.observable(false);
     self.editSetting = ko.observable({
+        Application: ko.observable(''),
         Assembly: ko.observable(''),
         Key: ko.observable(''),
         Value: ko.observable(''),
-        Type: ko.observable(0),
-
+        Type: ko.observable(''),
     });
 
     self.addSettingClick = function () {
         self.settingModelText('Add Setting');
         self.editingExistingKey(true);
 
+        self.editSetting().Application(self.typeSelection());
         self.editSetting().Assembly(self.typeSelection());
         self.editSetting().Key('');
         self.editSetting().Value('');
@@ -101,23 +102,67 @@
         self.settingModelText('Edit Setting');
         self.editingExistingKey(false);
 
-        var obj = table.row('.selected').data();
-        obj.Assembly = 'Test Assembly';
-
+        var selected = table.row('.selected');
+        if (!selected || selected.length < 1) {
+            return;
+        }
+            
+        var obj = selected.data();
+        self.editSetting().Application(ko.unwrap(obj.Application));
         self.editSetting().Assembly(ko.unwrap(obj.Assembly));
         self.editSetting().Key(ko.unwrap(obj.Key));
         self.editSetting().Value(ko.unwrap(obj.Value));
         self.editSetting().Type(ko.unwrap(obj.Type));
     };
 
-    getApplications = function() {
+    getApplications = function () {
+        self.applications.removeAll();
+        self.assemblies.removeAll();
+        self.settings.removeAll();
+        table.clear().draw();
 
+        $.post(urls.GetAllApplications)
+            .fail(function (err) {
+                //TODO 
+                //display error
+            })
+            .done(function (data) {
+                if (!data || data.length < 1) {
+                    return;
+                }
+
+                var previousApplicationSelection;
+                if (self.applicationSelection()) {
+                    previousApplicationSelection = self.applicationSelection();
+                }
+
+                self.applications(data);
+
+                var found = false;
+                if (previousApplicationSelection !== null) {
+                    ko.utils.arrayForEach(self.applications(), function (app) {
+                        if (ko.unwrap(app) === previousApplicationSelection) {
+                            self.applicationSelection(app);
+                            found = true;
+                        }
+                    });
+                }
+                if (previousApplicationSelection === null || !found) {
+                    self.applicationSelection(null);
+                }
+
+                getAssemblies();
+            })
+            .always(function (data) {
+                //TODO
+                //overlay
+            });
     };
 
     getAssemblies = function () {
-        table.clear().draw();
-        self.settings.removeAll();
         self.assemblies.removeAll();
+        self.settings.removeAll();
+        table.clear().draw();
 
         if (!self.applicationSelection()) {
             return;
@@ -162,8 +207,8 @@
     };
 
     getSettings = function () {
-        table.clear();
         self.settings.removeAll();
+        table.clear();
 
         if (!self.assemblySelection()) {
             return;
