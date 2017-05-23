@@ -81,7 +81,7 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Controllers
 
             _dbAppSettingMaintenanceService.DeleteDbAppSetting(toRemove);
 
-            return new JsonResult();
+            return new JsonResult() { Data = true};
         }
     }
 }

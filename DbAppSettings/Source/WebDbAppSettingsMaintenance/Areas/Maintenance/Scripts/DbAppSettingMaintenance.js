@@ -47,6 +47,13 @@
 
     //Settings
     self.settings = ko.observableArray([]);
+    self.selected = ko.observableArray([]);
+    self.firstSelected = ko.pureComputed(function() {
+        if (self.selected && self.selected().length > 0) {
+            return self.selected()[0];
+        }
+        return null;
+    });
 
     table = $('#settings').DataTable({
         data: ko.toJS(self.settings),
@@ -67,6 +74,8 @@
     });
 
     $('#settings tbody').on('click', 'tr', function () {
+        self.selected.removeAll();
+        
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }
@@ -74,6 +83,13 @@
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
+
+        var selected = table.row('.selected');
+        if (!selected || selected.length < 1) {
+            return;
+        }
+
+        self.selected.push(selected.data());
     });
 
     //Editing setting
@@ -91,8 +107,8 @@
         self.settingModelText('Add Setting');
         self.editingExistingKey(true);
 
-        self.editSetting().Application(self.typeSelection());
-        self.editSetting().Assembly(self.typeSelection());
+        self.editSetting().Application(self.applicationSelection());
+        self.editSetting().Assembly(self.assemblySelection());
         self.editSetting().Key('');
         self.editSetting().Value('');
         self.editSetting().Type(self.types()[0]);
@@ -102,12 +118,11 @@
         self.settingModelText('Edit Setting');
         self.editingExistingKey(false);
 
-        var selected = table.row('.selected');
-        if (!selected || selected.length < 1) {
+        if (!self.firstSelected()) {
             return;
         }
             
-        var obj = selected.data();
+        var obj = self.firstSelected();
         self.editSetting().Application(ko.unwrap(obj.Application));
         self.editSetting().Assembly(ko.unwrap(obj.Assembly));
         self.editSetting().Key(ko.unwrap(obj.Key));
@@ -249,36 +264,76 @@
             });
     };
 
-    //self.removeSetting = function (obj) {
-    //    var confirmed = function () {
-    //        $.loadingOverlay("Removing Setting...");
+    self.removeSetting = function () {
+        if (!self.firstSelected()) {
+            return;
+        }
 
-    //        $.ajax({
-    //            url: urls.RemoveKey,
-    //            data: JSON.stringify({
-    //                assembly: ko.unwrap(obj.Assembly),
-    //                settingKey: ko.unwrap(obj.Key)
-    //            }),
-    //            contentType: 'application/json; charset=utf-8',
-    //            type: 'POST'
-    //        }).then(function (result) {
-    //            if (result.Success === false) {
-    //                $.loadingOverlay.close();
-    //                $.dialog.showWarning(result.Message);
-    //            } else {
-    //                getSolutions();
-    //            }
-    //        });
-    //    };
+        var obj = self.firstSelected();
 
-    //    var message = "Remove Setting, continue?";
-    //    $.dialog.showConfirm(message, "Remove Setting?", confirmed);
-    //};
+        $.post(urls.RemoveSetting, { model: obj })
+            .fail(function (err) {
+                //TODO 
+                //display error
+            })
+            .done(function (data) {
+                getApplications();
+            })
+            .always(function (data) {
+                //TODO
+                //overlay
+            });
+    };
 
     //Display drivers
     self.assembliesEnabled = ko.pureComputed(function () {
         return self.applicationSelection();
     });
+    self.editEnabled = ko.pureComputed(function () {
+        return self.firstSelected();
+    });
+
+    self.removeEnabled = ko.pureComputed(function () {
+        return self.firstSelected();
+    });
 
     return self;
+};
+
+ko.bindingHandlers.limitCharacters = {
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var allowedNumberOfCharacters = valueAccessor();
+        var currentValue = allBindingsAccessor.get('value');
+        var cutText = ko.unwrap(currentValue).substr(0, allowedNumberOfCharacters);
+        currentValue(cutText);
+    }
+};
+
+ko.bindingHandlers.numeric = {
+    init: function (element, valueAccessor) {
+        var value = valueAccessor();
+        $(element).on("keydown", function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: . ,
+                (event.keyCode == 188 || event.keyCode == 190 || event.keyCode == 110) ||
+                // Allow: home, end, left, right
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $(element).change(function () {
+            value($(element).val());
+        });
+    }
 };
