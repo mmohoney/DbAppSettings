@@ -6,9 +6,9 @@ using DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Demo;
 using DbAppSettings.Maintenance.Model.Service;
 using DbAppSettings.Maintenance.Model.Service.Interfaces;
 using DbAppSettings.Model.DataTransfer;
-using WebDbAppSettingsMaintenance.Areas.Maintenance.Models;
+using WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models;
 
-namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Controllers
+namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 {
     public class MaintenanceController : Controller
     {

@@ -2,7 +2,7 @@
 using System.Linq;
 using DbAppSettings.Model.Domain;
 
-namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Models
+namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models
 {
     public class DbAppSettingsViewModel
     {

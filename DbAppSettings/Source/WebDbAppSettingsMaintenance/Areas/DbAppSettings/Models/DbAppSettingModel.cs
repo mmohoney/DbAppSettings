@@ -1,6 +1,8 @@
-﻿using DbAppSettings.Model.DataTransfer;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DbAppSettings.Model.DataTransfer;
 
-namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Models
+namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models
 {
     public class DbAppSettingModel
     {
@@ -12,6 +14,14 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance.Models
         public string Application { get; set; }
         public string Assembly { get; set; }
         public string Key { get; set; }
+        public string DisplayKey
+        {
+            get
+            {
+                List<string> keySplits = Key.Split('.').ToList();
+                return keySplits[keySplits.Count - 1];
+            }
+        }
         public string Type { get; set; }
         public string Value { get; set; }
 

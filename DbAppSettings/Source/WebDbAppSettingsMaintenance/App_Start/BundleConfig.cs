@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace WebDbAppSettingsMaintenance
 {
@@ -28,7 +27,7 @@ namespace WebDbAppSettingsMaintenance
                       "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/Maintenance/js").IncludeDirectory(
-                    "~/Areas/Maintenance/Scripts", "*.js"));
+                    "~/Areas/DbAppSettings/Scripts", "*.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
                     "~/Scripts/knockout-3.4.2.js"));

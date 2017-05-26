@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace WebDbAppSettingsMaintenance.Areas.Maintenance
+namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings
 {
     public class MaintenanceAreaRegistration : AreaRegistration 
     {
@@ -8,15 +8,15 @@ namespace WebDbAppSettingsMaintenance.Areas.Maintenance
         {
             get 
             {
-                return "Maintenance";
+                return "DbAppSettings";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
-                "Maintenance_default",
-                "Maintenance/{controller}/{action}/{id}",
+                "DbAppSettings_default",
+                "DbAppSettings/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

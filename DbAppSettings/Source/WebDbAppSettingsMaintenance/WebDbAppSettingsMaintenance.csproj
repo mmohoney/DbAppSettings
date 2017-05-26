@@ -140,10 +140,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\Maintenance\Controllers\MaintenanceController.cs" />
-    <Compile Include="Areas\Maintenance\MaintenanceAreaRegistration.cs" />
-    <Compile Include="Areas\Maintenance\Models\DbAppSettingsViewModel.cs" />
-    <Compile Include="Areas\Maintenance\Models\DbAppSettingModel.cs" />
+    <Compile Include="Areas\DbAppSettings\Controllers\MaintenanceController.cs" />
+    <Compile Include="Areas\DbAppSettings\MaintenanceAreaRegistration.cs" />
+    <Compile Include="Areas\DbAppSettings\Models\DbAppSettingsViewModel.cs" />
+    <Compile Include="Areas\DbAppSettings\Models\DbAppSettingModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -151,7 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Maintenance\Scripts\DbAppSettingMaintenance.js" />
+    <Content Include="Areas\DbAppSettings\Scripts\DbAppSettingMaintenance.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -322,8 +322,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Areas\Maintenance\Views\web.config" />
-    <Content Include="Areas\Maintenance\Views\Maintenance\Index.cshtml" />
+    <Content Include="Areas\DbAppSettings\Views\web.config" />
+    <Content Include="Areas\DbAppSettings\Views\Maintenance\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -335,6 +335,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <None Include="Properties\PublishProfiles\twinmproductions.net - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -446,7 +447,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Maintenance\Views\Shared\" />
+    <Folder Include="Areas\DbAppSettings\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

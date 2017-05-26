@@ -60,7 +60,7 @@
         columns: [
             {
                 title: "Key",
-                data: "Key"
+                data: "DisplayKey"
             },
             {
                 title: "Type",
@@ -99,6 +99,7 @@
         Application: ko.observable(''),
         Assembly: ko.observable(''),
         Key: ko.observable(''),
+        DisplayKey: ko.observable(''),
         Value: ko.observable(''),
         Type: ko.observable(''),
     });
@@ -110,6 +111,7 @@
         self.editSetting().Application(self.applicationSelection());
         self.editSetting().Assembly(self.assemblySelection());
         self.editSetting().Key('');
+        self.editSetting().DisplayKey('');
         self.editSetting().Value('');
         self.editSetting().Type(self.types()[0]);
     };
@@ -126,6 +128,7 @@
         self.editSetting().Application(ko.unwrap(obj.Application));
         self.editSetting().Assembly(ko.unwrap(obj.Assembly));
         self.editSetting().Key(ko.unwrap(obj.Key));
+        self.editSetting().DisplayKey(ko.unwrap(obj.DisplayKey));
         self.editSetting().Value(ko.unwrap(obj.Value));
         self.editSetting().Type(ko.unwrap(obj.Type));
     };
