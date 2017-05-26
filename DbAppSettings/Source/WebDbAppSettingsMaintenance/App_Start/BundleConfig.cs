@@ -26,12 +26,6 @@ namespace WebDbAppSettingsMaintenance
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/Maintenance/js").IncludeDirectory(
-                    "~/Areas/DbAppSettings/Scripts", "*.js"));
-
-            bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
-                    "~/Scripts/knockout-3.4.2.js"));
-
             bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
                     "~/Scripts/knockout-3.4.2.js"));
 
@@ -42,6 +36,15 @@ namespace WebDbAppSettingsMaintenance
             bundles.Add(new StyleBundle("~/bundles/dataTables/css").Include(
                 "~/Content/DataTables/css/jquery.dataTables.css",
                 "~/Content/DataTables/css/dataTables.bootstrap.css"));
+
+            bundles.Add(new ScriptBundle("~/bower/sweetalerts/js").Include(
+                "~/bower_components/sweetalert2/dist/sweetalert2.js"));
+
+            bundles.Add(new StyleBundle("~/bower/sweetalerts/css").Include(
+                "~/bower_components/sweetalert2/dist/sweetalert2.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/Maintenance/js").IncludeDirectory(
+                "~/Areas/DbAppSettings/Scripts", "*.js"));
         }
     }
 }

@@ -7,6 +7,7 @@
 
 @section styles{
     @Styles.Render("~/bundles/dataTables/css")
+    @Styles.Render("~/bower/sweetalerts/css")
 
     <style>
         .scrollable-menu {
@@ -82,7 +83,7 @@
             </div>
 
             <div class="panel-body">
-                <table id="settings" class="display" cellspacing="0" width="100%">
+                <table class="table table-bordered table-striped" id="settings" class="display" cellspacing="0" width="100%">
                     <thead>
                         <tr> </tr>
                     </thead>
@@ -193,6 +194,7 @@
 {
     @Scripts.Render("~/bundles/dataTables/js")
     @Scripts.Render("~/bundles/knockout/js")
+    @Scripts.Render("~/bower/sweetalerts/js")
     @Scripts.Render("~/bundles/Maintenance/js")
 
     <script type="text/javascript">

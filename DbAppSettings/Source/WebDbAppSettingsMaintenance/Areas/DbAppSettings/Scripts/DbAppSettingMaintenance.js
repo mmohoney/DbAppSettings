@@ -141,8 +141,7 @@
 
         $.post(urls.GetAllApplications)
             .fail(function (err) {
-                //TODO 
-                //display error
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -188,8 +187,7 @@
 
         $.post(urls.GetAllAssembliesForApplication, { applicationKey: ko.unwrap(self.applicationSelection) })
             .fail(function (err) {
-                //TODO 
-                //display error
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -234,8 +232,7 @@
 
         $.post(urls.GetAllDbAppSettingsForApplicationAndAssembly, { applicationKey: ko.unwrap(self.applicationSelection), assembly: ko.unwrap(self.assemblySelection) })
             .fail(function (err) {
-                //TODO 
-                //display error
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -252,19 +249,29 @@
     };
 
     self.saveSetting = function () {
-        $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
-            .fail(function (err) {
-                //TODO 
-                //display error
-            })
-            .done(function (data) {
-                $('.modal').modal('hide');
-                getApplications();
-            })
-            .always(function (data) {
-                //TODO
-                //overlay
-            });
+        swal({
+            title: "Save Setting?",
+            text: "Are you sure you want to save the setting?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#337ab7",
+            confirmButtonText: "Yes, save it!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            preConfirm: function () {
+                $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
+                    .fail(function (err) {
+                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                    })
+                    .done(function (data) {
+                        swal("Setting saved!", "Setting saved.", "success");
+                        $('.modal').modal('hide');
+                        getApplications();
+                    });
+            }
+        });
     };
 
     self.removeSetting = function () {
@@ -274,18 +281,28 @@
 
         var obj = self.firstSelected();
 
-        $.post(urls.RemoveSetting, { model: obj })
-            .fail(function (err) {
-                //TODO 
-                //display error
-            })
-            .done(function (data) {
-                getApplications();
-            })
-            .always(function (data) {
-                //TODO
-                //overlay
-            });
+        swal({
+            title: "Remove Setting?",
+            text: "Are you sure you want to remove the setting?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#337ab7",
+            confirmButtonText: "Yes, remove it!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            preConfirm: function () {
+                $.post(urls.RemoveSetting, { model: obj })
+                    .fail(function (err) {
+                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                    })
+                    .done(function (data) {
+                        swal("Setting removed!", "Setting removed.", "success");
+                        getApplications();
+                    });
+            }
+        });
     };
 
     //Display drivers
