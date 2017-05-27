@@ -14,17 +14,17 @@ namespace DbAppSettings.Maintenance.Model.Service
             _dbAppSettingMaintenanceDao = dao;
         }
 
-        public List<DbAppSettingDto> GetAll()
+        public List<DbAppSettingDto> GetAll(string sessionId)
         {
             return _dbAppSettingMaintenanceDao.GetAll();
         }
 
-        public void SaveDbAppSetting(DbAppSettingDto dto)
+        public void SaveDbAppSetting(string sessionId, DbAppSettingDto dto)
         {
             _dbAppSettingMaintenanceDao.SaveDbAppSetting(dto);
         }
 
-        public void DeleteDbAppSetting(DbAppSettingDto dto)
+        public void DeleteDbAppSetting(string sessionId, DbAppSettingDto dto)
         {
             _dbAppSettingMaintenanceDao.DeleteDbAppSetting(dto);
         }

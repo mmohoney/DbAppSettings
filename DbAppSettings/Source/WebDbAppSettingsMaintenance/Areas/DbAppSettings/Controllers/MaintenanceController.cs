@@ -22,7 +22,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         // GET: Maintenance/Maintenance
         public ActionResult Index()
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
             List<string> applications = allSettings.Select(s => s.ApplicationKey).Distinct().OrderBy(a => a).ToList();
             return View(new DbAppSettingsViewModel() { Applications = applications});
         }
@@ -30,7 +30,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllApplications()
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
             List<string> applications = allSettings.Select(s => s.ApplicationKey).Distinct().OrderBy(a => a).ToList();
             return new JsonResult() {Data = applications};
         }
@@ -38,7 +38,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllAssembliesForApplication(string applicationKey)
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
             List<DbAppSettingDto> settingsForApplications = allSettings.Where(a => a.ApplicationKey == applicationKey).ToList();
             List<string> assembliesForSolution = settingsForApplications.Select(s => s.Assembly).Distinct().OrderBy(a => a).ToList();
             return new JsonResult() { Data = assembliesForSolution };
@@ -47,7 +47,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllDbAppSettingsForApplicationAndAssembly(string applicationKey, string assembly)
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
             List<DbAppSettingDto> settingsForApplications = allSettings.Where(a => a.ApplicationKey == applicationKey).ToList();
             List<DbAppSettingDto> settingsForAppAndAssembly = settingsForApplications.Where(s => s.Assembly == assembly).OrderBy(a => a.Key).ToList();
             List<DbAppSettingModel> settingModels = settingsForAppAndAssembly.Select(DbAppSettingModel.FromDto).ToList();
@@ -64,7 +64,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             //TODO: Validate
 
-            _dbAppSettingMaintenanceService.SaveDbAppSetting(toSave);
+            _dbAppSettingMaintenanceService.SaveDbAppSetting(HttpContext.Session.SessionID, toSave);
 
             return new JsonResult() { Data = true};
         }
@@ -79,7 +79,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             //TODO: Validate
 
-            _dbAppSettingMaintenanceService.DeleteDbAppSetting(toRemove);
+            _dbAppSettingMaintenanceService.DeleteDbAppSetting(HttpContext.Session.SessionID, toRemove);
 
             return new JsonResult() { Data = true};
         }
