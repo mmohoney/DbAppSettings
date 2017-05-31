@@ -6,6 +6,7 @@
     <title>TMP - @ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/bower/sweetalerts/css")
     @RenderSection("styles", required: false)
 </head>
 <body>
@@ -38,6 +39,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bower/sweetalerts/js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

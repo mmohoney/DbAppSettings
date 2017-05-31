@@ -20,6 +20,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         }
 
         // GET: Maintenance/Maintenance
+        [HttpGet]
         public ActionResult Index()
         {
             List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);

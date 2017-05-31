@@ -7,7 +7,6 @@
 
 @section styles{
     @Styles.Render("~/bundles/dataTables/css")
-    @Styles.Render("~/bower/sweetalerts/css")
 
     <style>
         .scrollable-menu {
@@ -194,7 +193,6 @@
 {
     @Scripts.Render("~/bundles/dataTables/js")
     @Scripts.Render("~/bundles/knockout/js")
-    @Scripts.Render("~/bower/sweetalerts/js")
     @Scripts.Render("~/bundles/Maintenance/js")
 
     <script type="text/javascript">
@@ -217,7 +215,7 @@
             ko.applyBindings(page.Index);
 
             $("#loading").hide();
-            $("#loaded").show();
+            $("#loaded").show();    
         });
     </script>
 }

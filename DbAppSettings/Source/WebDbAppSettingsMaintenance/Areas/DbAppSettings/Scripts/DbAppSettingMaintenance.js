@@ -133,11 +133,29 @@
         self.editSetting().Type(ko.unwrap(obj.Type));
     };
 
-    getApplications = function () {
-        self.applications.removeAll();
-        self.assemblies.removeAll();
+    var clearSettings = function () {
         self.settings.removeAll();
-        table.clear().draw();
+        table.clear();
+        self.selected.removeAll();
+    };
+
+    var clearAssemblies = function () {
+        self.assemblies.removeAll();
+        clearSettings();
+    };
+
+    var clearApplications = function() {
+        self.applications.removeAll();
+        clearAssemblies();
+    };
+
+    getApplications = function () {
+        swal({
+            text: 'Getting Applications...',
+        });
+        swal.showLoading(); ; 
+
+        clearApplications();
 
         $.post(urls.GetAllApplications)
             .fail(function (err) {
@@ -171,15 +189,17 @@
                 getAssemblies();
             })
             .always(function (data) {
-                //TODO
-                //overlay
+                swal.close();
             });
     };
 
     getAssemblies = function () {
-        self.assemblies.removeAll();
-        self.settings.removeAll();
-        table.clear().draw();
+        swal({
+            text: 'Getting Assemblies...',
+        });
+        swal.showLoading(); 
+
+        clearAssemblies();
 
         if (!self.applicationSelection()) {
             return;
@@ -217,14 +237,17 @@
                 getSettings();
             })
             .always(function(data) {
-                //TODO
-                //overlay
+                swal.close();
             });
     };
 
     getSettings = function () {
-        self.settings.removeAll();
-        table.clear();
+        swal({
+            text: 'Getting Settings...',
+        });
+        swal.showLoading(); 
+
+        clearSettings();
 
         if (!self.assemblySelection()) {
             return;
@@ -243,8 +266,7 @@
                 table.rows.add(ko.toJS(self.settings)).draw();
             })
             .always(function (data) {
-                //TODO
-                //overlay
+                swal.close();
             });
     };
 
