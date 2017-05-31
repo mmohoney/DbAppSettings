@@ -112,7 +112,7 @@ namespace DbAppSettings.Test.Mock
         internal override List<DbAppSettingDto> GetChangedSettings()
         {
             GetChangedSettingsHitCount++;
-            var dto = new DbAppSettingTestSetting().ToDto();
+            DbAppSettingDto dto = new DbAppSettingTestSetting().ToDto();
             dto.ModifiedDate = DateTime.Today.AddDays(1);
             return new List<DbAppSettingDto> { dto };
         }

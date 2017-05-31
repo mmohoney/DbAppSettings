@@ -91,7 +91,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             DummySettingCacheProvider3 provider = new DummySettingCacheProvider3(new DummyCacheManagerArguments() { CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
 
-            var dto = new DbAppSettingTestSetting().ToDto();
+            DbAppSettingDto dto = new DbAppSettingTestSetting().ToDto();
             provider.SetSettingValues(new List<DbAppSettingDto>{dto});
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
         }
@@ -102,9 +102,9 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             DummySettingCacheProvider3 provider = new DummySettingCacheProvider3(new DummyCacheManagerArguments() { CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
 
-            var domain = new DbAppSettingTestSetting();
+            DbAppSettingTestSetting domain = new DbAppSettingTestSetting();
 
-            var dto = domain.ToDto();
+            DbAppSettingDto dto = domain.ToDto();
             provider.SetSettingValues(new List<DbAppSettingDto> { dto });
             Assert.IsTrue(SettingCacheProviderBase.SettingDtosByKey.Count == 1);
 
@@ -115,12 +115,12 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
         [Test]
         public void SaveNewSettingIfNotExists()
         {
-            var dao = new DummySaveNewSettingDao();
+            DummySaveNewSettingDao dao = new DummySaveNewSettingDao();
             DummySettingCacheProvider4 provider = new DummySettingCacheProvider4(new DummyCacheManagerArguments() { SaveNewSettingDao = dao, CacheRefreshTimeout = () => TimeSpan.FromMilliseconds(0) });
             Assert.IsNull(SettingCacheProviderBase.LastRefreshedTime);
 
-            var domain = new DbAppSettingTestSetting();
-            var dto = domain.ToDto();
+            DbAppSettingTestSetting domain = new DbAppSettingTestSetting();
+            DbAppSettingDto dto = domain.ToDto();
 
             provider.SaveNewSettingIfNotExists(dto);
 

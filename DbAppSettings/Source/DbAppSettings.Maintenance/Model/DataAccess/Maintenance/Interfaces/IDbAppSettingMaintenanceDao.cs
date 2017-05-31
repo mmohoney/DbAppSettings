@@ -5,8 +5,8 @@ namespace DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Interfaces
 {
     public interface IDbAppSettingMaintenanceDao
     {
-        List<DbAppSettingDto> GetAll();
-        void SaveDbAppSetting(DbAppSettingDto dto);
-        void DeleteDbAppSetting(DbAppSettingDto dto);
+        List<DbAppSettingDto> GetAll(string sessionId);
+        void SaveDbAppSetting(string sessionId, DbAppSettingDto dto);
+        void DeleteDbAppSetting(string sessionId, DbAppSettingDto dto);
     }
 }
