@@ -63,7 +63,9 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             DbAppSettingDto toSave = model.ToDto();
 
-            //TODO: Validate
+            bool isValid = _dbAppSettingMaintenanceService.ValidateValueForType(model.Value, model.Type);
+            if (!isValid)
+                return new JsonResult() {Data = false};
 
             _dbAppSettingMaintenanceService.SaveDbAppSetting(HttpContext.Session.SessionID, toSave);
 

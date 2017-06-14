@@ -8,5 +8,6 @@ namespace DbAppSettings.Maintenance.Model.Service.Interfaces
         List<DbAppSettingDto> GetAll(string sessionId);
         void SaveDbAppSetting(string sessionId, DbAppSettingDto dto);
         void DeleteDbAppSetting(string sessionId, DbAppSettingDto dto);
+        bool ValidateValueForType(object value, string valueType);
     }
 }

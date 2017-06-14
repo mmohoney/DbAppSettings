@@ -101,16 +101,16 @@
     </div>
 
     <div class="modal fade" id="addEditSettingModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><span data-bind="text: settingModelText"></span></h4>
-                </div>
+        <form data-bind="submit: saveSetting">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"><span data-bind="text: settingModelText"></span></h4>
+                    </div>
 
-                <div class="modal-body" data-bind="with: editSetting">
-                    <div class="form-horizontal">
-                        <div class="row">
+                    <div class="modal-body" data-bind="with: editSetting">
+                        <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Application:</label>
                                 <div class="col-sm-10">
@@ -152,40 +152,40 @@
                                 </div>
 
                                 @*<div data-bind="visible: Type() == '@typeof(bool).FullName'">
-                                    <div class="col-sm-10">
-                                        <label class="radio-inline"> <input type="radio" value="true" data-bind="checked: Value"> true </label>
-                                        <label class="radio-inline"> <input type="radio" value="false" data-bind="checked: Value"> false </label>
+                                        <div class="col-sm-10">
+                                            <label class="radio-inline"> <input type="radio" value="true" data-bind="checked: Value"> true </label>
+                                            <label class="radio-inline"> <input type="radio" value="false" data-bind="checked: Value"> false </label>
+                                        </div>
                                     </div>
-                                </div>
-                                
-                                <div data-bind="visible: Type() == '@typeof(byte).FullName'">
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" data-bind="value: Value">
-                                    </div>
-                                </div>
 
-                                <div data-bind="visible: Type() == '@typeof(char).FullName'">
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" data-bind="value: Value, valueUpdate: 'afterkeydown', limitCharacters: 1">
+                                    <div data-bind="visible: Type() == '@typeof(byte).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="value: Value">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div data-bind="visible: Type() == '@typeof(decimal).FullName'">
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" data-bind="text: Value">
+                                    <div data-bind="visible: Type() == '@typeof(char).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="value: Value, valueUpdate: 'afterkeydown', limitCharacters: 1">
+                                        </div>
                                     </div>
-                                </div>*@
+
+                                    <div data-bind="visible: Type() == '@typeof(decimal).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="text: Value">
+                                        </div>
+                                    </div>*@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-bind="click: saveSetting">Save</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-bind="click: saveSetting">Save</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -196,6 +196,8 @@
     @Scripts.Render("~/bundles/Maintenance/js")
 
     <script type="text/javascript">
+
+
         $(function() {
             var jsModel = @Html.Raw(Json.Encode(Model));
 
@@ -215,7 +217,7 @@
             ko.applyBindings(page.Index);
 
             $("#loading").hide();
-            $("#loaded").show();    
+            $("#loaded").show();
         });
     </script>
 }
