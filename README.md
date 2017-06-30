@@ -1,6 +1,10 @@
 DbAppSettings
 =======================
 
+<a href="http://mattshomedomain.ddns.net:47850/viewType.html?buildTypeId=DbAppSettings_Build&guest=1">
+<img src="http://mattshomedomain.ddns.net:47850/app/rest/builds/buildType:(id:DbAppSettings_Build)/statusIcon"/>
+</a>
+
 [![Build Status](https://travis-ci.org/mmohoney/DbAppSettings.svg?branch=master)](https://travis-ci.org/mmohoney/DbAppSettings)
 
 ### Features
