@@ -5,8 +5,9 @@ namespace DbAppSettings.Maintenance.Model.Service.Interfaces
 {
     public interface IDbAppSettingMaintenanceService
     {
-        List<DbAppSettingDto> GetAll();
-        void SaveDbAppSetting(DbAppSettingDto dto);
-        void DeleteDbAppSetting(DbAppSettingDto dto);
+        List<DbAppSettingDto> GetAll(string sessionId);
+        void SaveDbAppSetting(string sessionId, DbAppSettingDto dto);
+        void DeleteDbAppSetting(string sessionId, DbAppSettingDto dto);
+        bool ValidateValueForType(object value, string valueType);
     }
 }

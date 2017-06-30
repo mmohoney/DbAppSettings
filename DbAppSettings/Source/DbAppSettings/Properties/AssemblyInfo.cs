@@ -35,6 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
+[assembly: InternalsVisibleTo("DbAppSettings.Maintenance")]
 [assembly: InternalsVisibleTo("DbAppSettings.Test")]
 [assembly: InternalsVisibleTo("DebugConsole")]
 [assembly: InternalsVisibleTo("WebDbAppSettingsMaintenance")]

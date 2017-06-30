@@ -1,0 +1,395 @@
+﻿var DbAppSettingMaintenance = function (config) {
+
+    var self = this;
+    var model = config.page.viewModel;
+    var urls = config.page.urls;
+    var table = {};
+    var getApplications = function() { return; };
+    var getAssemblies = function () { return; };
+    var getSettings = function () { return; };
+
+    self.types = ko.observableArray(model.Types);
+
+    //Applications
+    var applicationDescription = 'Select an Application...';
+    self.applications = ko.observableArray(model.Applications);
+    self.selectedApplicationDescription = ko.observable(applicationDescription);
+    self.applicationSelection = ko.observable(null);
+    self.applicationSelect = function (obj) {
+        self.applicationSelection(obj);
+    };
+    self.applicationSelection.subscribe(function () {
+        self.assemblySelection(null);
+        if (self.applicationSelection()) {
+            self.selectedApplicationDescription(self.applicationSelection());
+            getAssemblies();
+        } else {
+            self.selectedApplicationDescription(applicationDescription);
+        }
+    });
+
+    //Assemblies
+    var assemblyDescription = 'Select an Assembly...';
+    self.assemblies = ko.observableArray(model.Assemblies);
+    self.selectedAssemblyDescription = ko.observable(assemblyDescription);
+    self.assemblySelection = ko.observable();
+    self.assemblySelect = function (obj, e) {
+        self.assemblySelection(obj);
+    };
+    self.assemblySelection.subscribe(function () {
+        if (self.assemblySelection()) {
+            self.selectedAssemblyDescription(self.assemblySelection());
+            getSettings();
+        } else {
+            self.selectedAssemblyDescription(assemblyDescription);
+        }
+    });
+
+    //Settings
+    self.settings = ko.observableArray([]);
+    self.selected = ko.observableArray([]);
+    self.firstSelected = ko.pureComputed(function() {
+        if (self.selected && self.selected().length > 0) {
+            return self.selected()[0];
+        }
+        return null;
+    });
+
+    table = $('#settings').DataTable({
+        data: ko.toJS(self.settings),
+        columns: [
+            {
+                title: "Key",
+                data: "DisplayKey"
+            },
+            {
+                title: "Type",
+                data: "Type"
+            },
+            {
+                title: "Value",
+                data: "Value"
+            },
+        ]
+    });
+
+    $('#settings tbody').on('click', 'tr', function () {
+        self.selected.removeAll();
+        
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+
+        var selected = table.row('.selected');
+        if (!selected || selected.length < 1) {
+            return;
+        }
+
+        self.selected.push(selected.data());
+    });
+
+    //Editing setting
+    self.settingModelText = ko.observable('');
+    self.editingExistingKey = ko.observable(false);
+    self.editSetting = ko.observable({
+        Application: ko.observable(''),
+        Assembly: ko.observable(''),
+        Key: ko.observable(''),
+        DisplayKey: ko.observable(''),
+        Value: ko.observable(''),
+        Type: ko.observable(''),
+    });
+
+    self.addSettingClick = function () {
+        self.settingModelText('Add Setting');
+        self.editingExistingKey(true);
+
+        self.editSetting().Application(self.applicationSelection());
+        self.editSetting().Assembly(self.assemblySelection());
+        self.editSetting().Key('');
+        self.editSetting().DisplayKey('');
+        self.editSetting().Value('');
+        self.editSetting().Type(self.types()[0]);
+    };
+
+    self.editSettingClick = function () {
+        self.settingModelText('Edit Setting');
+        self.editingExistingKey(false);
+
+        if (!self.firstSelected()) {
+            return;
+        }
+            
+        var obj = self.firstSelected();
+        self.editSetting().Application(ko.unwrap(obj.Application));
+        self.editSetting().Assembly(ko.unwrap(obj.Assembly));
+        self.editSetting().Key(ko.unwrap(obj.Key));
+        self.editSetting().DisplayKey(ko.unwrap(obj.DisplayKey));
+        self.editSetting().Value(ko.unwrap(obj.Value));
+        self.editSetting().Type(ko.unwrap(obj.Type));
+    };
+
+    var clearSettings = function () {
+        self.settings.removeAll();
+        table.clear();
+        self.selected.removeAll();
+    };
+
+    var clearAssemblies = function () {
+        self.assemblies.removeAll();
+        clearSettings();
+    };
+
+    var clearApplications = function() {
+        self.applications.removeAll();
+        clearAssemblies();
+    };
+
+    getApplications = function () {
+        swal({
+            text: 'Getting Applications...',
+        });
+        swal.showLoading(); ; 
+
+        clearApplications();
+
+        $.post(urls.GetAllApplications)
+            .fail(function (err) {
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+            })
+            .done(function (data) {
+                if (!data || data.length < 1) {
+                    return;
+                }
+
+                var previousApplicationSelection;
+                if (self.applicationSelection()) {
+                    previousApplicationSelection = self.applicationSelection();
+                }
+
+                self.applications(data);
+
+                var found = false;
+                if (previousApplicationSelection !== null) {
+                    ko.utils.arrayForEach(self.applications(), function (app) {
+                        if (ko.unwrap(app) === previousApplicationSelection) {
+                            self.applicationSelection(app);
+                            found = true;
+                        }
+                    });
+                }
+                if (previousApplicationSelection === null || !found) {
+                    self.applicationSelection(null);
+                }
+
+                getAssemblies();
+            })
+            .always(function (data) {
+                swal.close();
+            });
+    };
+
+    getAssemblies = function () {
+        swal({
+            text: 'Getting Assemblies...',
+        });
+        swal.showLoading(); 
+
+        clearAssemblies();
+
+        if (!self.applicationSelection()) {
+            return;
+        }
+
+        $.post(urls.GetAllAssembliesForApplication, { applicationKey: ko.unwrap(self.applicationSelection) })
+            .fail(function (err) {
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+            })
+            .done(function (data) {
+                if (!data || data.length < 1) {
+                    return;
+                }
+
+                var previousAssemblySelection;
+                if (self.assemblySelection()) {
+                    previousAssemblySelection = self.assemblySelection();
+                }
+
+                self.assemblies(data);
+
+                var found = false;
+                if (previousAssemblySelection !== null) {
+                    ko.utils.arrayForEach(self.assemblies(), function (assm) {
+                        if (ko.unwrap(assm) === previousAssemblySelection) {
+                            self.assemblySelection(assm);
+                            found = true;
+                        }
+                    });
+                }
+                if (previousAssemblySelection === null || !found) {
+                    self.assemblySelection(null);
+                }
+
+                getSettings();
+            })
+            .always(function(data) {
+                swal.close();
+            });
+    };
+
+    getSettings = function () {
+        swal({
+            text: 'Getting Settings...',
+        });
+        swal.showLoading(); 
+
+        clearSettings();
+
+        if (!self.assemblySelection()) {
+            return;
+        }
+
+        $.post(urls.GetAllDbAppSettingsForApplicationAndAssembly, { applicationKey: ko.unwrap(self.applicationSelection), assembly: ko.unwrap(self.assemblySelection) })
+            .fail(function (err) {
+                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+            })
+            .done(function (data) {
+                if (!data || data.length < 1) {
+                    return;
+                }
+
+                self.settings(data);
+                table.rows.add(ko.toJS(self.settings)).draw();
+            })
+            .always(function (data) {
+                swal.close();
+            });
+    };
+
+    self.saveSetting = function () {
+        swal({
+            title: "Save Setting?",
+            text: "Are you sure you want to save the setting?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#337ab7",
+            confirmButtonText: "Yes, save it!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            preConfirm: function () {
+                $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
+                    .fail(function (err) {
+                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                    })
+                    .done(function (data) {
+                        swal("Setting saved!", "Setting saved.", "success");
+                        $('.modal').modal('hide');
+                        getApplications();
+                    });
+            }
+        });
+    };
+
+    self.removeSetting = function () {
+        if (!self.firstSelected()) {
+            return;
+        }
+
+        var obj = self.firstSelected();
+
+        swal({
+            title: "Remove Setting?",
+            text: "Are you sure you want to remove the setting?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#337ab7",
+            confirmButtonText: "Yes, remove it!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            preConfirm: function () {
+                $.post(urls.RemoveSetting, { model: obj })
+                    .fail(function (err) {
+                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                    })
+                    .done(function (data) {
+                        swal("Setting removed!", "Setting removed.", "success");
+                        getApplications();
+                    });
+            }
+        });
+    };
+
+    //Display drivers
+    self.assembliesEnabled = ko.pureComputed(function () {
+        return self.applicationSelection();
+    });
+    self.editEnabled = ko.pureComputed(function () {
+        return self.firstSelected();
+    });
+
+    self.removeEnabled = ko.pureComputed(function () {
+        return self.firstSelected();
+    });
+
+    return self;
+};
+
+ko.bindingHandlers.limitCharacters = {
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        var allowedNumberOfCharacters = valueAccessor();
+        var currentValue = allBindingsAccessor.get('value');
+        var cutText = ko.unwrap(currentValue).substr(0, allowedNumberOfCharacters);
+        currentValue(cutText);
+    }
+};
+
+ko.bindingHandlers.numeric = {
+    init: function (element, valueAccessor) {
+        var value = valueAccessor();
+        $(element).on("keydown", function (event) {
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: . ,
+                (event.keyCode == 188 || event.keyCode == 190 || event.keyCode == 110) ||
+                // Allow: home, end, left, right
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $(element).change(function () {
+            value($(element).val());
+        });
+    }
+};
+
+ko.bindingHandlers.enterkey = {
+    init: function (element, valueAccessor, allBindings, viewModel) {
+        var callback = valueAccessor();
+        $(element).keypress(function (event) {
+            var keyCode = (event.which ? event.which : event.keyCode);
+            if (keyCode === 13) {
+                callback.call(viewModel);
+                return false;
+            }
+            return true;
+        });
+    }
+};

@@ -1,0 +1,223 @@
+﻿@model WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models.DbAppSettingsViewModel
+
+@{
+    ViewBag.Title = "DbAppSettings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    @Styles.Render("~/bundles/dataTables/css")
+
+    <style>
+        .scrollable-menu {
+            height: auto;
+            max-height: 200px;
+            overflow-x: hidden;
+        }
+
+        .dropdown-menu {
+            max-height: 350px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    </style>
+}
+
+<div id="content">
+    @*Heading*@
+    <div class="clearfix">
+        <div class="col-md-6">
+            <h3>
+                <span>DbAppSettings</span>
+            </h3>
+        </div>
+    </div>
+
+    @*Page loading*@
+    <div id="loading">
+        <span class="glyphicon glyphicon-transfer"></span>Loading...
+    </div>
+
+    @*Page loaded*@
+    <div id="loaded" style="display: none;">
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left">Maintenance</h4>
+            </div>
+
+            <div class="panel-body">
+                <div class="alert alert-danger">
+                    <dl class="dl-horizontal">
+                        <dt>Warning!</dt>
+                        <dd>These drive application settings.</dd>
+                    </dl>
+                </div>
+
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Selected Application</label>
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width: 300px">
+                                <span data-bind="text: selectedApplicationDescription"></span>&nbsp;
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown dropdown-menu scrollable-menu" role="menu" data-bind="foreach: applications">
+                                <li><a href="#" data-bind="text: $data, click: $parent.applicationSelect"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Selected Assembly</label>
+                        <div class="col-sm-10">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="width: 300px" data-bind="enable: assembliesEnabled">
+                                <span data-bind="text: selectedAssemblyDescription"></span>&nbsp;
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown dropdown-menu scrollable-menu" role="menu" data-bind="foreach: assemblies">
+                                <li><a href="#" data-bind="text: $data, click: $parent.assemblySelect"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-bordered table-striped" id="settings" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr> </tr>
+                    </thead>
+                </table>
+
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" style="width: 200px" class="btn btn-primary" data-bind="enable: editEnabled, click: editSettingClick" data-toggle="modal" data-target="#addEditSettingModal">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;Edit
+                    </button>
+                    <button type="button" style="width: 200px" class="btn btn-danger" data-bind="enable: removeEnabled, click: removeSetting">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addEditSettingModal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <form data-bind="submit: saveSetting">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"><span data-bind="text: settingModelText"></span></h4>
+                    </div>
+
+                    <div class="modal-body" data-bind="with: editSetting">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Application:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" data-bind="visible: !$parent.editingExistingKey(), text: Application"></p>
+                                    <input type="text" class="form-control" data-bind="visible: $parent.editingExistingKey(), value: Application">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Assembly:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" data-bind="visible: !$parent.editingExistingKey(), text: Assembly"></p>
+                                    <input type="text" class="form-control" data-bind="visible: $parent.editingExistingKey(), value: Assembly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Key: </label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" data-bind="visible: !$parent.editingExistingKey(), text: DisplayKey"></p>
+                                    <input type="text" class="form-control" data-bind="visible: $parent.editingExistingKey(), value: DisplayKey">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Type:</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" data-bind="visible: !$parent.editingExistingKey(), text: Type"></p>
+                                    <select class="form-control" data-bind="visible: $parent.editingExistingKey(), options: $parent.types, value: Type"></select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Value: </label>
+                                <div>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" data-bind="value: Value">
+                                    </div>
+                                </div>
+
+                                @*<div data-bind="visible: Type() == '@typeof(bool).FullName'">
+                                        <div class="col-sm-10">
+                                            <label class="radio-inline"> <input type="radio" value="true" data-bind="checked: Value"> true </label>
+                                            <label class="radio-inline"> <input type="radio" value="false" data-bind="checked: Value"> false </label>
+                                        </div>
+                                    </div>
+
+                                    <div data-bind="visible: Type() == '@typeof(byte).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="value: Value">
+                                        </div>
+                                    </div>
+
+                                    <div data-bind="visible: Type() == '@typeof(char).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="value: Value, valueUpdate: 'afterkeydown', limitCharacters: 1">
+                                        </div>
+                                    </div>
+
+                                    <div data-bind="visible: Type() == '@typeof(decimal).FullName'">
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" data-bind="text: Value">
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-bind="click: saveSetting">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/dataTables/js")
+    @Scripts.Render("~/bundles/knockout/js")
+    @Scripts.Render("~/bundles/Maintenance/js")
+
+    <script type="text/javascript">
+
+
+        $(function() {
+            var jsModel = @Html.Raw(Json.Encode(Model));
+
+            var page = {
+                viewModel: jsModel,
+                urls: {
+                    GetAllApplications: '@Url.Action("GetAllApplications")',
+                    GetAllAssembliesForApplication: '@Url.Action("GetAllAssembliesForApplication")',
+                    GetAllDbAppSettingsForApplicationAndAssembly: '@Url.Action("GetAllDbAppSettingsForApplicationAndAssembly")',
+                    SaveSetting: '@Url.Action("SaveSetting")',
+                    RemoveSetting: '@Url.Action("RemoveSetting")',
+                }
+            };
+
+            page.Index = new DbAppSettingMaintenance({ page: page });
+
+            ko.applyBindings(page.Index);
+
+            $("#loading").hide();
+            $("#loaded").show();
+        });
+    </script>
+}

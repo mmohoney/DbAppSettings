@@ -112,7 +112,7 @@ namespace DbAppSettings.Test.Mock
         internal override List<DbAppSettingDto> GetChangedSettings()
         {
             GetChangedSettingsHitCount++;
-            var dto = new DbAppSettingTestSetting().ToDto();
+            DbAppSettingDto dto = new DbAppSettingTestSetting().ToDto();
             dto.ModifiedDate = DateTime.Today.AddDays(1);
             return new List<DbAppSettingDto> { dto };
         }
@@ -122,7 +122,7 @@ namespace DbAppSettings.Test.Mock
             throw new NotImplementedException();
         }
 
-        internal override void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        internal override void SaveNewSettingIfNotExists(DbAppSettingDto dbAppSettingDto)
         {
             throw new NotImplementedException();
         }

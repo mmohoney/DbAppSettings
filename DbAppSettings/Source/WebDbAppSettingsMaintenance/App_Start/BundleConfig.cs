@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace WebDbAppSettingsMaintenance
 {
@@ -27,8 +26,25 @@ namespace WebDbAppSettingsMaintenance
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
+            bundles.Add(new ScriptBundle("~/bundles/knockout/js").Include(
+                    "~/Scripts/knockout-3.4.2.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/dataTables/js").Include(
+                "~/Scripts/DataTables/jquery.dataTables.js",
+                "~/Scripts/DataTables/dataTables.bootstrap.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/dataTables/css").Include(
+                "~/Content/DataTables/css/jquery.dataTables.css",
+                "~/Content/DataTables/css/dataTables.bootstrap.css"));
+
+            bundles.Add(new ScriptBundle("~/bower/sweetalerts/js").Include(
+                "~/bower_components/sweetalert2/dist/sweetalert2.js"));
+
+            bundles.Add(new StyleBundle("~/bower/sweetalerts/css").Include(
+                "~/bower_components/sweetalert2/dist/sweetalert2.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/Maintenance/js").IncludeDirectory(
-                    "~/Areas/Maintenance/Scripts", "*.js"));
+                "~/Areas/DbAppSettings/Scripts", "*.js"));
         }
     }
 }

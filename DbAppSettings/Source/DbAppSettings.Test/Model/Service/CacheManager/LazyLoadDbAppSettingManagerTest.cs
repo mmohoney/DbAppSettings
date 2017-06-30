@@ -57,7 +57,7 @@ namespace DbAppSettings.Test.Model.Service.CacheManager
         [Test]
         public void LazyLoadDbAppSettingManager_IntailizeCache()
         {
-            var cache = new DummySettingCache();
+            DummySettingCache cache = new DummySettingCache();
             LazyLoadDbAppSettingManager cacheManager = new LazyLoadDbAppSettingManager(new LazyLoadProviderFactory(), cache);
             Assert.IsNotNull(cacheManager);
 

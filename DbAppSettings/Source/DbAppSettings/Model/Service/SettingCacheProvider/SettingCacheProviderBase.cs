@@ -34,6 +34,22 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
         public bool IsInitalized => Initalized;
 
         /// <summary>
+        /// Verifies if the cache is initialized. Throws exception if not.
+        /// </summary>
+        public void IntializationCheck()
+        {
+            //Throw exception if we have not initialized the cache
+            if (!Initalized)
+            {
+                lock (Lock)
+                {
+                    if (!Initalized)
+                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager CreateAndIntialize methods.");
+                }
+            }
+        }
+
+        /// <summary>
         /// Intialize the setting cache provider
         /// </summary>
         public void InitalizeSettingCacheProvider()
@@ -58,6 +74,24 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the cached value for the setting key regardless of the concrete class
+        /// </summary>
+        /// <typeparam name="TValueType"></typeparam>
+        /// <param name="dbAppSettingDto"></param>
+        /// <returns></returns>
+        public TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
+        {
+            if (dbAppSettingDto == null)
+                return default(TValueType);
+
+            dbAppSettingDto = GetValueFromCache(dbAppSettingDto);
+
+            return dbAppSettingDto != null
+                ? InternalDbAppSettingBase.GetValueFromString<TValueType>(dbAppSettingDto.Type, dbAppSettingDto.Value)
+                : default(TValueType);
         }
 
         /// <summary>
@@ -158,31 +192,50 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
                 }
 
                 //If the setting was not found in the cache, we need to save it to the data access layer
-                SaveNewSettingIfNotExists(dbAppSetting);
+                DbAppSettingDto dbAppSettingDto = dbAppSetting.ToDto();
+                SaveNewSettingIfNotExists(dbAppSettingDto);
+                dbAppSetting.From(dbAppSettingDto);
+            }
+        }
+
+        /// <summary>
+        /// Check the if the cache contains the value from the dictionary and return the up to date value if so
+        /// </summary>
+        /// <param name="placeHolderDbAppSettingDto"></param>
+        internal DbAppSettingDto GetValueFromCache(DbAppSettingDto placeHolderDbAppSettingDto)
+        {
+            //Check if setting exists without locking
+            DbAppSettingDto outDto;
+            if (SettingDtosByKey.TryGetValue(placeHolderDbAppSettingDto.Key, out outDto))
+                return outDto;
+
+            //Check if setting exists with locking
+            lock (Lock)
+            {
+                if (SettingDtosByKey.ContainsKey(placeHolderDbAppSettingDto.Key))
+                    return SettingDtosByKey[placeHolderDbAppSettingDto.Key];
+
+                //If the setting was not found in the cache, we need to save it to the data access layer
+                SaveNewSettingIfNotExists(placeHolderDbAppSettingDto);
+                return placeHolderDbAppSettingDto;
             }
         }
 
         /// <summary>
         /// Save the settign to the data access layer
         /// </summary>
-        /// <param name="dbAppSetting"></param>
-        internal virtual void SaveNewSettingIfNotExists(InternalDbAppSettingBase dbAppSetting)
+        /// <param name="dbAppSettingDto"></param>
+        internal virtual void SaveNewSettingIfNotExists(DbAppSettingDto dbAppSettingDto) 
         {
             lock (Lock)
             {
                 try
                 {
-                    //Convert to a dto to save
-                    DbAppSettingDto newSettingDto = dbAppSetting.ToDto();
-
                     //If the setting is no found in the cache, save the setting
-                    ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSetting.ToDto());
+                    ManagerArguments.SaveNewSettingDao.SaveNewSettingIfNotExists(dbAppSettingDto);
 
                     //If the setting was just added to the data access layer, add it to the dto cache as well
-                    SettingDtosByKey.AddOrUpdate(newSettingDto.Key, newSettingDto, (key, oldValue) => newSettingDto);
-
-                    //Hydrate it from itself as it is now present in the cache
-                    dbAppSetting.From(newSettingDto);
+                    SettingDtosByKey.AddOrUpdate(dbAppSettingDto.Key, dbAppSettingDto, (key, oldValue) => dbAppSettingDto);
                 }
                 catch (Exception e)
                 {

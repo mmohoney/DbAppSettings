@@ -1,4 +1,5 @@
 ﻿using System;
+using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
@@ -39,17 +40,19 @@ namespace DbAppSettings.Model.Service
 
         internal static DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
         {
-            //Throw exception if we have not initialized the cache
-            if (!Instance.SettingCacheProvider.IsInitalized)
-            {
-                lock (Lock)
-                {
-                    if (!Instance.SettingCacheProvider.IsInitalized)
-                        throw new Exception("Cache is uninitialized. Initalize by invoking DbAppSettingCacheManager CreateAndIntialize methods.");
-                }
-            }
+            Instance.SettingCacheProvider.IntializationCheck();
 
             return Instance.SettingCacheProvider.GetDbAppSetting<T, TValueType>();
+        }
+
+        internal static TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
+        {
+            if (dbAppSettingDto == null)
+                return default(TValueType);
+
+            Instance.SettingCacheProvider.IntializationCheck();
+
+            return Instance.SettingCacheProvider.GetDbAppSettingValue<TValueType>(dbAppSettingDto);
         }
 
         public void InitializeCache(ISettingCacheProvider settingCacheProvider)

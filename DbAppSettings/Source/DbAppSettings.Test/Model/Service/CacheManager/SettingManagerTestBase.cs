@@ -1,4 +1,5 @@
 ﻿using System;
+using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
@@ -23,12 +24,21 @@ namespace DbAppSettings.Test.Model.Service.CacheManager
         {
             public bool IsInitalized => true;
 
+            public void IntializationCheck()
+            {
+            }
+
             public void InitalizeSettingCacheProvider()
             {
                 throw new NotImplementedException();
             }
 
             public DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>() where T : DbAppSetting<T, TValueType>, new()
+            {
+                throw new NotImplementedException();
+            }
+
+            public TValueType GetDbAppSettingValue<TValueType>(DbAppSettingDto dbAppSettingDto)
             {
                 throw new NotImplementedException();
             }

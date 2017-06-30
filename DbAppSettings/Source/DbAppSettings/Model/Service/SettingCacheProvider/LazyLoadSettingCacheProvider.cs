@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
@@ -35,15 +34,7 @@ namespace DbAppSettings.Model.Service.SettingCacheProvider
 
         public override DbAppSetting<T, TValueType> GetDbAppSetting<T, TValueType>()
         {
-            //Throw exception if we have not initialized the cache
-            if (!Initalized)
-            {
-                lock (Lock)
-                {
-                    if (!Initalized)
-                        throw new Exception("SettingCache uninitialized. Initalize by invoking DbAppSettingCacheManager.InitalizeSettingCacheProvider.");
-                }
-            }
+            IntializationCheck();
 
             T newSetting = new T();
 
