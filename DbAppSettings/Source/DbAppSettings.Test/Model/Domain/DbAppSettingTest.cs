@@ -159,5 +159,31 @@ namespace DbAppSettings.Test.Model.Domain
 
             Assert.IsTrue(inputToList.SequenceEqual(resultToList));
         }
+
+        [Test]
+        public void ConvertStringToStringCollection()
+        {
+            string example = @"test";
+
+            StringCollection collection = InternalDbAppSettingBase.ConvertStringToStringCollection(example);
+            Assert.IsNotNull(collection);
+            Assert.IsTrue(collection.Count == 1);
+
+            example = @"1
+                        2
+                        3
+                        4
+                        ";
+
+            collection = InternalDbAppSettingBase.ConvertStringToStringCollection(example);
+            Assert.IsNotNull(collection);
+            Assert.IsTrue(collection.Count == 5);
+
+            example = @"";
+
+            collection = InternalDbAppSettingBase.ConvertStringToStringCollection(example);
+            Assert.IsNotNull(collection);
+            Assert.IsTrue(collection.Count == 1);
+        }
     }
 }

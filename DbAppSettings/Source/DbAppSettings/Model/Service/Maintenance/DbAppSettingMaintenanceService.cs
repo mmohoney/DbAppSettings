@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using DbAppSettings.Model.DataAccess.Interfaces;
 using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
@@ -60,7 +61,7 @@ namespace DbAppSettings.Model.Service.Maintenance
         public bool ValidateValueForType(object value, string valueType)
         {
             return IsValidType(value, valueType);
-            
+
             //TODO: Custom validation logic
         }
 
@@ -84,9 +85,18 @@ namespace DbAppSettings.Model.Service.Maintenance
             try
             {
                 if (type == typeof(StringCollection))
-                    Convert.ChangeType(value, type);
-                else
-                    TypeDescriptor.GetConverter(type).ConvertFrom(value);
+                {
+                    List<string> splits = ((string)value).Split(new string[] { System.Environment.NewLine }, StringSplitOptions.None).ToList();
+                    if (splits.Count < 1)
+                        return false;
+
+                    StringCollection collection = new StringCollection();
+                    collection.AddRange(splits.ToArray());
+
+                    return true;
+                }
+
+                TypeDescriptor.GetConverter(type).ConvertFrom(value);
                 return true;
             }
             catch (Exception e)

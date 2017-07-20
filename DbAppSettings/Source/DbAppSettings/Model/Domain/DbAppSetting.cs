@@ -69,6 +69,19 @@ namespace DbAppSettings.Model.Domain
         internal abstract DbAppSettingDto ToDto();
 
         /// <summary>
+        /// Internal method used to convert a string into a StringCollection
+        /// </summary>
+        /// <param name="stringCollectionValue"></param>
+        /// <returns></returns>
+        internal static StringCollection ConvertStringToStringCollection(string stringCollectionValue)
+        {
+            List<string> breaks = stringCollectionValue.Split(new string[] { System.Environment.NewLine}, StringSplitOptions.None).ToList();
+            StringCollection stringCollection = new StringCollection();
+            stringCollection.AddRange(breaks.ToArray());
+            return stringCollection;
+        }
+
+        /// <summary>
         /// Convert a string collection into a json string to pass to the data access layer
         /// </summary>
         /// <param name="stringCollection"></param>
