@@ -1,5 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using DbAppSettings;
+using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DebugConsole.Properties;
 
@@ -9,6 +13,27 @@ namespace DebugConsole
     {
         static void Main(string[] args)
         {
+            Assembly.Load("WebDbAppSettingsMaintenance");
+
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(t => t.Namespace == "WebDbAppSettingsMaintenance.Service.Maintenance.Demo")
+                .Where(t => t.IsClass)
+                .ToList();
+
+            foreach (Type type in types)
+            {
+
+                    var newType = Activator.CreateInstance(type);
+                InternalDbAppSettingBase baseTest = newType as InternalDbAppSettingBase;
+                if (baseTest != null)
+                {
+                    DbAppSettingDto dto = baseTest.ToDto();
+
+                }
+            }
+
+
             DbAppSettingCacheManager.CreateAndIntialize(new LazyLoadManagerArguments
             {
                 LazyLoadSettingDao = new MySettingClassLazyLoadSettingDao(),

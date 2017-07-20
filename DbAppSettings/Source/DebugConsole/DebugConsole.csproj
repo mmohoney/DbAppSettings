@@ -66,6 +66,10 @@
       <Project>{1f4cd95d-4c5e-468f-b990-40922949e8cf}</Project>
       <Name>DbAppSettings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebDbAppSettingsMaintenance\WebDbAppSettingsMaintenance.csproj">
+      <Project>{c71ac218-cbb9-43f3-8c7c-646d2388aaa6}</Project>
+      <Name>WebDbAppSettingsMaintenance</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
