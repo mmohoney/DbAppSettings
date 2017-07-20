@@ -149,6 +149,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Maintenance\Demo\DemoDbAppSettingMaintenanceDao.cs" />
+    <Compile Include="Service\Maintenance\Demo\DemoDbAppSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\DbAppSettings\Scripts\DbAppSettingMaintenance.js" />
@@ -444,21 +446,19 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\DbAppSettings\Views\Shared\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DbAppSettings.Maintenance\DbAppSettings.Maintenance.csproj">
-      <Project>{7b390f06-3dd9-40ad-b7fa-986d440016ac}</Project>
-      <Name>DbAppSettings.Maintenance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DbAppSettings\DbAppSettings.csproj">
       <Project>{1F4CD95D-4C5E-468F-B990-40922949E8CF}</Project>
       <Name>DbAppSettings</Name>

@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
-using DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Demo;
-using DbAppSettings.Maintenance.Model.Service;
-using DbAppSettings.Maintenance.Model.Service.Interfaces;
 using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Service.Maintenance;
+using DbAppSettings.Model.Service.Maintenance.Interfaces;
 using WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models;
+using WebDbAppSettingsMaintenance.Service.Maintenance.Demo;
 
 namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 {
@@ -23,7 +23,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
             List<string> applications = allSettings.Select(s => s.ApplicationKey).Distinct().OrderBy(a => a).ToList();
             return View(new DbAppSettingsViewModel() { Applications = applications});
         }
@@ -31,7 +31,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllApplications()
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
             List<string> applications = allSettings.Select(s => s.ApplicationKey).Distinct().OrderBy(a => a).ToList();
             return new JsonResult() {Data = applications};
         }
@@ -39,7 +39,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllAssembliesForApplication(string applicationKey)
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
             List<DbAppSettingDto> settingsForApplications = allSettings.Where(a => a.ApplicationKey == applicationKey).ToList();
             List<string> assembliesForSolution = settingsForApplications.Select(s => s.Assembly).Distinct().OrderBy(a => a).ToList();
             return new JsonResult() { Data = assembliesForSolution };
@@ -48,7 +48,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
         [HttpPost]
         public ActionResult GetAllDbAppSettingsForApplicationAndAssembly(string applicationKey, string assembly)
         {
-            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll(HttpContext.Session.SessionID);
+            List<DbAppSettingDto> allSettings = _dbAppSettingMaintenanceService.GetAll();
             List<DbAppSettingDto> settingsForApplications = allSettings.Where(a => a.ApplicationKey == applicationKey).ToList();
             List<DbAppSettingDto> settingsForAppAndAssembly = settingsForApplications.Where(s => s.Assembly == assembly).OrderBy(a => a.Key).ToList();
             List<DbAppSettingModel> settingModels = settingsForAppAndAssembly.Select(DbAppSettingModel.FromDto).ToList();
@@ -67,7 +67,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             DbAppSettingDto toSave = model.ToDto();
 
-            _dbAppSettingMaintenanceService.SaveDbAppSetting(HttpContext.Session.SessionID, toSave);
+            _dbAppSettingMaintenanceService.SaveDbAppSetting(toSave);
 
             return new JsonResult() { Data = true};
         }
@@ -82,7 +82,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             //TODO: Validate
 
-            _dbAppSettingMaintenanceService.DeleteDbAppSetting(HttpContext.Session.SessionID, toRemove);
+            _dbAppSettingMaintenanceService.DeleteDbAppSetting(toRemove);
 
             return new JsonResult() { Data = true};
         }
