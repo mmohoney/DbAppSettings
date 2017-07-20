@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DbAppSetting.cs" />
     <Compile Include="DbAppSettingCacheManager.cs" />
+    <Compile Include="Model\DataAccess\Interfaces\IDbAppSettingMaintenanceDao.cs" />
     <Compile Include="Model\Service\CacheManager\Arguments\LazyLoadManagerArguments.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultLazyLoadSettingDao.cs" />
     <Compile Include="Model\DataAccess\Implementations\DefaultSaveNewSettingDao.cs" />
@@ -53,6 +54,8 @@
     <Compile Include="Model\Service\CacheManager\LazyLoadDbAppSettingManager.cs" />
     <Compile Include="Model\Service\Factory\SettingCacheProviderFactory.cs" />
     <Compile Include="Model\Service\Interfaces\ISettingCache.cs" />
+    <Compile Include="Model\Service\Maintenance\DbAppSettingMaintenanceService.cs" />
+    <Compile Include="Model\Service\Maintenance\Interfaces\IDbAppSettingMaintenanceService.cs" />
     <Compile Include="Model\Service\SettingCacheProvider\Interfaces\ISettingCacheProvider.cs" />
     <Compile Include="Model\Service\Factory\Interfaces\ISettingCacheProviderFactory.cs" />
     <Compile Include="Model\Service\SettingCache.cs" />

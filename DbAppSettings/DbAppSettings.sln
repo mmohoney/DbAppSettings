@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings", "Source\DbAppSettings\DbAppSettings.csproj", "{1F4CD95D-4C5E-468F-B990-40922949E8CF}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Maintenance", "Source\DbAppSettings.Maintenance\DbAppSettings.Maintenance.csproj", "{7B390F06-3DD9-40AD-B7FA-986D440016AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugConsole", "Source\DebugConsole\DebugConsole.csproj", "{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAppSettings.Maintenance.Test", "DbAppSettings.Maintenance.Test\DbAppSettings.Maintenance.Test.csproj", "{D9A6C882-CD49-4CFA-8ED2-9A24E5A688D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBBEF8CB-47F5-40FB-8C30-D71DD66CAC55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9A6C882-CD49-4CFA-8ED2-9A24E5A688D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9A6C882-CD49-4CFA-8ED2-9A24E5A688D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9A6C882-CD49-4CFA-8ED2-9A24E5A688D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9A6C882-CD49-4CFA-8ED2-9A24E5A688D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
