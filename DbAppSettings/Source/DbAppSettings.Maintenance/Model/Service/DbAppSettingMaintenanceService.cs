@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using DbAppSettings.Maintenance.Model.DataAccess.Maintenance.Interfaces;
 using DbAppSettings.Maintenance.Model.Service.Interfaces;
 using DbAppSettings.Model.DataTransfer;

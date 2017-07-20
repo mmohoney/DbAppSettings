@@ -61,11 +61,11 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
             if (model == null)
                 throw new ValidationException("model cannot be null");
 
-            DbAppSettingDto toSave = model.ToDto();
-
             bool isValid = _dbAppSettingMaintenanceService.ValidateValueForType(model.Value, model.Type);
             if (!isValid)
                 return new JsonResult() {Data = false};
+
+            DbAppSettingDto toSave = model.ToDto();
 
             _dbAppSettingMaintenanceService.SaveDbAppSetting(HttpContext.Session.SessionID, toSave);
 

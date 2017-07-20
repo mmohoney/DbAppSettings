@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using DbAppSettings;
 using DbAppSettings.Model.Service.CacheManager.Arguments;
 using DebugConsole.Properties;

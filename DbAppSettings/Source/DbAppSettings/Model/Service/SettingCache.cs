@@ -1,5 +1,4 @@
-﻿using System;
-using DbAppSettings.Model.DataTransfer;
+﻿using DbAppSettings.Model.DataTransfer;
 using DbAppSettings.Model.Domain;
 using DbAppSettings.Model.Service.Interfaces;
 using DbAppSettings.Model.Service.SettingCacheProvider.Interfaces;
