@@ -34,7 +34,7 @@ namespace WebDbAppSettingsMaintenance
                 "~/Scripts/DataTables/dataTables.bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/bundles/dataTables/css").Include(
-                "~/Content/DataTables/css/jquery.dataTables.css",
+                //"~/Content/DataTables/css/jquery.dataTables.css",
                 "~/Content/DataTables/css/dataTables.bootstrap.css"));
 
             bundles.Add(new ScriptBundle("~/bower/sweetalerts/js").Include(

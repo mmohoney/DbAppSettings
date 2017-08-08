@@ -10,7 +10,7 @@ namespace WebDbAppSettingsMaintenance.Service.Maintenance.Demo
     internal class DemoDbAppSettingMaintenanceDao : IDbAppSettingMaintenanceDao
     {
         private static readonly Dictionary<string, DbAppSettingDto> DemoSettingsBySession = CreateSettings();
-       
+
         public List<DbAppSettingDto> GetAll()
         {
             return DemoSettingsBySession.Values.ToList();
@@ -34,71 +34,30 @@ namespace WebDbAppSettingsMaintenance.Service.Maintenance.Demo
         {
             Dictionary<string, DbAppSettingDto> settingsByKey = new Dictionary<string, DbAppSettingDto>();
 
-            List<Type> types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(t => t.Namespace == "WebDbAppSettingsMaintenance.Service.Maintenance.Demo")
-                .Where(t => t.IsClass)
-                .ToList();
-
-            List<DbAppSettingDto> dbAppSettingDtos = new List<DbAppSettingDto>();
-
-            foreach (Type type in types)
-            {
-                object activatedType = Activator.CreateInstance(type);
-                InternalDbAppSettingBase dbAppSettingBase = activatedType as InternalDbAppSettingBase;
-                if (dbAppSettingBase != null)
-                {
-                    DbAppSettingDto dto = dbAppSettingBase.ToDto();
-                    dbAppSettingDtos.Add(dto);
-                }
-            }
+            List<DbAppSettingDto> dbAppSettingDtos = GetAllDbAppSettingDtos();
 
             dbAppSettingDtos.ForEach(s => s.ApplicationKey = "Application One");
+            dbAppSettingDtos.ForEach(s => s.Key = $"One_{s.Key}");
             dbAppSettingDtos.ForEach(s => settingsByKey.Add(s.Key, s));
 
+            List<DbAppSettingDto> dbAppSettingDtos2 = GetAllDbAppSettingDtos();
 
-            //DbAppSettingDto dto1 = new DbAppSettingDto() { Key = new DemoDbAppSettings.DemoDbAppSettingBool().FullSettingName, Value = "2", Type = typeof(int).FullName, ApplicationKey = "DbAppSettingApp" };
-            //DbAppSettingDto dto2 = new DbAppSettingDto() { Key = $"AnotherAssembly.{new DemoDbAppSettings.DemoDbAppSettingInt().SettingName}", Value = "NEW TEST", Type = typeof(string).FullName, ApplicationKey = "DbAppSettingApp" };
-            //DbAppSettingDto dto3 = new DbAppSettingDto() { Key = $"AnotherAssembly.{new DemoDbAppSettings.DemoDbAppSettingString().SettingName}", Value = "true", Type = typeof(bool).FullName, ApplicationKey = "DbAppSettingApp" };
-
-            //settingsByKey.Add(dto1.Key, dto1);
-            //settingsByKey.Add(dto2.Key, dto2);
-            //settingsByKey.Add(dto3.Key, dto3);
-
-            //DbAppSettingDto dto4 = new DbAppSettingDto() { Key = new DemoDbAppSettings.DemoSecondAppDbAppSettingBool().FullSettingName, Value = "2", Type = typeof(int).FullName, ApplicationKey = "SecondApp" };
-            //DbAppSettingDto dto5 = new DbAppSettingDto() { Key = new DemoDbAppSettings.DemoSecondDbAppSettingInt().FullSettingName, Value = "NEW TEST", Type = typeof(string).FullName, ApplicationKey = "SecondApp" };
-            //DbAppSettingDto dto6 = new DbAppSettingDto() { Key = new DemoDbAppSettings.DemoSecondDbAppSettingString().FullSettingName, Value = "true", Type = typeof(bool).FullName, ApplicationKey = "SecondApp" };
-
-            //settingsByKey.Add(dto4.Key, dto4);
-            //settingsByKey.Add(dto5.Key, dto5);
-            //settingsByKey.Add(dto6.Key, dto6);
-
-            //List<DbAppSettingDto> allTypeDtos = new List<DbAppSettingDto>
-            //{
-            //    new DemoDbAppSettings.DemoAnotherAppDbAppSettingBool().ToDto(),
-            //    new DemoDbAppSettings.DemoAnotherAppDbAppSettingByte().ToDto(),
-            //    new DemoDbAppSettings.DemoAnotherAppDbAppSettingChar().ToDto(),
-            //    new DemoDbAppSettings.DemoAnotherAppDbAppSettingDecimal().ToDto()
-            //};
-
-            //foreach (DbAppSettingDto dto in allTypeDtos)
-            //{
-            //    dto.ApplicationKey = "Another App";
-            //    settingsByKey.Add(dto.Key, dto);
-            //}
+            dbAppSettingDtos2.ForEach(s => s.ApplicationKey = "Application Two");
+            dbAppSettingDtos2.ForEach(s => s.Key = $"Two_{s.Key}");
+            dbAppSettingDtos2.ForEach(s => settingsByKey.Add(s.Key, s));
 
             return settingsByKey;
         }
 
-        private void AddDbAppSettingsToDictionary()
+        private static List<DbAppSettingDto> GetAllDbAppSettingDtos()
         {
+            List<DbAppSettingDto> dbAppSettingDtos = new List<DbAppSettingDto>();
+
             List<Type> types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(t => t.Namespace == "WebDbAppSettingsMaintenance.Service.Maintenance.Demo")
                 .Where(t => t.IsClass)
                 .ToList();
-
-            List<DbAppSettingDto> dbAppSettingDtos = new List<DbAppSettingDto>();
 
             foreach (Type type in types)
             {
@@ -111,7 +70,7 @@ namespace WebDbAppSettingsMaintenance.Service.Maintenance.Demo
                 }
             }
 
-            dbAppSettingDtos.ForEach(s => DemoSettingsBySession.Add(s.Key, s));
+            return dbAppSettingDtos;
         }
     }
 }

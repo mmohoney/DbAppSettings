@@ -4,7 +4,7 @@
     var model = config.page.viewModel;
     var urls = config.page.urls;
     var table = {};
-    var getApplications = function() { return; };
+    var getApplications = function () { return; };
     var getAssemblies = function () { return; };
     var getSettings = function () { return; };
 
@@ -48,7 +48,7 @@
     //Settings
     self.settings = ko.observableArray([]);
     self.selected = ko.observableArray([]);
-    self.firstSelected = ko.pureComputed(function() {
+    self.firstSelected = ko.pureComputed(function () {
         if (self.selected && self.selected().length > 0) {
             return self.selected()[0];
         }
@@ -75,7 +75,7 @@
 
     $('#settings tbody').on('click', 'tr', function () {
         self.selected.removeAll();
-        
+
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }
@@ -123,7 +123,7 @@
         if (!self.firstSelected()) {
             return;
         }
-            
+
         var obj = self.firstSelected();
         self.editSetting().Application(ko.unwrap(obj.Application));
         self.editSetting().Assembly(ko.unwrap(obj.Assembly));
@@ -144,22 +144,19 @@
         clearSettings();
     };
 
-    var clearApplications = function() {
+    var clearApplications = function () {
         self.applications.removeAll();
         clearAssemblies();
     };
 
     getApplications = function () {
-        swal({
-            text: 'Getting Applications...',
-        });
-        swal.showLoading(); ; 
-
+        $.loadingOverlay('Getting Applications...');
+       
         clearApplications();
 
         $.post(urls.GetAllApplications)
             .fail(function (err) {
-                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                $.dialog.showError("Unexpected Error!", "An unexpected error occurred.");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -187,17 +184,13 @@
                 }
 
                 getAssemblies();
-            })
-            .always(function (data) {
-                swal.close();
+
+                $.loadingOverlay.close();
             });
     };
 
     getAssemblies = function () {
-        swal({
-            text: 'Getting Assemblies...',
-        });
-        swal.showLoading(); 
+        $.loadingOverlay('Getting Assemblies...');
 
         clearAssemblies();
 
@@ -207,7 +200,7 @@
 
         $.post(urls.GetAllAssembliesForApplication, { applicationKey: ko.unwrap(self.applicationSelection) })
             .fail(function (err) {
-                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                $.dialog.showError("Unexpected Error!", "An unexpected error occurred.");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -235,17 +228,13 @@
                 }
 
                 getSettings();
-            })
-            .always(function(data) {
-                swal.close();
+
+                $.loadingOverlay.close();
             });
     };
 
     getSettings = function () {
-        swal({
-            text: 'Getting Settings...',
-        });
-        swal.showLoading(); 
+        $.loadingOverlay('Getting Settings...');
 
         clearSettings();
 
@@ -255,7 +244,7 @@
 
         $.post(urls.GetAllDbAppSettingsForApplicationAndAssembly, { applicationKey: ko.unwrap(self.applicationSelection), assembly: ko.unwrap(self.assemblySelection) })
             .fail(function (err) {
-                swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                $.dialog.showError("Unexpected Error!", "An unexpected error occurred.");
             })
             .done(function (data) {
                 if (!data || data.length < 1) {
@@ -264,9 +253,8 @@
 
                 self.settings(data);
                 table.rows.add(ko.toJS(self.settings)).draw();
-            })
-            .always(function (data) {
-                swal.close();
+
+                $.loadingOverlay.close();
             });
     };
 
@@ -278,20 +266,53 @@
             showCancelButton: true,
             confirmButtonColor: "#337ab7",
             confirmButtonText: "Yes, save it!",
-            closeOnConfirm: false,
+            //closeOnConfirm: false,
             showLoaderOnConfirm: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
             preConfirm: function () {
-                $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
-                    .fail(function (err) {
-                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
-                    })
-                    .done(function (data) {
-                        swal("Setting saved!", "Setting saved.", "success");
-                        $('.modal').modal('hide');
-                        getApplications();
-                    });
+                return new Promise(function (resolve, reject) {
+                    $.post(urls.SaveSetting, { model: ko.toJS(self.editSetting) })
+                        .fail(function (err) {
+                            $.dialog.showError("Unexpected Error!", "An unexpected error occurred.");
+
+
+
+                            swal({
+                                title: "nexpected Error!",
+                                text: "An unexpected error occurred.",
+                                type: "error",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "Yes, save it!",
+                                //closeOnConfirm: false,
+                                showLoaderOnConfirm: true,
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                               
+                            });
+
+
+
+
+
+
+
+
+                            swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                        })
+                        .done(function (result) {
+                            if (result !== true) {
+                                swal("Save Error!", result, "error");
+                            } else {
+                                swal("Setting saved!", "Setting saved.", "success")
+                                    .then(function (result) {
+                                        $('.modal').modal('hide');
+                                        getApplications();
+                                    });
+                            }
+                        });
+                });
             }
         });
     };
@@ -310,19 +331,24 @@
             showCancelButton: true,
             confirmButtonColor: "#337ab7",
             confirmButtonText: "Yes, remove it!",
-            closeOnConfirm: false,
+            //closeOnConfirm: false,
             showLoaderOnConfirm: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
             preConfirm: function () {
-                $.post(urls.RemoveSetting, { model: obj })
-                    .fail(function (err) {
-                        swal("Unexpected Error!", "An unexpected error occurred.", "error");
-                    })
-                    .done(function (data) {
-                        swal("Setting removed!", "Setting removed.", "success");
-                        getApplications();
-                    });
+                return new Promise(function (resolve, reject) {
+                    $.post(urls.RemoveSetting, { model: obj })
+                        .fail(function (err) {
+                            swal("Unexpected Error!", "An unexpected error occurred.", "error");
+                        })
+                        .done(function (data) {
+                            swal("Setting removed!", "Setting removed.", "success")
+                                .then(function () {
+                                    $('.modal').modal('hide');
+                                    getApplications();
+                                });
+                        });
+                });
             }
         });
     };
@@ -393,3 +419,104 @@ ko.bindingHandlers.enterkey = {
         });
     }
 };
+
+/**
+ * LoadingOverlay plugin (Function)
+ *
+ */
+
+(function ($) {
+    $.loadingOverlay = function (message) {
+        swal({
+            title: "",
+            text: message,
+            type: "info",
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+        swal.showLoading();
+    };
+
+    $.loadingOverlay.close = function () {
+        swal.close();
+    };
+})(jQuery);
+
+$.dialog = function () {
+    var fnShowMessage = function (text, title, callback) {
+        text = text.replace(/\r|\n/g, "<br/>");
+
+        swal({
+            title: title,
+            text: text,
+            type: "info",
+            showCancelButton: false,
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+    };
+
+    var fnShowErrorMessage = function (title, text) {
+        if (!text) {
+            text = 'Unknown error. Please contact help desk.';
+        }
+
+        text = text.replace(/\r|\n/g, "<br/>");
+
+        swal({
+            title: title,
+            text: text,
+            type: "error",
+            showCancelButton: false,
+            showConfirmButton: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+    };
+
+    //var fnShowSuccessMessage = function (text) {
+    //    text = text.replace(/\r|\n/g, "<br/>");
+    //    $('#genericDialog .panel').removeClass(function (index, css) {
+    //        return (css.match(/(^|\s)panel-\S+/g) || []).join(' ');
+    //    });
+    //    $('#genericDialog .panel').addClass('panel-success');
+    //    $('#genericDialog').find('.modal-body').html(text);
+    //    $('#genericDialogLabel').html('<span class="glyphicon glyphicon-ok-sign"></span> Success!');
+    //    $('#genericDialog').modal('show');
+    //};
+
+    //var fnShowWarningMessage = function (text) {
+    //    text = text.replace(/\r|\n/g, "<br/>");
+    //    $('#genericDialog .panel').removeClass(function (index, css) {
+    //        return (css.match(/(^|\s)panel-\S+/g) || []).join(' ');
+    //    });
+    //    $('#genericDialog .panel').addClass('panel-warning');
+    //    $('#genericDialog').find('.modal-body').html(text);
+    //    $('#genericDialogLabel').html('<span class="glyphicon glyphicon-warning-sign"></span> Warning!');
+    //    $('#genericDialog').modal('show');
+    //};
+
+    //var fnShowConfirmationMessage = function (html, title, yesCallback, noCallback) {
+    //    html = html.replace(/\r|\n/g, "<br/>");
+
+    //    $('#genericConfirmationDialog .panel').removeClass('panel-danger');
+    //    $('#genericConfirmationDialog .panel').addClass('panel-default');
+    //    $('#genericConfirmationDialog').find('.modal-body').html(html);
+    //    if (title && title.length > 0)
+    //        $('#genericConfirmationDialogHeader').html(title);
+    //    $('#confirmButton').click(yesCallback);
+    //    $('#cancelButton').click(noCallback);
+    //    $('#genericConfirmationDialog').modal('show');
+    //};
+
+    return {
+        showMessage: fnShowMessage,
+        showError: fnShowErrorMessage,
+        //showSuccess: fnShowSuccessMessage,
+        //showWarning: fnShowWarningMessage,
+        //showConfirm: fnShowConfirmationMessage
+    }
+}();

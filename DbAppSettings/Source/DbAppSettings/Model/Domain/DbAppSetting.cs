@@ -69,16 +69,27 @@ namespace DbAppSettings.Model.Domain
         internal abstract DbAppSettingDto ToDto();
 
         /// <summary>
-        /// Internal method used to convert a string into a StringCollection
+        /// Internal method used to convert a string into a StringCollection seperating on new lines
         /// </summary>
         /// <param name="stringCollectionValue"></param>
         /// <returns></returns>
         internal static StringCollection ConvertStringToStringCollection(string stringCollectionValue)
         {
-            List<string> breaks = stringCollectionValue.Split(new string[] { System.Environment.NewLine}, StringSplitOptions.None).ToList();
+            List<string> breaks = stringCollectionValue.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).ToList();
             StringCollection stringCollection = new StringCollection();
             stringCollection.AddRange(breaks.ToArray());
             return stringCollection;
+        }
+
+        /// <summary>
+        /// Internal method used to convert a StringCollection to a new line seperated string
+        /// </summary>
+        /// <param name="stringCollection"></param>
+        /// <returns></returns>
+        internal static string ConvertStringCollectionToString(StringCollection stringCollection)
+        {
+            List<string> stringList = stringCollection.Cast<string>().ToList();
+            return string.Join(System.Environment.NewLine, stringList);
         }
 
         /// <summary>

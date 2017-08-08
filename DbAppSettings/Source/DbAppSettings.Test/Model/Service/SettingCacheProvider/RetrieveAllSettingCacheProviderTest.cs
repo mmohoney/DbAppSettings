@@ -72,7 +72,7 @@ namespace DbAppSettings.Test.Model.Service.SettingCacheProvider
             provider.InitalizeSettingWatchTask();
 
             SpinWait.SpinUntil(() => dao.GetChangedDbAppSettingsHitCount > 0);
-
+            Thread.Sleep(100);
             Assert.IsTrue(dao.GetChangedDbAppSettingsHitCount > 1);
         }
 

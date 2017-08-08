@@ -63,7 +63,7 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Controllers
 
             bool isValid = _dbAppSettingMaintenanceService.ValidateValueForType(model.Value, model.Type);
             if (!isValid)
-                return new JsonResult() {Data = false};
+                return new JsonResult() {Data = "Value invalid for specified Type"};
 
             DbAppSettingDto toSave = model.ToDto();
 

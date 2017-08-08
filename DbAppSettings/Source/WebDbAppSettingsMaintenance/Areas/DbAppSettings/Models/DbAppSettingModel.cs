@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using DbAppSettings.Model.DataTransfer;
+using DbAppSettings.Model.Domain;
 
 namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models
 {
@@ -27,24 +29,42 @@ namespace WebDbAppSettingsMaintenance.Areas.DbAppSettings.Models
 
         public static DbAppSettingModel FromDto(DbAppSettingDto dto)
         {
+            string value =dto.Value;
+
+            if (dto.Type == typeof(StringCollection).FullName)
+            {
+                StringCollection collection = InternalDbAppSettingBase.ConvertJsonToStringCollection(dto.Value);
+                string stringValue = InternalDbAppSettingBase.ConvertStringCollectionToString(collection);
+                value = stringValue;
+            }
+
             return new DbAppSettingModel
             {
                 Application = dto.ApplicationKey,
                 Assembly = dto.Assembly,
                 Key = dto.Key,
                 Type = dto.Type,
-                Value = dto.Value,
+                Value = value,
             };
         }
 
         public DbAppSettingDto ToDto()
         {
+            string value = Value;
+
+            if (Type == typeof(StringCollection).FullName)
+            {
+                StringCollection collection = InternalDbAppSettingBase.ConvertStringToStringCollection(Value);
+                string jsonCollection = InternalDbAppSettingBase.ConvertStringCollectionToJson(collection);
+                value = jsonCollection;
+            }
+
             return new DbAppSettingDto
             {
                 ApplicationKey = Application,
                 Key = Key,
                 Type = Type,
-                Value = Value,
+                Value = value,
             };
         }
     }
